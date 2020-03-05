@@ -1,5 +1,4 @@
 <!-- Stored in resources/views/layouts/app.blade.php -->
-
 <html>
     <head>
         <meta charset="utf-8">
@@ -16,8 +15,8 @@
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
                 @yield('content')
-                @include('partials/backend/footer')
             </div>
+            @include('partials/backend/footer')
         </div>
         @include('partials/backend/scripts')
     </body>
