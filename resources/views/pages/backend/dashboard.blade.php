@@ -12,7 +12,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">@lang('messages.dashboard.home')</a></li>
+                    <li class="breadcrumb-item"><a href="#">@lang('messages.home')</a></li>
                     <li class="breadcrumb-item active">@lang('messages.dashboard.dashboard')</li>
                 </ol>
             </div>
