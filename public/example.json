@@ -1,0 +1,23 @@
+[{
+    "DOSA":{
+        "dosa_number": "2018000363",
+        "dosa_date": "2018-05-08",
+        "taxpayer_code":"00005",
+        "tailnumber":"N197UA",
+        "fees": [
+            {
+                "old_code": "1029",
+                "concept": "Aterrizaje",
+                "amount": 456.77,
+                "conversion_fee":840
+            },
+            {
+                "old_code": "1028",
+                "concept": "Hangar",
+                "amount": 43.23,
+                "conversion_fee":840
+            }
+        ],
+        "total": 500.00
+    }
+}]
