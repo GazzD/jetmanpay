@@ -3,6 +3,7 @@
 return [
     'english'   => 'English',
     'spanish'   => 'Spanish',
+    'home'      => 'Home',
     'sidebar'   => [
         'dashboard'         => 'Dashboard',
         'users'             => 'Users',
@@ -20,7 +21,13 @@ return [
         'all-rights-reserved' => 'All rights reserved <strong>JET MAN PAY.</strong>',
     ],
     'dashboard'   => [
-        'home'      => 'Home',
         'dashboard' => 'Dashboard',
+    ],
+    'documents'   => [
+        'documents'             => 'Documents',
+        'service-agreement'     => 'Service Agreement',
+        'representation-letter' => 'Representation Letter',
+        'privacy-policy'        => 'Privacy Policy',
+        'user-agreement'        => 'User Agreement',
     ],
 ];

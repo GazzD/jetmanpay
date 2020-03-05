@@ -14,7 +14,9 @@ use Illuminate\Support\Facades\Session;
 |
 */
 
-Route::get('/', 'DashboardController@index');
+Route::get('/', 'DashboardController@index')->name('dashboard');
+Route::get('/documents', 'DocumentsController@index')->name('documents');
+
 Route::get('locale/{locale}', function ($locale){
     Session::put('locale', $locale);
     return redirect()->back();
