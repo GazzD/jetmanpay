@@ -15,28 +15,28 @@
           <i class="fas fa-language" style="font-size: 1.5em;"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <a href="#" class="dropdown-item">
+          <a href="{{ url('locale/en') }}" class="dropdown-item">
             <!-- Message Start -->
             <div class="media">
               <img src="{{asset('backend/dist/img/flag-english.png')}}" alt="User Avatar" class="img-size-50 mr-3 img-circle">
               <div class="media-body">
                 <h3 class="dropdown-item-title">
-                  English
-                  <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
+                  @lang('messages.english')
+                  <span class="float-right text-sm @if(app()->getLocale() == 'en'): text-danger @else text-muted @endif"><i class="fas fa-star"></i></span>
                 </h3>
               </div>
             </div>
             <!-- Message End -->
           </a>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
+          <a href="{{ url('locale/es') }}" class="dropdown-item">
             <!-- Message Start -->
             <div class="media">
               <img src="{{asset('backend/dist/img/flag-spanish.png')}}" alt="User Avatar" class="img-size-50 img-circle mr-3">
               <div class="media-body">
                 <h3 class="dropdown-item-title">
-                  Spanish
-                  <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
+                  @lang('messages.spanish')
+                  <span class="float-right text-sm @if(app()->getLocale() == 'es'): text-danger @else text-muted @endif"><i class="fas fa-star"></i></span>
                 </h3>
               </div>
             </div>

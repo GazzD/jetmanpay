@@ -28,7 +28,7 @@
             <a href="#" class="nav-link active">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
-                Dashboard
+                @lang('messages.sidebar.dashboard')
               </p>
             </a>
           </li>
@@ -36,7 +36,7 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-users"></i>
               <p>
-                Users
+                @lang('messages.sidebar.users')
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
@@ -44,7 +44,7 @@
               <li class="nav-item">
                 <a href="pages/layout/top-nav.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Operators</p>
+                  <p>@lang('messages.sidebar.operators')</p>
                 </a>
               </li>
             </ul>
@@ -53,7 +53,7 @@
             <a href="pages/gallery.html" class="nav-link">
               <i class="nav-icon fas fa-money-check-alt"></i>
               <p>
-                Payments
+                @lang('messages.sidebar.payments')
               </p>
             </a>
           </li>
@@ -61,7 +61,7 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-exclamation-triangle"></i>
               <p>
-                Pending Payments
+                @lang('messages.sidebar.pending-payments')
               </p>
             </a>
           </li>
@@ -69,7 +69,7 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-file-import"></i>
               <p>
-                Send Payments
+                @lang('messages.sidebar.send-payments')
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
@@ -77,13 +77,13 @@
               <li class="nav-item">
                 <a href="pages/UI/general.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>By Airline</p>
+                  <p>@lang('messages.sidebar.by-airline')</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="pages/UI/icons.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Manual</p>
+                  <p>@lang('messages.sidebar.manual')</p>
                 </a>
               </li>
             </ul>
@@ -92,7 +92,7 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-exclamation"></i>
               <p>
-                Claims
+                @lang('messages.sidebar.claims')
               </p>
             </a>
           </li>
@@ -100,7 +100,7 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-cog"></i>
               <p>
-                Settings
+                @lang('messages.sidebar.settings')
               </p>
             </a>
           </li>
@@ -108,7 +108,7 @@
             <a href="pages/gallery.html" class="nav-link">
               <i class="nav-icon fas fa-file-alt"></i>
               <p>
-                Documents
+                @lang('messages.sidebar.documents')
               </p>
             </a>
           </li>
