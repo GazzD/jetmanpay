@@ -6,7 +6,7 @@
             <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
         </li>
     </ul>
-    
+
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
       <!-- Messages Dropdown Menu -->
@@ -47,10 +47,15 @@
       </li>
       <!-- Notifications Dropdown Menu -->
       <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
+        <a class="nav-link" data-toggle="dropdown" href="{{route('logout')}}" onclick="event.preventDefault();
+        document.getElementById('logout-form').submit();">
           <i class="fas fa-power-off" style="font-size: 1.5em;"></i>
         </a>
+        <form id="logout-form" action="{{route('logout')}}" method="POST" style="display: none;">
+            @csrf                                    </form>
       </li>
+</ul>
+
     </ul>
 </nav>
 <!-- /.navbar -->

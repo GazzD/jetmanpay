@@ -13,11 +13,15 @@ use Illuminate\Support\Facades\Session;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', 'DashboardController@index')->name('dashboard');
-Route::get('/documents', 'DocumentsController@index')->name('documents');
+Auth::routes();
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/', 'DashboardController@index')->name('dashboard');
+    Route::get('/documents', 'DocumentsController@index')->name('documents');
+});
 
 Route::get('locale/{locale}', function ($locale){
     Session::put('locale', $locale);
     return redirect()->back();
 });
+
+

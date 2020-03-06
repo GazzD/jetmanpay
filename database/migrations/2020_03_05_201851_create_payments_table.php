@@ -19,7 +19,7 @@ class CreatePaymentsTable extends Migration
             $table->date('dosa_date');
             $table->decimal('total_amount', 10, 2);
             $table->string('tail_number', 255);
-            $table->enum('status', array('PENDING', 'APPROVED', 'CANCELLED', 'REJECTED'));
+            $table->enum('status', array('PENDING', 'APPROVED', 'CANCELLED', 'REJECTED'))->default('PENDING');
             $table->foreignId('client_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
