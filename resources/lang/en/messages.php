@@ -23,6 +23,17 @@ return [
     'dashboard'   => [
         'dashboard' => 'Dashboard',
     ],
+    'pending-payments'  => [
+        'pending-payments'  => 'Pending payments',
+        'tail-number'       => 'Tail number',
+        'amount'            => 'Amount',
+        'date'              => 'Date',
+        'description'       => 'Description',
+        'number'            => 'Number',
+        'client'            => 'Client',
+        'operator'          => 'Operator',
+        'actions'           => 'Actions',
+    ],
     'documents'   => [
         'documents'             => 'Documents',
         'service-agreement'     => 'Service Agreement',

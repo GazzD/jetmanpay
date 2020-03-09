@@ -20,3 +20,6 @@
  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 <!-- Theme style -->
  <link rel="stylesheet" href="{{asset('backend/dist/css/adminlte-override.css')}}">
+ 
+ <link href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
+ 

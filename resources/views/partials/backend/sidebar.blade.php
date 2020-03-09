@@ -58,7 +58,7 @@
             </a>
           </li>
           <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
+            <a href="{{route('pending-payments')}}" class="nav-link">
               <i class="nav-icon fas fa-exclamation-triangle"></i>
               <p>
                 @lang('messages.sidebar.pending-payments')

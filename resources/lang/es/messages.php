@@ -30,6 +30,17 @@ return [
         'privacy-policy'        => 'Políticas de privacidad',
         'user-agreement'        => 'Acuerdo de usuario',
     ],
+    'pending-payments'  => [
+        'pending-payments'  => 'Pagos pendientes',
+        'tail-number'  => 'Matrícula',
+        'amount'  => 'Monto',
+        'date'  => 'Fecha',
+        'description'  => 'Descripción',
+        'number'  => 'Número',
+        'client'  => 'Cliente',
+        'operator'  => 'Operador',
+        'actions'  => 'Actiones',
+    ],
     'upload-json' => [
         'json'              => 'JSON',
         'json-file'         => 'Archivo json',

@@ -8,12 +8,13 @@ use App\Http\Controllers\Controller;
 use function GuzzleHttp\json_decode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Yajra\DataTables\DataTables;
 
 class PaymentsController extends Controller
 {
     public function index()
     {
-        return view('pages.backend.documents');
+        return view('pages.backend.pending-payments');
     }
     
     public function json()
@@ -21,6 +22,31 @@ class PaymentsController extends Controller
         return view('pages.backend.json');
     }
     
+    public function pendingPayments(Request $request)
+    {
+        // Datatable functionality (pagination, filter, order)
+        return DataTables::of(
+            Payment::where('status', 'PENDING')
+                ->where('user_id', auth()->user()->id)
+                ->with('client')
+                ->with('user')
+                ->with('fees')
+                ->latest()
+                ->get()
+            )
+            ->addColumn('description', function($data){
+                $description = strtoupper($data->client->name).'/';
+                return $description;
+            })
+            ->addColumn('action', function($data){
+                $button = '<button type="button" name="cancel-'.$data->id.'">Cancel</button>';
+                return $button;
+            })
+            ->rawColumns(['description', 'action'])
+            ->make(true)
+        ;
+        
+    }
     public function storeJson(Request $request)
     {
         // Json file name

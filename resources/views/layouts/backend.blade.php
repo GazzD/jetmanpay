@@ -20,6 +20,7 @@
             @include('partials/backend/footer')
         </div>
         @include('partials/backend/scripts')
+        @yield('extended-scripts')
     </body>
 </html>
 

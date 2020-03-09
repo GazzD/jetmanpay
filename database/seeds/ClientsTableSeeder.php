@@ -15,7 +15,7 @@ class ClientsTableSeeder extends Seeder
     public function run()
     {
         Client::create([
-            'code'      => '001',
+            'code'      => '00005',
             'name'      => 'Vene Airlines',
             'currency'  => 'VEF'
         ]);
