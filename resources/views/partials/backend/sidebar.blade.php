@@ -116,7 +116,7 @@
             <a href="{{route('load-json')}}" class="nav-link">
               <i class="nav-icon fas fa-file-alt"></i>
               <p>
-                JSON
+                @lang('messages.upload-json.upload-file')
               </p>
             </a>
           </li>
