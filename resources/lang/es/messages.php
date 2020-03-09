@@ -30,4 +30,11 @@ return [
         'privacy-policy'        => 'Políticas de privacidad',
         'user-agreement'        => 'Acuerdo de usuario',
     ],
+    'upload-json' => [
+        'json'              => 'JSON',
+        'json-file'         => 'Archivo json',
+        'send'              => 'Enviar',
+        'upload-file'       => 'Subir JSON',
+        'success-message'   => 'Archivo json cargado correctamente'
+    ]
 ];
