@@ -28,3 +28,5 @@
 <script src="{{asset('backend/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
 <!-- AdminLTE App -->
 <script src="{{asset('backend/dist/js/adminlte.js')}}"></script>
+<!-- Axios -->
+<script src="{{asset('backend/plugins/axios/axios.min.js')}}"></script>

@@ -15,12 +15,16 @@ class CreatePaymentsTable extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->string('dosa_number', 255);
-            $table->date('dosa_date');
+            $table->string('dosa_number', 255)->nullable();
+            $table->date('dosa_date')->nullable();
+            $table->integer('number')->nullable();
             $table->decimal('total_amount', 10, 2);
-            $table->string('tail_number', 255);
+            $table->string('reference', 255);
+            $table->text('description');
             $table->enum('status', array('PENDING', 'APPROVED', 'CANCELLED', 'REJECTED'))->default('PENDING');
+            $table->enum('currency', array('VEF', 'USD'))->default('USD');
             $table->foreignId('client_id')->constrained()->onDelete('cascade');
+            $table->foreignId('plane_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

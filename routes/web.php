@@ -21,7 +21,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/payments/load-json', 'PaymentsController@json')->name('load-json');
     Route::post('/payments/load-json', 'PaymentsController@storeJson')->name('store-json');
     Route::get('/payments/pending-payments', 'PaymentsController@pendingPayments')->name('fetch-pending-payments');
-    
+
+    Route::get('/payments/manual', 'PaymentsController@manual')->name('manual-payments');
+    Route::get('/clients/fetch/plane/{id}', 'ClientsController@fetchByPlane')->name('fetch-clients-by-plane');
+    Route::post('/payments/manual', 'PaymentsController@storeManual')->name('manual-payments');
+
 });
 
 Route::get('locale/{locale}', function ($locale){
