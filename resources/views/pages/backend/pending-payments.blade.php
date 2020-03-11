@@ -51,7 +51,7 @@ $(document).ready(function() {
             "url": "{{route('fetch-pending-payments')}}",
         },
         "columns":[
-        	{"data":"tail_number"},
+            {"data":"plane.tail_number"},
             {"data":"total_amount"},
             {"data":"dosa_date"},
             {"data":"description"},

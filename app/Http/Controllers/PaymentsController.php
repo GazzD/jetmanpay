@@ -16,10 +16,19 @@ class PaymentsController extends Controller
 {
     public function index()
     {
-        $payments = Payment::where('status','PENDING')->get();
+//         $payments = Payment::where('status', 'PENDING')
+//         ->where('user_id', auth()->user()->id)
+//         ->with('client')
+//         ->with('plane')
+//         ->with('user')
+//         ->with('fees')
+//         ->latest()
+//         ->get();
+        
+//         dd($payments);
 
         return view('pages.backend.pending-payments')
-            ->with('payments', $payments)
+//             ->with('payments', $payments)
             ;
     }
 
@@ -35,6 +44,7 @@ class PaymentsController extends Controller
             Payment::where('status', 'PENDING')
                 ->where('user_id', auth()->user()->id)
                 ->with('client')
+                ->with('plane')
                 ->with('user')
                 ->with('fees')
                 ->latest()
@@ -51,18 +61,18 @@ class PaymentsController extends Controller
             ->rawColumns(['description', 'action'])
             ->make(true)
         ;
-
+        
     }
     public function storeJson(Request $request)
     {
         // Json file name
         $fileName = Str::random(10).'.json';
-
+        
         // Validate json file
         if ($request->hasFile('jsonFile')) {
             // Store json file
             $request->jsonFile->storeAs('public/payments', $fileName);
-
+            
             // Pase json file
             $path = storage_path('app/public/payments/'.$fileName);
             $payments = json_decode(file_get_contents($path), true);
@@ -75,10 +85,10 @@ class PaymentsController extends Controller
                 $payment->tail_number = $jsonPayment['DOSA']['tailnumber'];
                 $payment->client_id = Client::where('code', $jsonPayment['DOSA']['taxpayer_code'])->first()->id;
                 $payment->user_id = auth()->user()->id;
-
+                
                 // Store payment
                 $payment->save();
-
+                
                 // Create payment fees
                 $paymentFees = array();
                 foreach ($jsonPayment['DOSA']['fees'] as $jsonFee) {
@@ -103,7 +113,7 @@ class PaymentsController extends Controller
 
     public function manual(Request $request){
         // Opens a form to create AND pay directly an invoice
-
+        
         $planes = Plane::all();
         return view('pages.backend.manual-payment')
             ->with('planes',$planes)
@@ -144,8 +154,7 @@ class PaymentsController extends Controller
             $fee->save();
         }
 
-        return($payment)
-        ;
+        return $payment;
     }
 
 }

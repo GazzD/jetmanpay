@@ -21,6 +21,11 @@ class Payment extends Model
         return $this->belongsTo('App\User');
     }
     
+    public function plane()
+    {
+        return $this->belongsTo('App\Plane');
+    }
+    
     public function fees()
     {
         return $this->hasMany('App\PaymentFee');
