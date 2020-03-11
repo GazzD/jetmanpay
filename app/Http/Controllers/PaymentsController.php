@@ -132,6 +132,7 @@ class PaymentsController extends Controller
         $payment->currency = $currency;
         $payment->reference = $reference;
         $payment->description = $description;
+        $payment->status = 'APPROVED';
         $payment->total_amount = $totalAmount;
         $payment->save();
 
