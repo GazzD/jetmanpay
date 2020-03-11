@@ -16,20 +16,7 @@ class PaymentsController extends Controller
 {
     public function index()
     {
-//         $payments = Payment::where('status', 'PENDING')
-//         ->where('user_id', auth()->user()->id)
-//         ->with('client')
-//         ->with('plane')
-//         ->with('user')
-//         ->with('fees')
-//         ->latest()
-//         ->get();
-        
-//         dd($payments);
-
-        return view('pages.backend.pending-payments')
-//             ->with('payments', $payments)
-            ;
+        return view('pages.backend.pending-payments');
     }
 
     public function json()
