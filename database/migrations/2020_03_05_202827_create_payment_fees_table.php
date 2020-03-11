@@ -15,10 +15,10 @@ class CreatePaymentFeesTable extends Migration
     {
         Schema::create('payment_fees', function (Blueprint $table) {
             $table->id();
-            $table->string('old_code', 255);
+            // $table->string('old_code', 255);
             $table->string('concept', 255);
             $table->decimal('amount', 10, 2);
-            $table->decimal('conversion_fee', 10, 2);
+            // $table->decimal('conversion_fee', 10, 2);
             $table->foreignId('payment_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

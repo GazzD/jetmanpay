@@ -3,12 +3,14 @@ namespace app\Http\Controllers;
 
 use App\Client;
 use App\Payment;
+use App\Plane;
 use App\PaymentFee;
 use App\Http\Controllers\Controller;
 use function GuzzleHttp\json_decode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Auth;
 
 class PaymentsController extends Controller
 {
@@ -16,12 +18,12 @@ class PaymentsController extends Controller
     {
         return view('pages.backend.pending-payments');
     }
-    
+
     public function json()
     {
         return view('pages.backend.json');
     }
-    
+
     public function pendingPayments(Request $request)
     {
         // Datatable functionality (pagination, filter, order)
@@ -29,6 +31,7 @@ class PaymentsController extends Controller
             Payment::where('status', 'PENDING')
                 ->where('user_id', auth()->user()->id)
                 ->with('client')
+                ->with('plane')
                 ->with('user')
                 ->with('fees')
                 ->latest()
@@ -86,15 +89,61 @@ class PaymentsController extends Controller
                     $paymentFee['updated_at'] = date('Y-m-d H:i:s');
                     $paymentFees[] = $paymentFee;
                 }
-                
+
                 // Store payment fees
                 PaymentFee::insert($paymentFees);
             }
         }
-        
+
         return redirect()->route('load-json')->with('status', __('messages.upload-json.success-message'));
     }
-    
+
+    public function manual(Request $request){
+        // Opens a form to create AND pay directly an invoice
+        
+        $planes = Plane::all();
+        return view('pages.backend.manual-payment')
+            ->with('planes',$planes)
+        ;
+    }
+    public function storeManual(Request $request){
+        // Creates a new payment and approves it
+
+        $planeId = $request->planeId+0;
+        $clientId = $request->clientId+0;
+        $currency = $request->currency;
+        $reference = $request->reference;
+        $description = $request->description;
+        $feeList = $request->feeList;
+        $totalAmount = 0;
+        $userId = Auth::user()->id;
+        // Calculating total amount
+        foreach ($feeList as $feeArray) {
+            $totalAmount = $totalAmount + $feeArray['amount'];
+        }
+
+        $payment = new Payment();
+        $payment->plane_id = $planeId;
+        $payment->client_id = $clientId;
+        $payment->user_id = $userId;
+        $payment->currency = $currency;
+        $payment->reference = $reference;
+        $payment->description = $description;
+        $payment->status = 'APPROVED';
+        $payment->total_amount = $totalAmount;
+        $payment->save();
+
+        foreach ($feeList as $feeArray) {
+            $fee = new PaymentFee();
+            $fee->concept = $feeArray['concept'];
+            $fee->amount = $feeArray['amount'];
+            $fee->payment_id = $payment->id;
+            $fee->save();
+        }
+
+        return $payment;
+    }
+
 }
 
 
