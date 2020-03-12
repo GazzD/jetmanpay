@@ -16,6 +16,7 @@ class CreatePaymentsTable extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->string('dosa_number', 255)->nullable();
+            $table->string('invoice_number', 255)->nullable();
             $table->date('dosa_date')->nullable();
             $table->integer('number')->nullable();
             $table->decimal('total_amount', 10, 2);

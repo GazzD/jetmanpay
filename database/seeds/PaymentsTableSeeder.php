@@ -14,6 +14,7 @@ class PaymentsTableSeeder extends Seeder
     {
         Payment::create([
             'dosa_number'   => '0001',
+            'invoice_number'=> time(),
             'dosa_date'     => '2020-01-01',
             'number'        => 100,
             'total_amount'  => 100,
@@ -27,6 +28,7 @@ class PaymentsTableSeeder extends Seeder
         ]);
         Payment::create([
             'dosa_number'   => '0002',
+            'invoice_number'=> time(),
             'dosa_date'     => '2020-01-01',
             'number'        => 500,
             'total_amount'  => 5000,
@@ -40,6 +42,7 @@ class PaymentsTableSeeder extends Seeder
         ]);
         Payment::create([
             'dosa_number'   => '0003',
+            'invoice_number'=> time(),
             'dosa_date'     => '2020-01-01',
             'number'        => 515,
             'total_amount'  => 1161,
@@ -52,7 +55,8 @@ class PaymentsTableSeeder extends Seeder
             'user_id'       => 1
         ]);
         Payment::create([
-            'dosa_number'   => '0003',
+            'dosa_number'   => '0004',
+            'invoice_number'=> time(),
             'dosa_date'     => '2020-01-01',
             'number'        => 102210,
             'total_amount'  => 101220,
