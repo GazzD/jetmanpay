@@ -29,7 +29,7 @@
 				<th>@lang('messages.pending-payments.tail-number')</th>
 				<th>@lang('messages.pending-payments.amount')</th>
 				<th>@lang('messages.pending-payments.date')</th>
-				<th>@lang('messages.pending-payments.description')</th>
+				<th style="max-width: 400px:">@lang('messages.pending-payments.description')</th>
 				<th>@lang('messages.pending-payments.number')</th>
 				<th>@lang('messages.pending-payments.client')</th>
 				<th>@lang('messages.pending-payments.operator')</th>

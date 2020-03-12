@@ -37,15 +37,11 @@ class PaymentsController extends Controller
                 ->latest()
                 ->get()
             )
-            ->addColumn('description', function($data){
-                $description = strtoupper($data->client->name).'/';
-                return $description;
-            })
             ->addColumn('action', function($data){
                 $button = '<button type="button" name="cancel-'.$data->id.'">Cancel</button>';
                 return $button;
             })
-            ->rawColumns(['description', 'action'])
+            ->rawColumns(['action'])
             ->make(true)
         ;
         
