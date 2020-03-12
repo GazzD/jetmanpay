@@ -64,13 +64,21 @@ class PaymentsController extends Controller
             $path = storage_path('app/public/payments/'.$fileName);
             $payments = json_decode(file_get_contents($path), true);
             foreach ($payments as $jsonPayment) {
+                // Load payment data
+                $client = Client::where('code', $jsonPayment['DOSA']['taxpayer_code'])->first();
+                $plane = Plane::where('tail_number', $jsonPayment['DOSA']['tailnumber'])->first();
+                $invoiceNumber = $this->generetateInvoiceNumber();
+                
                 // Create payment
                 $payment = new Payment();
                 $payment->dosa_number = $jsonPayment['DOSA']['dosa_number'];
+                $payment->invoice_number = $invoiceNumber;
                 $payment->dosa_date = $jsonPayment['DOSA']['dosa_date'];
                 $payment->total_amount = $jsonPayment['DOSA']['total'];
-                $payment->tail_number = $jsonPayment['DOSA']['tailnumber'];
-                $payment->client_id = Client::where('code', $jsonPayment['DOSA']['taxpayer_code'])->first()->id;
+                $payment->plane_id = $plane->id;
+                $payment->client_id = $client->id;
+                $payment->reference = strtoupper($client->name.' FAC '.$invoiceNumber.' DOSA '. $payment->dosa_number);
+                $payment->description = strtoupper($client->name.' FAC '.$invoiceNumber.' DOSA '. $payment->dosa_number);
                 $payment->user_id = auth()->user()->id;
                 
                 // Store payment
@@ -89,12 +97,11 @@ class PaymentsController extends Controller
                     $paymentFee['updated_at'] = date('Y-m-d H:i:s');
                     $paymentFees[] = $paymentFee;
                 }
-
                 // Store payment fees
                 PaymentFee::insert($paymentFees);
             }
         }
-
+        
         return redirect()->route('load-json')->with('status', __('messages.upload-json.success-message'));
     }
 
@@ -123,6 +130,7 @@ class PaymentsController extends Controller
         }
 
         $payment = new Payment();
+        $payment->invoice_number = $this->generetateInvoiceNumber();
         $payment->plane_id = $planeId;
         $payment->client_id = $clientId;
         $payment->user_id = $userId;
@@ -131,6 +139,7 @@ class PaymentsController extends Controller
         $payment->description = $description;
         $payment->status = 'APPROVED';
         $payment->total_amount = $totalAmount;
+        $payment->dosa_date = date('Y-m-d H:i:s');
         $payment->save();
 
         foreach ($feeList as $feeArray) {
@@ -143,7 +152,12 @@ class PaymentsController extends Controller
 
         return $payment;
     }
-
+    
+    
+    private function generetateInvoiceNumber()
+    {
+        return time();
+    }
 }
 
 
