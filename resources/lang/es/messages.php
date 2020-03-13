@@ -30,6 +30,18 @@ return [
         'privacy-policy'        => 'Políticas de privacidad',
         'user-agreement'        => 'Acuerdo de usuario',
     ],
+    'payments'  => [
+        'payments'  => 'Pagos realizados',
+        'tail-number'  => 'Matrícula',
+        'amount'  => 'Monto',
+        'date'  => 'Fecha',
+        'description'  => 'Descripción',
+        'number'  => 'Número',
+        'client'  => 'Cliente',
+        'operator'  => 'Operador',
+        'actions'  => 'Actiones',
+        'status'  => 'Status',
+    ],
     'pending-payments'  => [
         'pending-payments'  => 'Pagos pendientes',
         'tail-number'  => 'Matrícula',

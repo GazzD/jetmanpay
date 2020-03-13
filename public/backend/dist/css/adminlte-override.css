@@ -9,3 +9,6 @@
 .info-box-text {
     font-size: 1.4em;
 }
+.fc-color-picker>li {
+    font-size: 21px;
+}
