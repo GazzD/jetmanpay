@@ -50,7 +50,7 @@
             </ul>
           </li>
           <li class="nav-item">
-            <a href="pages/gallery.html" class="nav-link">
+            <a href="{{route('payments')}}" class="nav-link">
               <i class="nav-icon fas fa-money-check-alt"></i>
               <p>
                 @lang('messages.sidebar.payments')

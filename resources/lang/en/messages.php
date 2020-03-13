@@ -23,6 +23,18 @@ return [
     'dashboard'   => [
         'dashboard' => 'Dashboard',
     ],
+    'payments'  => [
+        'payments'          => 'Payments',
+        'tail-number'       => 'Tail number',
+        'amount'            => 'Amount',
+        'date'              => 'Date',
+        'description'       => 'Description',
+        'number'            => 'Number',
+        'client'            => 'Client',
+        'operator'          => 'Operator',
+        'actions'           => 'Actions',
+        'status'            => 'Estado',
+    ],
     'pending-payments'  => [
         'pending-payments'  => 'Pending payments',
         'tail-number'       => 'Tail number',

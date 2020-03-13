@@ -14,9 +14,14 @@ use Illuminate\Support\Facades\Auth;
 
 class PaymentsController extends Controller
 {
-    public function index()
+    public function pending()
     {
         return view('pages.backend.pending-payments');
+    }
+    
+    public function payments()
+    {
+        return view('pages.backend.payments');
     }
 
     public function json()
@@ -24,11 +29,11 @@ class PaymentsController extends Controller
         return view('pages.backend.json');
     }
 
-    public function pendingPayments(Request $request)
+    public function fetchPayments(Request $request)
     {
         // Datatable functionality (pagination, filter, order)
         return DataTables::of(
-            Payment::where('status', 'PENDING')
+            Payment::where('status', '<>' ,'PENDING')
                 ->where('user_id', auth()->user()->id)
                 ->with('client')
                 ->with('plane')
@@ -38,7 +43,13 @@ class PaymentsController extends Controller
                 ->get()
             )
             ->addColumn('action', function($data){
-                $button = '<button type="button" name="cancel-'.$data->id.'">Cancel</button>';
+                $button = '<ul class="fc-color-picker" id="color-chooser">';
+                $button .= '<li><a class="text-muted" href="#"><i class="fas fa-search"></i></a></li>';
+                $button .= '<li><a class="text-muted" href="#"><i class="fas fa-plus"></i></a></li>';
+                $button .= '<li><a class="text-muted" href="#"><i class="nav-icon fas fa-file-alt"></i></a></li>';
+                $button .= '<li><a class="text-muted" href="#"><i class="nav-icon far fa-file-alt"></i></a></li>';
+                $button .= '<li><a class="text-red" href="#"><i class="nav-icon fas fa-exclamation"></i></a></li>';
+                $button .= '</ul>';
                 return $button;
             })
             ->rawColumns(['action'])
@@ -46,6 +57,36 @@ class PaymentsController extends Controller
         ;
         
     }
+    
+    public function fetchPendingPayments(Request $request)
+    {
+        // Datatable functionality (pagination, filter, order)
+        return DataTables::of(
+            Payment::where('status', 'PENDING')
+            ->where('user_id', auth()->user()->id)
+            ->with('client')
+            ->with('plane')
+            ->with('user')
+            ->with('fees')
+            ->latest()
+            ->get()
+            )
+            ->addColumn('action', function($data){
+                $button = '<ul class="fc-color-picker" id="color-chooser">';
+                $button .= '<li><a class="text-muted" href="#"><i class="fas fa-search"></i></a></li>';
+                $button .= '<li><a class="text-muted" href="#"><i class="fas fa-plus"></i></a></li>';
+                $button .= '<li><a class="text-muted" href="#"><i class="nav-icon fas fa-file-alt"></i></a></li>';
+                $button .= '<li><a class="text-muted" href="#"><i class="nav-icon far fa-file-alt"></i></a></li>';
+                $button .= '<li><a class="text-red" href="#"><i class="nav-icon fas fa-exclamation"></i></a></li>';
+                $button .= '</ul>';
+                return $button;
+            })
+            ->rawColumns(['action'])
+            ->make(true)
+            ;
+            
+    }
+    
     public function storeJson(Request $request)
     {
         // Json file name
