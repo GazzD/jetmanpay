@@ -33,7 +33,16 @@ return [
         'client'            => 'Client',
         'operator'          => 'Operator',
         'actions'           => 'Actions',
-        'status'            => 'Estado',
+        'status'            => 'Status',
+    ],
+    'users'  => [
+        'name'                  => 'Name',
+        'users'                 => 'Users',
+        'email'                 => 'Email',
+        'role'                  => 'Role',
+        'create'                => 'Create',
+        'password'              => 'Password',
+        'password-confirmation' => 'Password confirmation',
     ],
     'pending-payments'  => [
         'pending-payments'  => 'Pending payments',

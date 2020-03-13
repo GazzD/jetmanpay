@@ -39,8 +39,19 @@ return [
         'number'  => 'Número',
         'client'  => 'Cliente',
         'operator'  => 'Operador',
-        'actions'  => 'Actiones',
-        'status'  => 'Status',
+        'actions'  => 'Opciones',
+        'status'  => 'Estado',
+    ],
+    'users'  => [
+        'name'      => 'Nombre',
+        'users'     => 'Usuarios',
+        'email'     => 'Correo',
+        'role'      => 'Rol',
+        'create'    => 'Crear',
+        'password'  => 'Contraseña',
+        'password-confirmation'  => 'Confirma tu contraseña',
+
+
     ],
     'pending-payments'  => [
         'pending-payments'  => 'Pagos pendientes',
@@ -51,7 +62,7 @@ return [
         'number'  => 'Número',
         'client'  => 'Cliente',
         'operator'  => 'Operador',
-        'actions'  => 'Actiones',
+        'actions'  => 'Opciones',
     ],
     'manual-payments'  => [
         'manual-payments'   => 'Pagos manuales',

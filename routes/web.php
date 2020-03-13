@@ -17,6 +17,8 @@ Auth::routes();
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/', 'DashboardController@index')->name('dashboard');
     Route::get('/documents', 'DocumentsController@index')->name('documents');
+
+    //Payments
     Route::get('/payments/pending', 'PaymentsController@pending')->name('pending-payments');
     Route::get('/payments/payments', 'PaymentsController@payments')->name('payments');
     Route::get('/payments/load-json', 'PaymentsController@json')->name('load-json');
@@ -27,6 +29,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/payments/manual', 'PaymentsController@manual')->name('manual-payments');
     Route::get('/clients/fetch/plane/{id}', 'ClientsController@fetchByPlane')->name('fetch-clients-by-plane');
     Route::post('/payments/manual', 'PaymentsController@storeManual')->name('manual-payments');
+
+    //Users
+    Route::get('/users', 'UsersController@index')->name('users');
+    Route::get('/users/create', 'UsersController@create')->name('users/create');
+    Route::post('/users/create', 'UsersController@store')->name('users/store');
+    Route::get('/users/fetch', 'UsersController@fetch')->name('users/fetch');
+
 
 });
 

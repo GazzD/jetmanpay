@@ -33,7 +33,7 @@
             </a>
           </li>
           <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
+          <a href="#" class="nav-link">
               <i class="nav-icon fas fa-users"></i>
               <p>
                 @lang('messages.sidebar.users')
@@ -42,7 +42,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/layout/top-nav.html" class="nav-link">
+                <a href="{{route('users')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>@lang('messages.sidebar.operators')</p>
                 </a>
