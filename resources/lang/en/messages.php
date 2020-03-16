@@ -4,6 +4,8 @@ return [
     'english'   => 'English',
     'spanish'   => 'Spanish',
     'home'      => 'Home',
+    'close'     => 'Close',
+    'save'      => 'Save',
     'sidebar'   => [
         'dashboard'         => 'Dashboard',
         'users'             => 'Users',
@@ -36,6 +38,8 @@ return [
         'status'            => 'Status',
         'view-documents'    => 'View Documents',
         'upload-document'   => 'Upload Documents',
+        'add-claim'         => 'Add claim',
+        'document-name'     => 'Document\'s name',
     ],
     'users'  => [
         'name'                  => 'Name',
@@ -58,6 +62,8 @@ return [
         'actions'           => 'Actions',
         'view-documents'    => 'View Documents',
         'upload-document'   => 'Upload Documents',
+        'add-claim'         => 'Add claim',
+        'document-name'     => 'Document\'s name',
     ],
     'manual-payments'  => [
         'manual-payments'   => 'Manual payments',

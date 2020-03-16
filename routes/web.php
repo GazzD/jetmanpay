@@ -32,6 +32,7 @@ Route::group(['middleware' => ['auth']], function () {
     
     // Payment documents
     Route::get('/payments/{id}/documents/', 'PaymentDocumentsController@index')->name('payment-documents');
+    Route::post('/payments/{id}/documents/', 'PaymentDocumentsController@store')->name('store-payment-documents');
 
     //Users
     Route::get('/users', 'UsersController@index')->name('users');

@@ -45,10 +45,10 @@ class PaymentsController extends Controller
             ->addColumn('action', function($data){
                 $button = '<ul class="fc-color-picker" id="color-chooser">';
                 $button .= '<li><a class="text-muted" href="#"><i class="fas fa-search"></i></a></li>';
-                $button .= '<li><a class="text-muted" href="#"><i class="fas fa-plus"></i></a></li>';
                 $button .= '<li><a class="text-muted" href="#"><i class="nav-icon fas fa-file-alt"></i></a></li>';
-                $button .= '<li><a class="text-muted" href="#"><i class="nav-icon far fa-file-alt"></i></a></li>';
-                $button .= '<li><a class="text-muted" href="#"><i class="nav-icon fas fa-exclamation"></i></a></li>';
+                $button .= '<li><a class="text-muted" href="'.route('payment-documents', $data->id).'"><i class="nav-icon far fa-file-alt" data-toggle="tooltip" data-placement="top" title="'.__('messages.payments.view-documents').'"></i></a></li>';
+                $button .= '<li><a class="text-muted" href="#"><i class="fas fa-plus" data-toggle="tooltip" data-placement="top" title="'.__('messages.payments.upload-document').'"></i></a></li>';
+                $button .= '<li><a class="text-muted" href="#"><i class="nav-icon fas fa-exclamation" data-toggle="tooltip" data-placement="top" title="'.__('messages.payments.add-claim').'"></i></a></li>';
                 $button .= '</ul>';
                 return $button;
             })
@@ -75,10 +75,43 @@ class PaymentsController extends Controller
                 $button = '<ul class="fc-color-picker" id="color-chooser">';
                 $button .= '<li><a class="text-muted" href="#"><i class="fas fa-search"></i></a></li>';
                 $button .= '<li><a class="text-muted" href="#"><i class="nav-icon fas fa-file-alt"></i></a></li>';
-                $button .= '<li><a class="text-muted" href="'.route('payment-documents', $data->id).'"><i class="nav-icon far fa-file-alt" data-toggle="tooltip" data-placement="top" title="'.__('messages.payments.view-documents').'"></i></a></li>';
-                $button .= '<li><a class="text-muted" href="#"><i class="fas fa-plus"></i></a></li>';
-                $button .= '<li><a class="text-muted" href="#"><i class="nav-icon fas fa-exclamation" data-toggle="tooltip" data-placement="top" title="'.__('messages.payments.upload-document').'"></i></a></li>';
+                $button .= '<li><a class="text-muted" href="'.route('payment-documents', $data->id).'"><i class="nav-icon far fa-file-alt" data-toggle="tooltip" data-placement="top" title="'.__('messages.pending-payments.view-documents').'"></i></a></li>';
+                $button .= '<li><i class="text-muted fas fa-plus" data-toggle="modal" data-target="#upload-document-'.$data->id.'" data-placement="top" title="'.__('messages.pending-payments.upload-document').'"></i></li>';
+                $button .= '<li><a class="text-muted" href="#"><i class="nav-icon fas fa-exclamation" data-toggle="tooltip" data-placement="top" title="'.__('messages.pending-payments.add-claim').'"></i></a></li>';
                 $button .= '</ul>';
+                $button .= '<!-- Modal -->
+                            <div class="modal fade" id="upload-document-'.$data->id.'" tabindex="-1" role="dialog">
+                              <div class="modal-dialog" role="document">
+                                <!-- form start -->
+                                <form role="form" action="'.route('store-payment-documents', $data->id).'" class="form-horizontal form-label-left" enctype="multipart/form-data" method="post">
+                                <div class="modal-content">
+                                  <div class="modal-body">
+                                    <div class="box box-primary">
+                                        <div class="box-header with-border">
+                                          <h3 class="box-title">'.__('messages.pending-payments.upload-document').'</h3>
+                                        </div>
+                                        <!-- /.box-header -->
+                                          '.csrf_field().'
+                                          <div class="box-body">
+                                            <div class="form-group">
+                                              <input type="text" required="true" class="form-control" name="name" placeholder="'.__('messages.pending-payments.document-name').'">
+                                            </div>
+                                            <div class="form-group">
+                                              <input type="file" name="documentFile">
+                                            </div>
+                                          </div>
+                                          <!-- /.box-body -->
+                                            <input type="hidden" name="paymentId" value="'.$data->id.'" />
+                                      </div>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">'.__('messages.close').'</button>
+                                    <button type="submit" class="btn btn-primary">'.__('messages.save').'</button>
+                                  </div>
+                                </div>
+                                </form>
+                              </div>
+                            </div>';
                 return $button;
             })
             ->rawColumns(['action'])
