@@ -38,7 +38,7 @@ class PaymentDocumentsController extends Controller
             
         }
         
-        return redirect()->route('pending-payments')->with('status', __('messages.upload-json.success-message'));
+        return redirect()->back();
     }
     
 }
