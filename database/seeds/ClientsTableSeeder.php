@@ -1,9 +1,7 @@
 <?php
 
-use App\User;
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 use App\Client;
+use Illuminate\Database\Seeder;
 
 class ClientsTableSeeder extends Seeder
 {

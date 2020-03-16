@@ -29,6 +29,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/payments/manual', 'PaymentsController@manual')->name('manual-payments');
     Route::get('/clients/fetch/plane/{id}', 'ClientsController@fetchByPlane')->name('fetch-clients-by-plane');
     Route::post('/payments/manual', 'PaymentsController@storeManual')->name('manual-payments');
+    
+    // Payment documents
+    Route::get('/payments/{id}/documents/', 'PaymentDocumentsController@index')->name('payment-documents');
+    Route::post('/payments/{id}/documents/', 'PaymentDocumentsController@store')->name('store-payment-documents');
 
     //Users
     Route::get('/users', 'UsersController@index')->name('users');
