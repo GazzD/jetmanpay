@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
-
+use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,11 +25,16 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/payments/load-json', 'PaymentsController@storeJson')->name('store-json');
     Route::get('/payments/pending-payments', 'PaymentsController@fetchPendingPayments')->name('fetch-pending-payments');
     Route::get('/payments/fetch-payments', 'PaymentsController@fetchPayments')->name('fetch-payments');
-
+    
+    Route::get('/payments/filter/plane', 'PaymentsController@filterByPlane')->name('payments/filter/plane');
+    Route::post('/payments/filter/plane/pending', 'PaymentsController@pendingPaymentsByPlane')->name('payments/filter/plane/pending');
+    Route::post('/payments/{paymentId}/pay', 'PaymentsController@pay')->name('payments/pay');     
+    
     Route::get('/payments/manual', 'PaymentsController@manual')->name('manual-payments');
     Route::get('/clients/fetch/plane/{id}', 'ClientsController@fetchByPlane')->name('fetch-clients-by-plane');
     Route::post('/payments/manual', 'PaymentsController@storeManual')->name('manual-payments');
-
+    
+    
     //Users
     Route::get('/users', 'UsersController@index')->name('users');
     Route::get('/users/create', 'UsersController@create')->name('users/create');

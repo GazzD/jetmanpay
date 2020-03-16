@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Lang;
 
 class PaymentsController extends Controller
 {
@@ -194,6 +195,59 @@ class PaymentsController extends Controller
     private function generetateInvoiceNumber()
     {
         return time();
+    }
+
+    public function filterByPlane(){
+        //Opens a view with all planes to futher filter pending payments
+        // $planes = Plane::all();
+        return view('pages.backend.payments.select-list')
+            // ->with('planes',$planes)
+            ;
+    }
+
+    public function pendingPaymentsByPlane(Request $request){
+        //Opens a view with all pending payments from a plane id
+        $planeTail = $request->planeTail;
+        $payments = Payment::where('status','PENDING')
+            ->whereHas('plane', function($q) use($planeTail){
+                $q->where('tail_number',$planeTail);
+            })
+            ->with('client')
+            ->get()
+            ;
+        if($payments->count() == 0){
+            return redirect()
+                ->route('payments/filter/plane')
+                ->withErrors(Lang::get('validation.payments.plane_not_found_or_pending'))
+                ;
+        }
+        return view('pages.backend.payments.filter-pending')
+            ->with('payments',$payments)
+            ;
+    }
+
+    public function pay(Request $request,$paymentId){
+        //Edit pending payment to change it's satus to APPROVED
+        $reference = $request->reference;
+        $clientId = $request->clientId;
+        $description = $request->description;
+        $payment = Payment::find($paymentId);
+        
+        // $client = Client::find($clientId);
+        // if($client->balance < $payment->total_amount){
+        //     return redirect()->back()->withErrors(Lang::get('validation.payments.not_enough_money'));
+        // }
+        
+        $payment->reference = $reference;
+        $payment->description = $description;
+        $payment->client_id = $clientId;
+        $payment->status = 'APPROVED';
+        $payment->save();
+            
+        // $client->balance = $client->balance - $payment->total_amount;
+        // $client->save();
+
+        return redirect()->route('payments/filter/plane');
     }
 }
 

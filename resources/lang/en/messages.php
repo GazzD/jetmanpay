@@ -34,6 +34,8 @@ return [
         'operator'          => 'Operator',
         'actions'           => 'Actions',
         'status'            => 'Status',
+        'add_tail'          => 'Please Type a Tailnumber',
+        'plane_tail'        => 'Tailnumber',
     ],
     'users'  => [
         'name'                  => 'Name',

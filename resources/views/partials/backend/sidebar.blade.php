@@ -75,7 +75,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/UI/general.html" class="nav-link">
+                <a href="{{route('payments/filter/plane')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>@lang('messages.sidebar.by-airline')</p>
                 </a>

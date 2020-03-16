@@ -12,7 +12,10 @@ return [
     | as the size rules. Feel free to tweak each of these messages here.
     |
     */
-
+    'payments' => [
+        'not_enough_money' => 'Fondos insuficientes.',
+        'plane_not_found_or_pending' => 'Matrícula invalida o sin pagos pendientes.'
+    ],
     'accepted' => 'The :attribute must be accepted.',
     'active_url' => 'The :attribute is not a valid URL.',
     'after' => 'The :attribute must be a date after :date.',
