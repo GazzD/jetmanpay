@@ -246,7 +246,7 @@ class PaymentsController extends Controller
             ;
     }
 
-    public function pay(Request $request,$paymentId){
+    public function payCreated(Request $request,$paymentId){
         //Edit pending payment to change it's satus to APPROVED
         $reference = $request->reference;
         $clientId = $request->clientId;
@@ -260,14 +260,25 @@ class PaymentsController extends Controller
         
         $payment->reference = $reference;
         $payment->description = $description;
-        $payment->client_id = $clientId;
         $payment->status = 'APPROVED';
         $payment->save();
             
         // $client->balance = $client->balance - $payment->total_amount;
         // $client->save();
 
-        return redirect()->route('payments/filter/plane');
+        return redirect()->route('payments');
+    }
+
+    public function createPayByAirplane(Request $request, $paymentId){
+        
+        $payment = Payment::where('id',$paymentId)
+            ->with('client')
+            ->with('fees')
+            ->first()
+            ;
+        return view('pages.backend.payments.pay-existing')
+            ->with('payment',$payment)
+            ;
     }
 }
 

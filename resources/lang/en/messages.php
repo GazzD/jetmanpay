@@ -42,6 +42,9 @@ return [
         'upload-document'   => 'Upload Documents',
         'add-claim'         => 'Add claim',
         'document-name'     => 'Document\'s name',
+        'select_invocice'   => 'Select an invoice',
+        'payments_by_plane' => 'Payments by plane',
+        'confirm_payment'   => 'Confirm payment',
     ],
     'users'  => [
         'name'                  => 'Name',

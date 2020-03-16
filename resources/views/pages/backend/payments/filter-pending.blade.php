@@ -8,7 +8,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0 text-dark">@lang('messages.users.users')</h1>
+                <h1 class="m-0 text-dark">@lang('messages.payments.select_invocice')</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -24,25 +24,18 @@
 
 <!-- Main content -->
 <section class="content">
-    <h1>@lang('messages.payments.add_tail')</h1>
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-    <form method="post" action="{{route('payments/filter/plane/pending')}}" role="form" class="form-horizontal">
-        @csrf
-        <div class="form-group">
-            <div class="col-md-10">
-              <input type="text" required="" placeholder="@lang('messages.users.name')" id="name" class="form-control" name="name">
+    @dump($payments)
+    <div class="row">
+        @foreach($payments as $payment)
+            <div class="col-md-12" style="backgroundcol">
+                <h3>
+                    <a href="{{route('payments/pay/create',$payment->id)}}">
+                        {{$payment->invoice_number}} ({{$payment->total_amount}} {{$payment->currency}})
+                    </a>
+                </h3>
             </div>
-        </div>
-        <button type="submit" id="submit-btn" class="btn btn-primary">@lang('messages.users.create')</button>
-	</form>
+        @endforeach
+    </div>
 </section>
 <!-- /.content -->
 @endsection

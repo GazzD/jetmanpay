@@ -42,6 +42,9 @@ return [
         'upload-document'   => 'Subir Documentos',
         'add-claim'         => 'Agregar reclamo',
         'document-name'     => 'Nombre del documento',
+        'select_invocice'   => 'Selecciona una orden de pago',
+        'payments_by_plane' => 'Pagos por avión',
+        'confirm_payment'   => 'Confirmar pago',
     ],
     'users'  => [
         'name'      => 'Nombre',

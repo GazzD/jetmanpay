@@ -26,9 +26,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/payments/pending-payments', 'PaymentsController@fetchPendingPayments')->name('fetch-pending-payments');
     Route::get('/payments/fetch-payments', 'PaymentsController@fetchPayments')->name('fetch-payments');
     
+    //Payment by airplane
     Route::get('/payments/filter/plane', 'PaymentsController@filterByPlane')->name('payments/filter/plane');
     Route::post('/payments/filter/plane/pending', 'PaymentsController@pendingPaymentsByPlane')->name('payments/filter/plane/pending');
-    Route::post('/payments/{paymentId}/pay', 'PaymentsController@pay')->name('payments/pay');     
+    Route::get('/payments/{paymentId}/pay/create', 'PaymentsController@createPayByAirplane')->name('payments/pay/create');
+    Route::post('/payments/{paymentId}/pay/store', 'PaymentsController@payCreated')->name('payments/pay/store');     
     
     Route::get('/payments/manual', 'PaymentsController@manual')->name('manual-payments');
     Route::get('/clients/fetch/plane/{id}', 'ClientsController@fetchByPlane')->name('fetch-clients-by-plane');
