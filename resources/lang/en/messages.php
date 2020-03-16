@@ -34,6 +34,8 @@ return [
         'operator'          => 'Operator',
         'actions'           => 'Actions',
         'status'            => 'Status',
+        'view-documents'    => 'View Documents',
+        'upload-document'   => 'Upload Documents',
     ],
     'users'  => [
         'name'                  => 'Name',
@@ -54,6 +56,8 @@ return [
         'client'            => 'Client',
         'operator'          => 'Operator',
         'actions'           => 'Actions',
+        'view-documents'    => 'View Documents',
+        'upload-document'   => 'Upload Documents',
     ],
     'manual-payments'  => [
         'manual-payments'   => 'Manual payments',
@@ -76,6 +80,9 @@ return [
         'representation-letter' => 'Representation Letter',
         'privacy-policy'        => 'Privacy Policy',
         'user-agreement'        => 'User Agreement',
+    ],
+    'payment-documents'   => [
+        'documents'             => 'Documents',
     ],
     'upload-json' => [
         'json'              => 'JSON',

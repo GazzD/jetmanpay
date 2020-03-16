@@ -48,7 +48,7 @@ class PaymentsController extends Controller
                 $button .= '<li><a class="text-muted" href="#"><i class="fas fa-plus"></i></a></li>';
                 $button .= '<li><a class="text-muted" href="#"><i class="nav-icon fas fa-file-alt"></i></a></li>';
                 $button .= '<li><a class="text-muted" href="#"><i class="nav-icon far fa-file-alt"></i></a></li>';
-                $button .= '<li><a class="text-red" href="#"><i class="nav-icon fas fa-exclamation"></i></a></li>';
+                $button .= '<li><a class="text-muted" href="#"><i class="nav-icon fas fa-exclamation"></i></a></li>';
                 $button .= '</ul>';
                 return $button;
             })
@@ -74,10 +74,10 @@ class PaymentsController extends Controller
             ->addColumn('action', function($data){
                 $button = '<ul class="fc-color-picker" id="color-chooser">';
                 $button .= '<li><a class="text-muted" href="#"><i class="fas fa-search"></i></a></li>';
-                $button .= '<li><a class="text-muted" href="#"><i class="fas fa-plus"></i></a></li>';
                 $button .= '<li><a class="text-muted" href="#"><i class="nav-icon fas fa-file-alt"></i></a></li>';
-                $button .= '<li><a class="text-muted" href="#"><i class="nav-icon far fa-file-alt"></i></a></li>';
-                $button .= '<li><a class="text-red" href="#"><i class="nav-icon fas fa-exclamation"></i></a></li>';
+                $button .= '<li><a class="text-muted" href="'.route('payment-documents', $data->id).'"><i class="nav-icon far fa-file-alt" data-toggle="tooltip" data-placement="top" title="'.__('messages.payments.view-documents').'"></i></a></li>';
+                $button .= '<li><a class="text-muted" href="#"><i class="fas fa-plus"></i></a></li>';
+                $button .= '<li><a class="text-muted" href="#"><i class="nav-icon fas fa-exclamation" data-toggle="tooltip" data-placement="top" title="'.__('messages.payments.upload-document').'"></i></a></li>';
                 $button .= '</ul>';
                 return $button;
             })
@@ -144,7 +144,6 @@ class PaymentsController extends Controller
 
     public function manual(Request $request){
         // Opens a form to create AND pay directly an invoice
-        
         $planes = Plane::all();
         return view('pages.backend.manual-payment')
             ->with('planes',$planes)
@@ -152,7 +151,7 @@ class PaymentsController extends Controller
     }
     public function storeManual(Request $request){
         // Creates a new payment and approves it
-
+        
         $planeId = $request->planeId+0;
         $clientId = $request->clientId+0;
         $currency = $request->currency;
@@ -165,7 +164,7 @@ class PaymentsController extends Controller
         foreach ($feeList as $feeArray) {
             $totalAmount = $totalAmount + $feeArray['amount'];
         }
-
+        
         $payment = new Payment();
         $payment->invoice_number = $this->generetateInvoiceNumber();
         $payment->plane_id = $planeId;
@@ -178,7 +177,7 @@ class PaymentsController extends Controller
         $payment->total_amount = $totalAmount;
         $payment->dosa_date = date('Y-m-d H:i:s');
         $payment->save();
-
+        
         foreach ($feeList as $feeArray) {
             $fee = new PaymentFee();
             $fee->concept = $feeArray['concept'];
@@ -186,10 +185,9 @@ class PaymentsController extends Controller
             $fee->payment_id = $payment->id;
             $fee->save();
         }
-
+        
         return $payment;
     }
-    
     
     private function generetateInvoiceNumber()
     {
