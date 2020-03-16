@@ -32,92 +32,13 @@ class PaymentsController extends Controller
     public function fetchPayments(Request $request)
     {
         // Datatable functionality (pagination, filter, order)
-        return DataTables::of(
-            Payment::where('status', '<>' ,'PENDING')
-                ->where('user_id', auth()->user()->id)
-                ->with('client')
-                ->with('plane')
-                ->with('user')
-                ->with('fees')
-                ->latest()
-                ->get()
-            )
-            ->addColumn('action', function($data){
-                $button = '<ul class="fc-color-picker" id="color-chooser">';
-                $button .= '<li><a class="text-muted" href="#"><i class="fas fa-search"></i></a></li>';
-                $button .= '<li><a class="text-muted" href="#"><i class="nav-icon fas fa-file-alt"></i></a></li>';
-                $button .= '<li><a class="text-muted" href="'.route('payment-documents', $data->id).'"><i class="nav-icon far fa-file-alt" data-toggle="tooltip" data-placement="top" title="'.__('messages.payments.view-documents').'"></i></a></li>';
-                $button .= '<li><a class="text-muted" href="#"><i class="fas fa-plus" data-toggle="tooltip" data-placement="top" title="'.__('messages.payments.upload-document').'"></i></a></li>';
-                $button .= '<li><a class="text-muted" href="#"><i class="nav-icon fas fa-exclamation" data-toggle="tooltip" data-placement="top" title="'.__('messages.payments.add-claim').'"></i></a></li>';
-                $button .= '</ul>';
-                return $button;
-            })
-            ->rawColumns(['action'])
-            ->make(true)
-        ;
-        
+        return $this->getPayments(false); 
     }
     
     public function fetchPendingPayments(Request $request)
     {
+        return $this->getPayments(true);
         // Datatable functionality (pagination, filter, order)
-        return DataTables::of(
-            Payment::where('status', 'PENDING')
-            ->where('user_id', auth()->user()->id)
-            ->with('client')
-            ->with('plane')
-            ->with('user')
-            ->with('fees')
-            ->latest()
-            ->get()
-            )
-            ->addColumn('action', function($data){
-                $button = '<ul class="fc-color-picker" id="color-chooser">';
-                $button .= '<li><a class="text-muted" href="#"><i class="fas fa-search"></i></a></li>';
-                $button .= '<li><a class="text-muted" href="#"><i class="nav-icon fas fa-file-alt"></i></a></li>';
-                $button .= '<li><a class="text-muted" href="'.route('payment-documents', $data->id).'"><i class="nav-icon far fa-file-alt" data-toggle="tooltip" data-placement="top" title="'.__('messages.pending-payments.view-documents').'"></i></a></li>';
-                $button .= '<li><i class="text-muted fas fa-plus" data-toggle="modal" data-target="#upload-document-'.$data->id.'" data-placement="top" title="'.__('messages.pending-payments.upload-document').'"></i></li>';
-                $button .= '<li><a class="text-muted" href="#"><i class="nav-icon fas fa-exclamation" data-toggle="tooltip" data-placement="top" title="'.__('messages.pending-payments.add-claim').'"></i></a></li>';
-                $button .= '</ul>';
-                $button .= '<!-- Modal -->
-                            <div class="modal fade" id="upload-document-'.$data->id.'" tabindex="-1" role="dialog">
-                              <div class="modal-dialog" role="document">
-                                <!-- form start -->
-                                <form role="form" action="'.route('store-payment-documents', $data->id).'" class="form-horizontal form-label-left" enctype="multipart/form-data" method="post">
-                                <div class="modal-content">
-                                  <div class="modal-body">
-                                    <div class="box box-primary">
-                                        <div class="box-header with-border">
-                                          <h3 class="box-title">'.__('messages.pending-payments.upload-document').'</h3>
-                                        </div>
-                                        <!-- /.box-header -->
-                                          '.csrf_field().'
-                                          <div class="box-body">
-                                            <div class="form-group">
-                                              <input type="text" required="true" class="form-control" name="name" placeholder="'.__('messages.pending-payments.document-name').'">
-                                            </div>
-                                            <div class="form-group">
-                                              <input type="file" name="documentFile">
-                                            </div>
-                                          </div>
-                                          <!-- /.box-body -->
-                                            <input type="hidden" name="paymentId" value="'.$data->id.'" />
-                                      </div>
-                                  </div>
-                                  <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">'.__('messages.close').'</button>
-                                    <button type="submit" class="btn btn-primary">'.__('messages.save').'</button>
-                                  </div>
-                                </div>
-                                </form>
-                              </div>
-                            </div>';
-                return $button;
-            })
-            ->rawColumns(['action'])
-            ->make(true)
-            ;
-            
     }
     
     public function storeJson(Request $request)
@@ -220,6 +141,74 @@ class PaymentsController extends Controller
         }
         
         return $payment;
+    }
+    
+    private function getPayments($justPending)
+    {
+        // Build payment query
+        $query = Payment::where('user_id', auth()->user()->id)
+        ->with('client')
+        ->with('plane')
+        ->with('user')
+        ->with('fees')
+        ->latest()
+        ;
+        
+        // Validate status
+        if ($justPending) {
+            $query->where('status', 'PENDING');
+        } else {
+            $query->where('status', '<>' ,'PENDING');
+        }
+        
+        // Return datatable
+        return DataTables::of($query->get())
+        ->addColumn('action', function($data){
+            $button = '<ul class="fc-color-picker" id="color-chooser">';
+            $button .= '<li><a class="text-muted" href="#"><i class="fas fa-search"></i></a></li>';
+            $button .= '<li><a class="text-muted" href="#"><i class="nav-icon fas fa-file-alt"></i></a></li>';
+            $button .= '<li><a class="text-muted" href="'.route('payment-documents', $data->id).'"><i class="nav-icon far fa-file-alt" data-toggle="tooltip" data-placement="top" title="'.__('messages.pending-payments.view-documents').'"></i></a></li>';
+            $button .= '<li><i class="text-muted fas fa-plus" data-toggle="modal" data-target="#upload-document-'.$data->id.'" data-placement="top" title="'.__('messages.pending-payments.upload-document').'"></i></li>';
+            $button .= '<li><a class="text-muted" href="#"><i class="nav-icon fas fa-exclamation" data-toggle="tooltip" data-placement="top" title="'.__('messages.pending-payments.add-claim').'"></i></a></li>';
+            $button .= '</ul>';
+            $button .= '<!-- Upload Document Modal -->
+                            <div class="modal fade" id="upload-document-'.$data->id.'" tabindex="-1" role="dialog">
+                              <div class="modal-dialog" role="document">
+                                <!-- form start -->
+                                <form role="form" action="'.route('store-payment-documents', $data->id).'" class="form-horizontal form-label-left" enctype="multipart/form-data" method="post">
+                                <div class="modal-content">
+                                  <div class="modal-body">
+                                    <div class="box box-primary">
+                                        <div class="box-header with-border">
+                                          <h3 class="box-title">'.__('messages.pending-payments.upload-document').'</h3>
+                                        </div>
+                                        <!-- /.box-header -->
+                                          '.csrf_field().'
+                                          <div class="box-body">
+                                            <div class="form-group">
+                                              <input type="text" required="true" class="form-control" name="name" placeholder="'.__('messages.pending-payments.document-name').'">
+                                            </div>
+                                            <div class="form-group">
+                                              <input type="file" name="documentFile">
+                                            </div>
+                                          </div>
+                                          <!-- /.box-body -->
+                                            <input type="hidden" name="paymentId" value="'.$data->id.'" />
+                                      </div>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">'.__('messages.close').'</button>
+                                    <button type="submit" class="btn btn-primary">'.__('messages.save').'</button>
+                                  </div>
+                                </div>
+                                </form>
+                              </div>
+                            </div>';
+            return $button;
+        })
+        ->rawColumns(['action'])
+        ->make(true)
+        ;
     }
     
     private function generetateInvoiceNumber()
