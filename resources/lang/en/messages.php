@@ -4,6 +4,8 @@ return [
     'english'   => 'English',
     'spanish'   => 'Spanish',
     'home'      => 'Home',
+    'close'     => 'Close',
+    'save'      => 'Save',
     'sidebar'   => [
         'dashboard'         => 'Dashboard',
         'users'             => 'Users',
@@ -36,6 +38,10 @@ return [
         'status'            => 'Status',
         'add_tail'          => 'Please Type a Tailnumber',
         'plane_tail'        => 'Tailnumber',
+        'view-documents'    => 'View Documents',
+        'upload-document'   => 'Upload Documents',
+        'add-claim'         => 'Add claim',
+        'document-name'     => 'Document\'s name',
     ],
     'users'  => [
         'name'                  => 'Name',
@@ -56,6 +62,10 @@ return [
         'client'            => 'Client',
         'operator'          => 'Operator',
         'actions'           => 'Actions',
+        'view-documents'    => 'View Documents',
+        'upload-document'   => 'Upload Documents',
+        'add-claim'         => 'Add claim',
+        'document-name'     => 'Document\'s name',
     ],
     'manual-payments'  => [
         'manual-payments'   => 'Manual payments',
@@ -78,6 +88,9 @@ return [
         'representation-letter' => 'Representation Letter',
         'privacy-policy'        => 'Privacy Policy',
         'user-agreement'        => 'User Agreement',
+    ],
+    'payment-documents'   => [
+        'documents'             => 'Documents',
     ],
     'upload-json' => [
         'json'              => 'JSON',
