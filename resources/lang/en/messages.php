@@ -65,6 +65,7 @@ return [
         'client'            => 'Client',
         'operator'          => 'Operator',
         'actions'           => 'Actions',
+        'view-dosa'         => 'View DOSA',
         'view-documents'    => 'View Documents',
         'upload-document'   => 'Upload Documents',
         'add-claim'         => 'Add claim',
@@ -94,6 +95,9 @@ return [
     ],
     'payment-documents'   => [
         'documents'             => 'Documents',
+    ],
+    'payment-dosa'   => [
+        'dosa'             => 'DOSA',
     ],
     'upload-json' => [
         'json'              => 'JSON',

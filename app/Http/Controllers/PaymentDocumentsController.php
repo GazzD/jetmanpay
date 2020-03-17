@@ -25,7 +25,6 @@ class PaymentDocumentsController extends Controller
     {
         // Validate json file
         if ($request->hasFile('documentFile')) {
-//             dd($request->documentFile->getClientOriginalExtension());
             $fileName = Str::random(10).'.'.$request->documentFile->getClientOriginalExtension();
             // Store file
             $request->documentFile->storeAs('public/payments/documents', $fileName);

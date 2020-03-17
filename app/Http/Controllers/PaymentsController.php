@@ -167,7 +167,7 @@ class PaymentsController extends Controller
         ->addColumn('action', function($data){
             $button = '<ul class="fc-color-picker" id="color-chooser">';
             $button .= '<li><a class="text-muted" href="#"><i class="fas fa-search"></i></a></li>';
-            $button .= '<li><a class="text-muted" href="#"><i class="nav-icon fas fa-file-alt"></i></a></li>';
+            $button .= '<li><a class="text-muted" href="'.route('payment-dosa', $data->id).'"><i class="nav-icon fas fa-file-alt" data-toggle="tooltip" data-placement="top" title="'.__('messages.pending-payments.view-dosa').'"></i></a></li>';
             $button .= '<li><a class="text-muted" href="'.route('payment-documents', $data->id).'"><i class="nav-icon far fa-file-alt" data-toggle="tooltip" data-placement="top" title="'.__('messages.pending-payments.view-documents').'"></i></a></li>';
             $button .= '<li><i class="text-muted fas fa-plus" data-toggle="modal" data-target="#upload-document-'.$data->id.'" data-placement="top" title="'.__('messages.pending-payments.upload-document').'"></i></li>';
             $button .= '<li><a class="text-muted" href="#"><i class="nav-icon fas fa-exclamation" data-toggle="tooltip" data-placement="top" title="'.__('messages.pending-payments.add-claim').'"></i></a></li>';
