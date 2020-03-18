@@ -70,6 +70,7 @@ return [
         'upload-document'   => 'Upload Documents',
         'add-claim'         => 'Add claim',
         'document-name'     => 'Document\'s name',
+        'view-receipt'      => 'View receipt'
     ],
     'manual-payments'  => [
         'manual-payments'   => 'Manual payments',

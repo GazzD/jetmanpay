@@ -43,6 +43,9 @@ Route::group(['middleware' => ['auth']], function () {
     // Payment DOSA
     Route::get('/payments/{id}/dosa/', 'PaymentDosasController@index')->name('payment-dosa');
     
+    // Payment recipe
+    Route::get('/payments/{id}/receipt', 'PaymentsController@receipt')->name('payment-receipt');
+    
     //Users
     Route::get('/users', 'UsersController@index')->name('users');
     Route::get('/users/create', 'UsersController@create')->name('users/create');

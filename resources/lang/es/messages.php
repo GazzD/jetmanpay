@@ -70,6 +70,7 @@ return [
         'upload-document'   => 'Subir Documentos',
         'add-claim'         => 'Agregar reclamo',
         'document-name'     => 'Nombre del documento',
+        'view-receipt'      => 'Ver recibo'
     ],
     'manual-payments'  => [
         'manual-payments'   => 'Pagos manuales',

@@ -37,6 +37,8 @@
 			</tr>
 		</thead>
 	</table>
+	
+	<img alt="" src="{{asset('pdf/header.png')}}" />
 </section>
 <!-- /.content -->
 @endsection

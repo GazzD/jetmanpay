@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class PaymentsController extends Controller
 {
@@ -144,15 +145,82 @@ class PaymentsController extends Controller
         return $payment;
     }
     
+    public function receipt($id) {
+        // Get payment
+        $payment = Payment::with('fees')->with('client')->with('plane')->find($id);
+        
+        $color = '#FFF';
+        switch($payment->status) {
+            case 'APPROVED':
+                $color = '#65FF3A';
+                break;
+            case 'REJECTED':
+            case 'CANCELLED':
+                $color = '#FF2600';
+                break;
+            case 'PENDING':
+                $color = '#FF9544';
+                break;
+        }
+        $currency = 'x';
+        switch($payment->currency) {
+            case 'USD':
+                $currency = '$';
+                break;
+            case 'VEN':
+                $currency = 'VEN';
+                break;
+        }
+        
+        // Calculate taxes
+        $tax = 0;
+        $subtotal = 0;
+        $appfee = 0;
+        foreach ($payment->fees as $fee) {
+            $tax += $fee->conversion_fee;
+            $subtotal += $fee->amount-$fee->conversion_fee;
+        }
+        
+        $data = [
+            'payment' => $payment,
+            'color' => $color,
+            'currency' => $currency,
+            'tax' => $tax,
+            'subtotal' => $subtotal,
+            'appfee' => $appfee
+        ];
+//         $pdf = PDF::loadView('pdf.payment-receipt', $data);
+//         return $pdf->download('IPS Bill receipt.pdf');
+        
+//         $contxt = stream_context_create([
+//             'ssl' => [
+//                 'verify_peer' => FALSE,
+//                 'verify_peer_name' => FALSE,
+//                 'allow_self_signed'=> TRUE
+//             ]
+//         ]);
+        $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true]);
+//         $pdf->getDomPDF()->setHttpContext($contxt);
+        
+        return $pdf
+            ->loadView('pdf.payment-receipt', $data)
+            ->stream()
+        ;
+        
+        
+//         dd($payment);
+        
+    }
+    
     private function getPayments($justPending)
     {
         // Build payment query
         $query = Payment::where('user_id', auth()->user()->id)
-        ->with('client')
-        ->with('plane')
-        ->with('user')
-        ->with('fees')
-        ->latest()
+            ->with('client')
+            ->with('plane')
+            ->with('user')
+            ->with('fees')
+            ->latest()
         ;
         
         // Validate status
@@ -166,7 +234,7 @@ class PaymentsController extends Controller
         return DataTables::of($query->get())
         ->addColumn('action', function($data){
             $button = '<ul class="fc-color-picker" id="color-chooser">';
-            $button .= '<li><a class="text-muted" href="#"><i class="fas fa-search"></i></a></li>';
+            $button .= '<li><a class="text-muted" href="'.route('payment-receipt', $data->id).'"><i class="fas fa-search" data-toggle="tooltip" data-placement="top" title="'.__('messages.pending-payments.view-receipt').'"></i></a></li>';
             $button .= '<li><a class="text-muted" href="'.route('payment-dosa', $data->id).'"><i class="nav-icon fas fa-file-alt" data-toggle="tooltip" data-placement="top" title="'.__('messages.pending-payments.view-dosa').'"></i></a></li>';
             $button .= '<li><a class="text-muted" href="'.route('payment-documents', $data->id).'"><i class="nav-icon far fa-file-alt" data-toggle="tooltip" data-placement="top" title="'.__('messages.pending-payments.view-documents').'"></i></a></li>';
             $button .= '<li><i class="text-muted fas fa-plus" data-toggle="modal" data-target="#upload-document-'.$data->id.'" data-placement="top" title="'.__('messages.pending-payments.upload-document').'"></i></li>';
@@ -190,7 +258,7 @@ class PaymentsController extends Controller
                                               <input type="text" required="true" class="form-control" name="name" placeholder="'.__('messages.pending-payments.document-name').'">
                                             </div>
                                             <div class="form-group">
-                                              <input type="file" name="documentFile">
+                                              <input type="file" name="documentFile" />
                                             </div>
                                           </div>
                                           <!-- /.box-body -->
