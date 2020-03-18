@@ -189,26 +189,13 @@ class PaymentsController extends Controller
             'subtotal' => $subtotal,
             'appfee' => $appfee
         ];
-//         $pdf = PDF::loadView('pdf.payment-receipt', $data);
-//         return $pdf->download('IPS Bill receipt.pdf');
         
-//         $contxt = stream_context_create([
-//             'ssl' => [
-//                 'verify_peer' => FALSE,
-//                 'verify_peer_name' => FALSE,
-//                 'allow_self_signed'=> TRUE
-//             ]
-//         ]);
         $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true]);
-//         $pdf->getDomPDF()->setHttpContext($contxt);
         
         return $pdf
             ->loadView('pdf.payment-receipt', $data)
-            ->stream()
+            ->download('IPS Bill receipt.pdf')
         ;
-        
-        
-//         dd($payment);
         
     }
     
