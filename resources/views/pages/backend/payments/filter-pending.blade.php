@@ -26,17 +26,16 @@
     <!-- Main content -->
     <section class="content">
         <div class="card card-default">
+        @foreach($payments as $payment)
         <div class="row">
-            @foreach($payments as $payment)
-                <div class="col-md-12">
-                    <h3>
-                        <a href="{{route('payments/pay/create',$payment->id)}}">
-                            {{$payment->invoice_number}} ({{$payment->total_amount}} {{$payment->currency}})
-                        </a>
-                    </h3>
-                </div>
-            @endforeach
+            <h3 style="margin: 0.5em 1em;">
+                <a href="{{route('payments/pay/create',$payment->id)}}">
+                    {{$payment->invoice_number}} ({{$payment->total_amount}} {{$payment->currency}})
+                </a>
+            </h3>
         </div>
+        <hr style="margin-bottom: 0;">
+        @endforeach
     </div>
     </section>
 
