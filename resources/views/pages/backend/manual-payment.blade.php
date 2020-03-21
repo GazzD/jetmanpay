@@ -199,7 +199,7 @@
         console.log('================================');
         axios.post('/payments/manual',data,config).then(response => {
             console.log(response.data.policy_id);
-            window.location.replace('/payments/pending');
+            window.location.replace('/payments');
 
 
         }).catch(e => {
