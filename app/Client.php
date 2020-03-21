@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Client extends Model
 {
     protected $fillable = [
-        'code', 'name', 'currency', 'created_at', 'updated_at'
+        'nif', 'business_name', 'created_at', 'updated_at'
     ];
     public function payments()
     {
