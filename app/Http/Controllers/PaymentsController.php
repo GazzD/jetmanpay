@@ -331,6 +331,12 @@ class PaymentsController extends Controller
             ->with('fees')
             ->first()
             ;
+        $taxes = 0;
+            foreach ($payment->fees as $fee) {
+                $taxes = $taxes + $fee->conversion_fee;
+            }
+        $payment->taxes = $taxes;
+        $payment->subTotal = $payment->total_amount - $taxes;
         return view('pages.backend.payments.pay-existing')
             ->with('payment',$payment)
             ;

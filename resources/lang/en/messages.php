@@ -29,6 +29,7 @@ return [
         'payments'          => 'Payments',
         'tail-number'       => 'Tail number',
         'amount'            => 'Amount',
+        'concept'           => 'Concept',
         'date'              => 'Date',
         'description'       => 'Description',
         'number'            => 'Number',
@@ -45,6 +46,9 @@ return [
         'select_invocice'   => 'Select an invoice',
         'payments_by_plane' => 'Payments by plane',
         'confirm_payment'   => 'Confirm payment',
+        'invoice_number'    => 'Invoice number',
+        'fees'              => 'Fees',
+        'taxes'             => 'Taxes',
     ],
     'users'  => [
         'name'                  => 'Name',
