@@ -53,10 +53,8 @@
        
             <div class="col-md-6">
                 <div class="form-group">
-                    <label>@lang('messages.manual-payments.currency')</label>
-                    <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" disabled name="currency" required="required" id="currency">
-                    <option value="{{$payment->currency}}">{{$payment->currency}}</option>
-                    </select>
+                    <label>@lang('messages.payments.invoice_number')</label>
+                    <input type="text" class="form-control" disabled name="invoice_number" value="{{$payment->invoice_number}}">
                 </div>
             </div>
             <div class="col-md-6">
@@ -69,31 +67,50 @@
         <div class="form-group">
             <label>@lang('messages.manual-payments.description')</label>
             <div class="col-md-12">
-                <textarea class="form-control" style="max-width: 100%;" name="description" placeholder="Description" rows="8"></textarea>
+                <textarea class="form-control" style="max-width: 100%;" name="description" placeholder="@lang('messages.manual-payments.description')" rows="8"></textarea>
             </div>
         </div>
         <div class="form-group">
-            <label>Fees</label>
+            <label>@lang('messages.payments.fees')</label>
             @foreach ($payment->fees as $fee)
                 <div class="row" style="margin-top:10px;">
-                    <div class="col-md-6">
+                    <div class="col-md-10">
                     <input type="text" value="{{$fee->concept}}" disabled placeholder="Concept" id="feeConcept" class="form-control" name="feeConcept">
                     </div>
-                    <div class="col-md-6">
-                        <input type="text" value="{{$fee->amount}} @if($payment->currency == 'USD')$ @else BsS @endif" disabled placeholder="Amount" id="feeAmount" class="form-control" name="feeConcept">
+                    <div class="col-md-2">
+                        <input type="text" value=" @if($payment->currency == 'USD')${{$fee->amount - $fee->conversion_fee}} @else {{$fee->amount - $fee->conversion_fee}} BsS @endif" disabled placeholder="Amount" id="feeAmount" class="form-control" name="feeConcept">
                     </div>
                 </div>
             @endforeach
         </div>
-        <div class="form-group">
-            <label>Total</label>
-            <div class="col-md-12">
-                <h3>{{$payment->total_amount}} @if($payment->currency == 'USD')$ @else BsS @endif</h3>
+        <div class="row" style="text-align:right;">
+            <div class="col-md-10">
+                <label><h3>Sub-total</h3></label>
+            </div>
+            <div class="col-md-2">
+                <h3> @if($payment->currency == 'USD')${{$payment->subTotal}} @else {{$payment->subTotal}} BsS @endif</h3>
             </div>
         </div>
+        <div class="row" style="text-align:right;">
+            <div class="col-md-10">
+                <label><h3>@lang('messages.payments.taxes')</h3></label>
+            </div>
+            <div class="col-md-2">
+                <h3> @if($payment->currency == 'USD')${{$payment->taxes}} @else {{$payment->taxes}} BsS @endif</h3>
+            </div>
+        </div>
+        <div class="row" style="text-align:right;">
+            <div class="col-md-10">
+                <label><h3>Total</h3></label>
+            </div>
+            <div class="col-md-2">
+                <h3> @if($payment->currency == 'USD')${{$payment->total_amount}} @else {{$payment->total_amount}} BsS @endif</h3>
+            </div>
+        </div>
+
         <div id="feeList">
         </div>
-        <button type="submit" class="btn btn-primary">Guardar</button>
+        <button type="submit" class="btn btn-primary">@lang('messages.save')</button>
         </form>
         </div>
     </div>

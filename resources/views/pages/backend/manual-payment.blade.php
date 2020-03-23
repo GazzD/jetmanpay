@@ -23,67 +23,81 @@
 
 <!-- Main content -->
 <section class="content">
-    <form method="post" action="#" enctype=multipart/form-data role="form" class="form-horizontal">
-        <input type="hidden" id="csrf" value="{{ csrf_token() }}">
-        <div class="form-group">
-            <label class="col-md-2 control-label">@lang('messages.manual-payments.plane')</label>
-            <div class="col-md-10">
-                <select class="form-control" name="planeId" required="required" id="planes">
-                    <option value="null">@lang('messages.manual-payments.choose-one')</option>
-                    @foreach($planes as $plane)
-                        <option value="{{$plane->id}}">{{$plane->tail_number}}</option>
-                    @endforeach
-                </select>
+    <div class="card card-default">
+        <div class="card-header">
+            <h3 class="card-title">@lang('messages.payments.confirm_payment')</h3>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-remove"></i></button>
             </div>
         </div>
-        <div class="form-group">
-            <label class="col-md-2 control-label">@lang('messages.manual-payments.client')</label>
-            <div class="col-md-10">
-                <select class="form-control" name="clientId" required="required" id="clients">
-                    <option value="null">@lang('messages.manual-payments.choose-one')</option>
-
-                </select>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-md-2 control-label">@lang('messages.manual-payments.currency')</label>
-            <div class="col-md-10">
-                <select class="form-control" name="currency" required="required" id="currency">
-                    <option value="USD">USD ($)</option>
-                    <option value="VEF">VEF (BsS)</option>
-                </select>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-md-2 control-label">@lang('messages.manual-payments.reference')</label>
-            <div class="col-md-10">
-              <input type="text" required="" placeholder="Reference" id="reference" class="form-control" name="reference">
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-md-2 control-label">@lang('messages.manual-payments.description')</label>
-            <div class="col-md-10">
-                <textarea class="form-control" style="max-width: 100%;" id="description" placeholder="Description" rows="8"></textarea>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-md-2 control-label">TRADUCIR NEW ITEM</label>
-            <div class="row">
-                <div class="col-md-5">
-                    <input type="text" required="" placeholder="Concept" id="feeConcept" class="form-control" name="feeConcept">
+        <div class="card-body">
+            <form method="post" action="#" enctype=multipart/form-data role="form" class="form-horizontal">
+                <div class="row">
+                    <input type="hidden" id="csrf" value="{{ csrf_token() }}">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>@lang('messages.manual-payments.plane')</label>
+                            <select class="form-control" name="planeId" required="required" id="planes">
+                                <option value="null">@lang('messages.manual-payments.choose-one')</option>
+                                @foreach($planes as $plane)
+                                    <option value="{{$plane->id}}">{{$plane->tail_number}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>@lang('messages.manual-payments.client')</label>
+                            <select class="form-control" name="clientId" required="required" id="clients">
+                                <option value="null">@lang('messages.manual-payments.choose-one')</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>@lang('messages.manual-payments.currency')</label>
+                            <select class="form-control" name="currency" required="required" id="currency">
+                                <option value="USD">USD ($)</option>
+                                <option value="VEF">VEF (BsS)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>@lang('messages.manual-payments.reference')</label>
+                            <input type="text" required="" placeholder="@lang('messages.manual-payments.reference')" id="reference" class="form-control" name="reference">
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-5">
-                    <input type="number" required="" placeholder="Amount" id="feeAmount" class="form-control" name="feeConcept">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>@lang('messages.manual-payments.description')</label>
+                            <textarea class="form-control" style="max-width: 100%;" id="description" placeholder="Description" rows="8"></textarea>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-2">
-                    <a class="btn btn-warning" id="addFee">+</a>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">@lang('messages.payments.fees')</label>
+                    <div class="row">
+                        <div class="col-md-5">
+                            <input type="text" required="" placeholder="@lang('messages.payments.concept')" id="feeConcept" class="form-control" name="feeConcept">
+                        </div>
+                        <div class="col-md-5">
+                            <input type="number" required="" placeholder="@lang('messages.payments.amount')" id="feeAmount" class="form-control" name="feeConcept">
+                        </div>
+                        <div class="col-md-2">
+                            <a class="btn btn-warning" id="addFee">+</a>
+                        </div>
+                    </div>
                 </div>
-            </div>
+                <div id="feeList">
+                </div>
+                <a href="#" id="submit-btn" class="btn btn-primary">Guardar</a>
+            </form>
         </div>
-        <div id="feeList">
-        </div>
-        <a href="#" id="submit-btn" class="btn btn-primary">Guardar</a>
-	</form>
+    </div>
 </section>
 <!-- /.content -->
 @endsection
@@ -98,10 +112,10 @@
         let row = `
         <div class="row">
             <div class="col-md-4">
-                <h3>Concept</h3>
+                <h3>@lang('messages.payments.concept')</h3>
             </div>
             <div class="col-md-4">
-                <h3>Amount</h3>
+                <h3>@lang('messages.payments.amount')</h3>
             </div>
             <div class="col-md-4">
             </div>
@@ -185,7 +199,7 @@
         console.log('================================');
         axios.post('/payments/manual',data,config).then(response => {
             console.log(response.data.policy_id);
-            window.location.replace('/payments/pending');
+            window.location.replace('/payments');
 
 
         }).catch(e => {

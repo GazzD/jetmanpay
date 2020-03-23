@@ -29,6 +29,7 @@ return [
         'payments'          => 'Pagos realizados',
         'tail-number'       => 'Matrícula',
         'amount'            => 'Monto',
+        'concept'           => 'Concepto',
         'date'              => 'Fecha',
         'description'       => 'Descripción',
         'number'            => 'Número',
@@ -45,6 +46,9 @@ return [
         'select_invocice'   => 'Selecciona una orden de pago',
         'payments_by_plane' => 'Pagos por avión',
         'confirm_payment'   => 'Confirmar pago',
+        'invoice_number'    => 'Número de factura',
+        'fees'              => 'Cuotas',
+        'taxes'             => 'Impuestos',
     ],
     'users'  => [
         'name'      => 'Nombre',
