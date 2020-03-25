@@ -15,6 +15,8 @@ class CreateClientsTable extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
+            $table->string('code', 255);
+            $table->string('name', 255);
             $table->string('rif', 255)->nullable();
             $table->string('nit', 255)->nullable();
             $table->string('business_name', 255)->nullable();
@@ -63,7 +65,6 @@ class CreateClientsTable extends Migration
             $table->string('client_type', 255)->nullable();
             $table->float('secuence')->nullable();
             $table->string('cd_user', 255)->nullable();
-            $table->string('office', 255)->nullable();
             $table->string('origin', 255)->nullable();
             $table->integer('payer')->nullable();
             $table->timestamps();
