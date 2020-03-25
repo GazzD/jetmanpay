@@ -23,7 +23,10 @@ class PaymentsController extends Controller
     
     public function payments()
     {
-        return view('pages.backend.payments');
+        $clients = Client::all();
+        return view('pages.backend.payments')
+            ->with('clients',$clients)
+            ;
     }
 
     public function json()
@@ -340,6 +343,27 @@ class PaymentsController extends Controller
         return view('pages.backend.payments.pay-existing')
             ->with('payment',$payment)
             ;
+    }
+
+    public function generateReport(Request $request){
+        $from = $request->from;
+        $to = $request->to;
+        $clientId = $request->clientId;
+        $currency = $request->currency;
+        $reach = $request->reach;
+
+        $payments = Payment::where('dosa_date','>',$from)
+            ->where('dosa_date','<',$to)
+            ->get()
+            ;
+        if($clientId > 0){
+            $payments = $payments->where('client_id',$clientId);
+        }
+        if($currency != 'ALL'){
+            $payments = $payments->where('currency',$currency);
+        }
+        dd($payments);
+        
     }
 }
 

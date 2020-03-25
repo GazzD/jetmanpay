@@ -20,6 +20,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     //Payments
     Route::get('/payments', 'PaymentsController@payments')->name('payments');
+    Route::post('/payments/reports', 'PaymentsController@generateReport')->name('payments/reports');
     Route::get('/payments/pending', 'PaymentsController@pending')->name('pending-payments');
     Route::get('/payments/load-json', 'PaymentsController@json')->name('load-json');
     Route::post('/payments/load-json', 'PaymentsController@storeJson')->name('store-json');

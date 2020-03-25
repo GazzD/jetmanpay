@@ -23,6 +23,11 @@
 
 <!-- Main content -->
 <section class="content">
+    <div class="row"  style="float:right;" >
+        <div class="col-md-12">
+            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#generateReport" style="margin-bottom: 10px;">Generato</button>
+        </div>
+    </div>
 	<table id="datatable" class="table table-striped table-bordered">
 		<thead>
 			<tr>
@@ -40,6 +45,77 @@
 	</table>
 </section>
 <!-- /.content -->
+
+ <!-- /.modal -->
+
+ <div class="modal fade" id="generateReport">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        <form method="POST" action="{{route('payments/reports')}}">
+            @csrf
+                <div class="modal-header">
+                    <h4 class="modal-title">Generate report</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="reach" value="all">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>@lang('messages.payments.begin-date')</label>
+                                <input class="form-control" type="date" name="from" required>
+                                
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>@lang('messages.payments.end-date')</label>
+                                <input class="form-control" type="date" name="to">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>@lang('messages.payments.client')</label>
+                                <select name="clientId" class="form-control">
+                                    <option value="-1">@lang('messages.payments.choose_client')</option>
+                                    @foreach ($clients as $client)
+                                        <option value="{{$client->id}}">{{$client->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>@lang('messages.payments.currency')</label>
+                                <select name="currency" class="form-control">
+                                    <option value="ALL">@lang('messages.payments.any')</option>
+                                    <option value="USD">USD ($)</option>
+                                    <option value="VEF">VEF (BsS)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input type="checkbox" name="my-checkbox" checked data-bootstrap-switch data-off-color="danger" data-on-color="success">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->
 @endsection
 @section('extended-scripts')
 <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
