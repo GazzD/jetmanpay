@@ -53,17 +53,34 @@ class UsersController extends Controller
     {
         $request->validate([
             'name' => 'required|max:255',
-            'email' => 'required|email|unique:users',
+            'phone' => 'required|max:255',
+            'addressLine1' => 'required|max:255',
+            'zipCode' => 'required|max:255',
+            'country' => 'required|max:255',
+            'state' => 'required|max:255',
         ]);
         $name = $request->name;
-        $email = $request->email;
+        $phone = $request->phone;
+        $country = $request->country;
+        $state = $request->state;
+        $zipCode = $request->zipCode;
+        $addressLine1 = $request->addressLine1;
+        $addressLine2 = $request->addressLine2;
         
         $user = User::find(Auth::user()->id);
+//         dd($user, $request->all());
         $user->name = $name;
-        $user->email = $email;
+        $user->phone = $phone;
+        $user->country = $country;
+        $user->state = $state;
+        $user->zip_code = $zipCode;
+        $user->name = $name;
+        $user->address_line1 = $addressLine1;
+        $user->address_line2 = $addressLine2;
+        
         $user->save();
         
-        return redirect()->route('users');
+        return redirect()->route('users/profile');
         
     }
 
