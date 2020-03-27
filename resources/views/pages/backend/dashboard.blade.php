@@ -24,14 +24,20 @@
 <!-- Main content -->
 <section class="content">
     <div class="container-fluid">
+        @if ($notifications->count() > 0)
+        @foreach($notifications as $notification)
         <div class="card card-primary card-outline">
             <div class="card-header">
-                <h3 class="card-title">Notification title</h3>
+                <h3 class="card-title">{{ $notification->title }}</h3>
             </div>
             <div class="card-body">
-                <p>Notification Body</p>
-            </div><!-- /.card-body -->
+                <p>{{ $notification->message }}</p>
+            </div>
         </div>
+        @endforeach
+        @else
+        <div>@lang('messages.dashboard.notifications-empty')</div>
+        @endif
     </div>
   <!-- /.container-fluid -->
 </section>
