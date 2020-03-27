@@ -40,7 +40,8 @@ return [
         'all-rights-reserved' => 'All rights reserved <strong>JET MAN PAY.</strong>',
     ],
     'dashboard'   => [
-        'dashboard' => 'Dashboard',
+        'dashboard'             => 'Dashboard',
+        'notifications-empty'   => 'There are no news currently',
     ],
     'payments'  => [
         'payments'          => 'Payments',
