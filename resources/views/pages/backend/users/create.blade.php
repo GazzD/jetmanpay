@@ -52,7 +52,7 @@
             <div class="col-md-10">
                 <select name="roleId" class="form-control">
                     @foreach($roles as $role)
-                        <option value="{{$role->id}}">{{$role->name}}</option>
+                        <option value="{{$role->id}}">{{ __('messages.'.strtolower($role->name)) }}</option>
                     @endforeach
                 </select>
             </div>
