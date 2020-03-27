@@ -46,8 +46,12 @@ Route::group(['middleware' => ['auth']], function () {
     // Payment recipe
     Route::get('/payments/{id}/receipt', 'PaymentsController@receipt')->name('payment-receipt');
     
-    //Users
+    // Users
     Route::get('/users', 'UsersController@index')->name('users');
+    Route::get('/users/profile', 'UsersController@profile')->name('users/profile');
+    Route::get('/users/edit-profile', 'UsersController@editProfile')->name('users/edit-profile');
+    Route::post('/users/edit-profile', 'UsersController@updateProfile')->name('users/update-profile');
+    Route::post('/users/change-password', 'UsersController@changePassword')->name('users/change-password');
     Route::get('/users/create', 'UsersController@create')->name('users/create');
     Route::post('/users/create', 'UsersController@store')->name('users/store');
     Route::get('/users/fetch', 'UsersController@fetch')->name('users/fetch');
