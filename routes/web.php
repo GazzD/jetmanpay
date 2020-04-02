@@ -18,7 +18,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/', 'DashboardController@index')->name('dashboard');
     Route::get('/documents', 'DocumentsController@index')->name('documents');
 
-    //Payments
+    // Payments
     Route::get('/payments', 'PaymentsController@payments')->name('payments');
     Route::post('/payments/reports', 'PaymentsController@generateReport')->name('payments/reports');
     Route::get('/payments/pending', 'PaymentsController@pending')->name('pending-payments');
@@ -27,7 +27,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/payments/pending-payments', 'PaymentsController@fetchPendingPayments')->name('fetch-pending-payments');
     Route::get('/payments/fetch-payments', 'PaymentsController@fetchPayments')->name('fetch-payments');
     
-    //Payment by airplane
+    // Payment by airplane
     Route::get('/payments/filter/plane', 'PaymentsController@filterByPlane')->name('payments/filter/plane');
     Route::post('/payments/filter/plane/pending', 'PaymentsController@pendingPaymentsByPlane')->name('payments/filter/plane/pending');
     Route::get('/payments/{paymentId}/pay/create', 'PaymentsController@createPayByAirplane')->name('payments/pay/create');

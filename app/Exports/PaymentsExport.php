@@ -8,10 +8,6 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use phpDocumentor\Reflection\Types\Boolean;
-use phpDocumentor\Reflection\Types\Integer;
 use Illuminate\Support\Facades\Lang;
 
 class PaymentsExport implements FromCollection, WithHeadings, ShouldAutoSize, WithEvents
@@ -21,7 +17,7 @@ class PaymentsExport implements FromCollection, WithHeadings, ShouldAutoSize, Wi
     /**
     * @return \Illuminate\Support\Collection
     */
-     // varible form and to 
+     // Varible form and to 
      public function __construct(String $from = null , 
         String $to = null, 
         $clientId = null, 
@@ -36,7 +32,7 @@ class PaymentsExport implements FromCollection, WithHeadings, ShouldAutoSize, Wi
          $this->currency = $currency;
      }
      
-     //function select data from database 
+     // Function select data from database 
      public function collection()
      {
         $payments = Payment::select('currency','total_amount','description','dosa_date','number','client_id','status','plane_id')
@@ -71,31 +67,26 @@ class PaymentsExport implements FromCollection, WithHeadings, ShouldAutoSize, Wi
             }else{
                 $totalBs = $totalBs + $payment->total_amount;
             }
-            // //Calculate amount before commission 
-            // $totalFee = 0;
-            // foreach($payment->fees as $fee){
-            //     $totalFee = $totalFee + $fee->amount;
-            // }
-            // $payment->amount_before_commission = $payment->total_amount - $totalFee;
         }
-        //blank row
+        // Blank row
         $emptyRow = new Payment();
         $emptyRow->currency = null;
         $emptyRow->total_amount = '';
         
-        //Date row
+        // Date row
         $dateRow = new Payment();
         $dateRow->currency = Lang::get('messages.reports.report_generated');
         $dateRow->total_amount = date("Y/m/d");
         
-        //Total Amount (usd) row
+        // Total Amount (usd) row
         $usdRow = new Payment();
         $usdRow->currency = Lang::get('messages.reports.total_usd');
         $usdRow->total_amount = $totalUSD;
-        //Total Amount (BsS) row
+        
+        // Total Amount (BsS) row
         $bssRow = new Payment();
         $bssRow->currency = Lang::get('messages.reports.total_bs');
-        $bssRow->total_amount = $totalUSD;
+        $bssRow->total_amount = $totalBs;
         $payments->push($emptyRow);
         $payments->push($dateRow);
         $payments->push($usdRow);
