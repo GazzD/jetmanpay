@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Role;
+use Spatie\Permission\Models\Role;
+use App\User;
 
 class RolesTableSeeder extends Seeder
 {
@@ -12,14 +13,16 @@ class RolesTableSeeder extends Seeder
      */
     public function run()
     {
-        Role::create([
-            'id' => 1,
-            'name' => 'MANAGER',
-        ]);
-
-        Role::create([
-            'id' => 2,
-            'name' => 'OPERATOR',
-        ]);
+        $manager = Role::create(['name' => 'MANAGER']);
+        $operator = Role::create(['name' => 'OPERATOR']);
+        Role::create(['name' => 'CLIENT']);
+        Role::create(['name' => 'REVIEWER']);
+        Role::create(['name' => 'STAFF']);
+        
+        $user = User::find(1);
+        $user->assignRole($manager);
+        
+        $user = User::find(2);
+        $user->assignRole($operator);
     }
 }
