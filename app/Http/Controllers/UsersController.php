@@ -110,10 +110,12 @@ class UsersController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
-        $user->role_id = $request->roleId;
         
         // Store record
         $user->save();
+        
+        // Assign role
+        $user->assignRole(Role::findById($request->roleId));
         
         // Redirect to list
         return redirect()->route('users');
