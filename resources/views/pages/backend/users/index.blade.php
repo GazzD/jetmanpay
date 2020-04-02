@@ -53,7 +53,7 @@ $(document).ready(function() {
         "columns":[
             {"data":"name"},
             {"data":"email"},
-            {"data":"role.name"},
+            {"data":"role"},
         ]
     });
 });

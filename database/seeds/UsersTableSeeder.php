@@ -17,13 +17,13 @@ class UsersTableSeeder extends Seeder
             'name' => 'Víctor Cardozo',
             'email' => 'vcardozof@gmail.com',
             'password' => Hash::make('test'),
-            'role_id' => 1,
+//             'role_id' => 1,
         ]);
         User::create([
             'name' => 'Juan Pérez',
             'email' => 'operator@operator.com',
             'password' => Hash::make('test'),
-            'role_id' => 2,
+//             'role_id' => 2,
         ]);
     }
 }
