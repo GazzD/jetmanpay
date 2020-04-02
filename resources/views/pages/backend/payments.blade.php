@@ -73,7 +73,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>@lang('messages.payments.end_date')</label>
-                                <input class="form-control" type="date" name="to">
+                                <input class="form-control" type="date" name="to" required>
                             </div>
                         </div>
                     </div>
