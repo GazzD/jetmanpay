@@ -177,14 +177,8 @@ return [
         
         Yajra\DataTables\DataTablesServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
-<<<<<<< Upstream, based on develop
-        
         Spatie\Permission\PermissionServiceProvider::class,
-        
-=======
         Maatwebsite\Excel\ExcelServiceProvider::class,
->>>>>>> b83dced finish feature
-
     ],
 
     /*
