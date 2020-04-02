@@ -5,6 +5,7 @@ use App\Client;
 use App\Payment;
 use App\Plane;
 use App\PaymentFee;
+use App\Exports\PaymentsExport;
 use App\Http\Controllers\Controller;
 use function GuzzleHttp\json_decode;
 use Illuminate\Http\Request;
@@ -13,12 +14,16 @@ use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
 use Barryvdh\DomPDF\Facade as PDF;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PaymentsController extends Controller
 {
     public function pending()
     {
-        return view('pages.backend.pending-payments');
+        $clients = Client::all();
+        return view('pages.backend.pending-payments')
+            ->with('clients',$clients)
+            ;
     }
     
     public function payments()
@@ -350,10 +355,13 @@ class PaymentsController extends Controller
         $to = $request->to;
         $clientId = $request->clientId;
         $currency = $request->currency;
-        $reach = $request->reach;
-
+        $isPending = $request->isPending;
+        $excelToggle = $request->excelToggle; //If on = Excel, if null = PDF
+        $client = Client::find($clientId);
         $payments = Payment::where('dosa_date','>',$from)
             ->where('dosa_date','<',$to)
+            ->with('client')
+            ->with('plane')
             ->get()
             ;
         if($clientId > 0){
@@ -361,6 +369,49 @@ class PaymentsController extends Controller
         }
         if($currency != 'ALL'){
             $payments = $payments->where('currency',$currency);
+        }
+        // $payments = Payment::with('plane')->with('client')->get();
+        $totalBs = 0;
+        $totalUSD = 0;
+        foreach ($payments as $payment){
+            if($payment->currency == 'USD'){
+                $totalUSD = $totalUSD + $payment->total_amount;
+            }else{
+                $totalBs = $totalBs + $payment->total_amount;
+            }
+            //Calculate amount before commission 
+            $totalFee = 0;
+            foreach($payment->fees as $fee){
+                $totalFee = $totalFee + $fee->amount;
+            }
+            $payment->amount_before_commission = $payment->total_amount - $totalFee;
+        }
+        /*
+        Generate report
+        If excelToggle == null generate PDF, if not, generate excel file
+        */
+        if(!$excelToggle){
+            //Generate pdf
+            $data = [
+                'payments' => $payments,
+                'from' => $from,
+                'to' => $to,
+                'client' => $client,
+                'now' => date("Y-m-d h:i:sa"),
+                'totalUSD' => $totalUSD,
+                'totalBs' => $totalBs,
+            ];
+            
+            $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true]);
+            
+            return $pdf
+                ->loadView('pdf.payments-report', $data)
+                ->download('payments-report.pdf')
+            ;
+
+        }else{
+            return Excel::download(new PaymentsExport($from, $to,$clientId, $isPending, $currency), 'payment-reports-'.$from.'_'.$to.'.xlsx');
+            dd('Excel');
         }
         dd($payments);
         
