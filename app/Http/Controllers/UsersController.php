@@ -6,21 +6,21 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Hash;
 use App\User;
-use App\Role;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Role;
 
 class UsersController extends Controller
 {
     public function index(Request $request){
-        $users = User::all();
-        return view('pages.backend.users.index')
-            ->with('users',$users)
-        ;
+        // Display view
+        return view('pages.backend.users.index');
     }
     
     public function profile(Request $request){
+        // Realod current user
         $user = User::find(Auth::user()->id);
         
+        // Display view
         return view('pages.backend.users.profile')
             ->with('user', $user)
         ;
@@ -28,29 +28,33 @@ class UsersController extends Controller
     
     public function changePassword(Request $request)
     {
+        // Validate data
         $request->validate([
             'password' => 'required',
             'passwordConfirmation' => 'required|same:password',
         ]);
-        $password = $request->password;
         $user = User::find(Auth::user()->id);
-        $user->password = Hash::make($password);
+        $user->password = Hash::make($request->password);
         $user->save();
         
+        // Redirect to profile
         return redirect()->route('users/profile');
         
     }
     
     public function editProfile(Request $request){
+        // Realod current user
         $user = User::find(Auth::user()->id);
         
+        // Display view
         return view('pages.backend.users.edit-profile')
-        ->with('user', $user)
+            ->with('user', $user)
         ;
     }
     
     public function updateProfile(Request $request)
     {
+        // Validate data
         $request->validate([
             'name' => 'required|max:255',
             'phone' => 'required|max:255',
@@ -59,40 +63,40 @@ class UsersController extends Controller
             'country' => 'required|max:255',
             'state' => 'required|max:255',
         ]);
-        $name = $request->name;
-        $phone = $request->phone;
-        $country = $request->country;
-        $state = $request->state;
-        $zipCode = $request->zipCode;
-        $addressLine1 = $request->addressLine1;
-        $addressLine2 = $request->addressLine2;
         
+        // Realod current user
         $user = User::find(Auth::user()->id);
-//         dd($user, $request->all());
-        $user->name = $name;
-        $user->phone = $phone;
-        $user->country = $country;
-        $user->state = $state;
-        $user->zip_code = $zipCode;
-        $user->name = $name;
-        $user->address_line1 = $addressLine1;
-        $user->address_line2 = $addressLine2;
         
+        // Update data
+        $user->name = $request->name;
+        $user->phone = $request->phone;
+        $user->country = $request->country;
+        $user->state = $request->state;
+        $user->zip_code = $request->zipCode;
+        $user->address_line1 = $request->addressLine1;
+        $user->address_line2 = $request->addressLine2;
+        
+        // Store record
         $user->save();
         
+        // Redirect to profiles
         return redirect()->route('users/profile');
         
     }
 
     public function create(Request $request){
-        $roles = Role::all();
+        // Find roles
+        $roles = Role::where('name', 'MANAGER')->orWhere('name', 'OPERATOR')->get();
+        
+        // Render view
         return view('pages.backend.users.create')
             ->with('roles', $roles)
-            ;
+        ;
     }
 
     public function store(Request $request)
     {
+        // Validate
         $request->validate([
             'name' => 'required|max:255',
             'email' => 'required|email|unique:users',
@@ -100,29 +104,31 @@ class UsersController extends Controller
             'passwordConfirmation' => 'required|same:password',
             'roleId' => 'required',
         ]);
-        $name = $request->name;
-        $email = $request->email;
-        $password = $request->password;
-        $roleId = $request->roleId;
-
+        
+        // Create new user
         $user = new User();
-        $user->name = $name;
-        $user->email = $email;
-        $user->password = Hash::make($password);
-        $user->role_id = $roleId;
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->role_id = $request->roleId;
+        
+        // Store record
         $user->save();
-
+        
+        // Redirect to list
         return redirect()->route('users');
 
     }
 
     public function fetch()
     {
-        return DataTables::of(
-            User::with('role')
-            ->get()
-        )
-        ->make(true)
-        ;
+        // Assign first role
+        $users = User::with('roles')->get();
+        foreach ($users as $i => $user) {
+            $users[$i]->role = __('messages.'.strtolower($users[$i]->roles[0]->name));
+        }
+        
+        // Return datatable
+        return DataTables::of($users)->make(true);
     }
 }
