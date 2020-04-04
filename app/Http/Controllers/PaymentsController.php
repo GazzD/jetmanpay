@@ -4,17 +4,16 @@ namespace app\Http\Controllers;
 use App\Client;
 use App\Payment;
 use App\Plane;
-use App\PaymentFee;
 use App\Exports\PaymentsExport;
 use App\Http\Controllers\Controller;
 use function GuzzleHttp\json_decode;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
 use Barryvdh\DomPDF\Facade as PDF;
 use Maatwebsite\Excel\Facades\Excel;
+use App\PaymentItem;
 
 class PaymentsController extends Controller
 {
@@ -23,7 +22,7 @@ class PaymentsController extends Controller
         $clients = Client::all();
         return view('pages.backend.pending-payments')
             ->with('clients',$clients)
-            ;
+        ;
     }
     
     public function payments()
@@ -31,14 +30,14 @@ class PaymentsController extends Controller
         $clients = Client::all();
         return view('pages.backend.payments')
             ->with('clients',$clients)
-            ;
+        ;
     }
-
+    
     public function json()
     {
         return view('pages.backend.json');
     }
-
+    
     public function fetchPayments(Request $request)
     {
         // Datatable functionality (pagination, filter, order)
@@ -47,86 +46,87 @@ class PaymentsController extends Controller
     
     public function fetchPendingPayments(Request $request)
     {
-        return $this->getPayments(true);
         // Datatable functionality (pagination, filter, order)
+        return $this->getPayments(true);
     }
     
     public function storeJson(Request $request)
     {
-        // Json file name
-        $fileName = Str::random(10).'.json';
+//         // Json file name
+//         $fileName = Str::random(10).'.json';
         
-        // Validate json file
-        if ($request->hasFile('jsonFile')) {
-            // Store json file
-            $request->jsonFile->storeAs('public/payments', $fileName);
+//         // Validate json file
+//         if ($request->hasFile('jsonFile')) {
+//             // Store json file
+//             $request->jsonFile->storeAs('public/payments', $fileName);
             
-            // Pase json file
-            $path = storage_path('app/public/payments/'.$fileName);
-            $payments = json_decode(file_get_contents($path), true);
-            foreach ($payments as $jsonPayment) {
-                // Load payment data
-                $client = Client::where('code', $jsonPayment['DOSA']['taxpayer_code'])->first();
-                $plane = Plane::where('tail_number', $jsonPayment['DOSA']['tailnumber'])->first();
-                $invoiceNumber = $this->generetateInvoiceNumber();
+//             // Pase json file
+//             $path = storage_path('app/public/payments/'.$fileName);
+//             $payments = json_decode(file_get_contents($path), true);
+//             foreach ($payments as $jsonPayment) {
+//                 // Load payment data
+//                 $client = Client::where('code', $jsonPayment['DOSA']['taxpayer_code'])->first();
+//                 $plane = Plane::where('tail_number', $jsonPayment['DOSA']['tailnumber'])->first();
+//                 $invoiceNumber = $this->generetateInvoiceNumber();
                 
-                // Create payment
-                $payment = new Payment();
-                $payment->dosa_number = $jsonPayment['DOSA']['dosa_number'];
-                $payment->invoice_number = $invoiceNumber;
-                $payment->dosa_date = $jsonPayment['DOSA']['dosa_date'];
-                $payment->total_amount = $jsonPayment['DOSA']['total'];
-                $payment->plane_id = $plane->id;
-                $payment->client_id = $client->id;
-                $payment->reference = strtoupper($client->name.' FAC '.$invoiceNumber.' DOSA '. $payment->dosa_number);
-                $payment->description = strtoupper($client->name.' FAC '.$invoiceNumber.' DOSA '. $payment->dosa_number);
-                $payment->user_id = auth()->user()->id;
+//                 // Create payment
+//                 $payment = new Payment();
+//                 $payment->dosa_number = $jsonPayment['DOSA']['dosa_number'];
+//                 $payment->invoice_number = $invoiceNumber;
+//                 $payment->dosa_date = $jsonPayment['DOSA']['dosa_date'];
+//                 $payment->total_amount = $jsonPayment['DOSA']['total'];
+//                 $payment->plane_id = $plane->id;
+//                 $payment->client_id = $client->id;
+//                 $payment->reference = strtoupper($client->name.' FAC '.$invoiceNumber.' DOSA '. $payment->dosa_number);
+//                 $payment->description = strtoupper($client->name.' FAC '.$invoiceNumber.' DOSA '. $payment->dosa_number);
+//                 $payment->user_id = auth()->user()->id;
                 
-                // Store payment
-                $payment->save();
+//                 // Store payment
+//                 $payment->save();
                 
-                // Create payment fees
-                $paymentFees = array();
-                foreach ($jsonPayment['DOSA']['fees'] as $jsonFee) {
-                    $paymentFee = [];
-                    $paymentFee['old_code'] = $jsonFee['old_code'];
-                    $paymentFee['concept'] = $jsonFee['concept'];
-                    $paymentFee['amount'] = $jsonFee['amount'];
-                    $paymentFee['conversion_fee'] = $jsonFee['conversion_fee'];
-                    $paymentFee['payment_id'] = $payment->id;
-                    $paymentFee['created_at'] = date('Y-m-d H:i:s');
-                    $paymentFee['updated_at'] = date('Y-m-d H:i:s');
-                    $paymentFees[] = $paymentFee;
-                }
-                // Store payment fees
-                PaymentFee::insert($paymentFees);
-            }
-        }
+//                 // Create payment fees
+//                 $paymentFees = array();
+//                 foreach ($jsonPayment['DOSA']['fees'] as $jsonFee) {
+//                     $paymentFee = [];
+//                     $paymentFee['old_code'] = $jsonFee['old_code'];
+//                     $paymentFee['concept'] = $jsonFee['concept'];
+//                     $paymentFee['amount'] = $jsonFee['amount'];
+//                     $paymentFee['conversion_fee'] = $jsonFee['conversion_fee'];
+//                     $paymentFee['payment_id'] = $payment->id;
+//                     $paymentFee['created_at'] = date('Y-m-d H:i:s');
+//                     $paymentFee['updated_at'] = date('Y-m-d H:i:s');
+//                     $paymentFees[] = $paymentFee;
+//                 }
+//                 // Store payment fees
+//                 PaymentFee::insert($paymentFees);
+//             }
+//         }
         
         return redirect()->route('load-json')->with('status', __('messages.upload-json.success-message'));
     }
-
+    
     public function manual(Request $request){
         // Opens a form to create AND pay directly an invoice
         $planes = Plane::all();
-        return view('pages.backend.manual-payment')
+        return view('pages.backend.payments.manual-payment')
             ->with('planes',$planes)
         ;
     }
+    
     public function storeManual(Request $request){
         // Creates a new payment and approves it
-        
         $planeId = $request->planeId+0;
         $clientId = $request->clientId+0;
         $currency = $request->currency;
         $reference = $request->reference;
         $description = $request->description;
-        $feeList = $request->feeList;
+        $paymentItemList = $request->feeList;
         $totalAmount = 0;
         $userId = Auth::user()->id;
+        
         // Calculating total amount
-        foreach ($feeList as $feeArray) {
-            $totalAmount = $totalAmount + $feeArray['amount'];
+        foreach ($paymentItemList as $paymentItemArray) {
+            $totalAmount = $totalAmount + $paymentItemArray['amount'];
         }
         
         $payment = new Payment();
@@ -135,6 +135,7 @@ class PaymentsController extends Controller
         $payment->client_id = $clientId;
         $payment->user_id = $userId;
         $payment->currency = $currency;
+        $payment->number = 'ISP-'.$this->generateRandomString();
         $payment->reference = $reference;
         $payment->description = $description;
         $payment->status = 'APPROVED';
@@ -142,20 +143,21 @@ class PaymentsController extends Controller
         $payment->dosa_date = date('Y-m-d H:i:s');
         $payment->save();
         
-        foreach ($feeList as $feeArray) {
-            $fee = new PaymentFee();
-            $fee->concept = $feeArray['concept'];
-            $fee->amount = $feeArray['amount'];
-            $fee->payment_id = $payment->id;
-            $fee->save();
+        foreach ($paymentItemList as $paymentItemArray) {
+            $paymentItem = new PaymentItem();
+            $paymentItem->concept = $paymentItemArray['concept'];
+            $paymentItem->amount = $paymentItemArray['amount'];
+            $paymentItem->payment_id = $payment->id;
+            $paymentItem->save();
         }
         
         return $payment;
     }
     
-    public function receipt($id) {
+    public function receipt($id)
+    {
         // Get payment
-        $payment = Payment::with('fees')->with('client')->with('plane')->find($id);
+        $payment = Payment::with('items')->with('client')->with('plane')->find($id);
         
         $color = '#FFF';
         switch($payment->status) {
@@ -175,8 +177,8 @@ class PaymentsController extends Controller
             case 'USD':
                 $currency = '$';
                 break;
-            case 'VEN':
-                $currency = 'VEN';
+            case 'VEF':
+                $currency = 'BsS';
                 break;
         }
         
@@ -184,9 +186,9 @@ class PaymentsController extends Controller
         $tax = 0;
         $subtotal = 0;
         $appfee = 0;
-        foreach ($payment->fees as $fee) {
-            $tax += $fee->conversion_fee;
-            $subtotal += $fee->amount-$fee->conversion_fee;
+        foreach ($payment->items as $item) {
+            $tax += $item->fee;
+            $subtotal += $item->amount-$item->fee;
         }
         
         $data = [
@@ -214,7 +216,7 @@ class PaymentsController extends Controller
             ->with('client')
             ->with('plane')
             ->with('user')
-            ->with('fees')
+            ->with('items')
             ->latest()
         ;
         
@@ -227,7 +229,7 @@ class PaymentsController extends Controller
         
         // Return datatable
         return DataTables::of($query->get())
-        ->addColumn('action', function($data){
+            ->addColumn('action', function($data){
             $button = '<ul class="fc-color-picker" id="color-chooser">';
             $button .= '<li><a class="text-muted" href="'.route('payment-receipt', $data->id).'"><i class="fas fa-search" data-toggle="tooltip" data-placement="top" title="'.__('messages.pending-payments.view-receipt').'"></i></a></li>';
             $button .= '<li><a class="text-muted" href="'.route('payment-dosa', $data->id).'"><i class="nav-icon fas fa-file-alt" data-toggle="tooltip" data-placement="top" title="'.__('messages.pending-payments.view-dosa').'"></i></a></li>';
@@ -236,38 +238,38 @@ class PaymentsController extends Controller
             $button .= '<li><a class="text-muted" href="#"><i class="nav-icon fas fa-exclamation" data-toggle="tooltip" data-placement="top" title="'.__('messages.pending-payments.add-claim').'"></i></a></li>';
             $button .= '</ul>';
             $button .= '<!-- Upload Document Modal -->
-                            <div class="modal fade" id="upload-document-'.$data->id.'" tabindex="-1" role="dialog">
-                              <div class="modal-dialog" role="document">
-                                <!-- form start -->
-                                <form role="form" action="'.route('store-payment-documents', $data->id).'" class="form-horizontal form-label-left" enctype="multipart/form-data" method="post">
-                                <div class="modal-content">
-                                  <div class="modal-body">
-                                    <div class="box box-primary">
-                                        <div class="box-header with-border">
-                                          <h3 class="box-title">'.__('messages.pending-payments.upload-document').'</h3>
+                        <div class="modal fade" id="upload-document-'.$data->id.'" tabindex="-1" role="dialog">
+                          <div class="modal-dialog" role="document">
+                            <!-- form start -->
+                            <form role="form" action="'.route('store-payment-documents', $data->id).'" class="form-horizontal form-label-left" enctype="multipart/form-data" method="post">
+                            <div class="modal-content">
+                              <div class="modal-body">
+                                <div class="box box-primary">
+                                    <div class="box-header with-border">
+                                      <h3 class="box-title">'.__('messages.pending-payments.upload-document').'</h3>
+                                    </div>
+                                    <!-- /.box-header -->
+                                      '.csrf_field().'
+                                      <div class="box-body">
+                                        <div class="form-group">
+                                          <input type="text" required="true" class="form-control" name="name" placeholder="'.__('messages.pending-payments.document-name').'">
                                         </div>
-                                        <!-- /.box-header -->
-                                          '.csrf_field().'
-                                          <div class="box-body">
-                                            <div class="form-group">
-                                              <input type="text" required="true" class="form-control" name="name" placeholder="'.__('messages.pending-payments.document-name').'">
-                                            </div>
-                                            <div class="form-group">
-                                              <input type="file" name="documentFile" />
-                                            </div>
-                                          </div>
-                                          <!-- /.box-body -->
-                                            <input type="hidden" name="paymentId" value="'.$data->id.'" />
+                                        <div class="form-group">
+                                          <input type="file" name="documentFile" />
+                                        </div>
                                       </div>
+                                      <!-- /.box-body -->
+                                        <input type="hidden" name="paymentId" value="'.$data->id.'" />
                                   </div>
-                                  <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">'.__('messages.close').'</button>
-                                    <button type="submit" class="btn btn-primary">'.__('messages.save').'</button>
-                                  </div>
-                                </div>
-                                </form>
                               </div>
-                            </div>';
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">'.__('messages.close').'</button>
+                                <button type="submit" class="btn btn-primary">'.__('messages.save').'</button>
+                              </div>
+                            </div>
+                            </form>
+                          </div>
+                        </div>';
             return $button;
         })
         ->rawColumns(['action'])
@@ -275,21 +277,15 @@ class PaymentsController extends Controller
         ;
     }
     
-    private function generetateInvoiceNumber()
+    public function filterByPlane()
     {
-        return time();
+        // Opens a view with all planes to futher filter pending payments
+        return view('pages.backend.payments.select-list');
     }
-
-    public function filterByPlane(){
-        //Opens a view with all planes to futher filter pending payments
-        // $planes = Plane::all();
-        return view('pages.backend.payments.select-list')
-            // ->with('planes',$planes)
-            ;
-    }
-
-    public function pendingPaymentsByPlane(Request $request){
-        //Opens a view with all pending payments from a plane id
+    
+    public function pendingPaymentsByPlane(Request $request)
+    {
+        // Opens a view with all pending payments from a plane id
         $planeTail = $request->planeTail;
         $payments = Payment::where('status','PENDING')
             ->whereHas('plane', function($q) use($planeTail){
@@ -297,20 +293,21 @@ class PaymentsController extends Controller
             })
             ->with('client')
             ->get()
-            ;
+        ;
         if($payments->count() == 0){
             return redirect()
                 ->route('payments/filter/plane')
                 ->withErrors(Lang::get('validation.payments.plane_not_found_or_pending'))
-                ;
+            ;
         }
         return view('pages.backend.payments.filter-pending')
             ->with('payments',$payments)
-            ;
+        ;
     }
 
-    public function payCreated(Request $request,$paymentId){
-        //Edit pending payment to change it's satus to APPROVED
+    public function payCreated(Request $request,$paymentId)
+    {
+        // Edit pending payment to change it's satus to APPROVED
         $reference = $request->reference;
         $clientId = $request->clientId;
         $description = $request->description;
@@ -332,25 +329,26 @@ class PaymentsController extends Controller
         return redirect()->route('payments');
     }
 
-    public function createPayByAirplane(Request $request, $paymentId){
-        
+    public function createPayByAirplane(Request $request, $paymentId)
+    {
         $payment = Payment::where('id',$paymentId)
             ->with('client')
-            ->with('fees')
+            ->with('items')
             ->first()
-            ;
+        ;
         $taxes = 0;
-            foreach ($payment->fees as $fee) {
-                $taxes = $taxes + $fee->conversion_fee;
-            }
+        foreach ($payment->items as $item) {
+            $taxes = $taxes + $item->fee;
+        }
         $payment->taxes = $taxes;
         $payment->subTotal = $payment->total_amount - $taxes;
         return view('pages.backend.payments.pay-existing')
             ->with('payment',$payment)
-            ;
+        ;
     }
 
-    public function generateReport(Request $request){
+    public function generateReport(Request $request)
+    {
         $from = $request->from;
         $to = $request->to;
         $clientId = $request->clientId;
@@ -365,7 +363,7 @@ class PaymentsController extends Controller
             ->with('plane')
             ->where('user_id',$user->id)
             ->get()
-            ;
+        ;
         if($clientId > 0){
             $payments = $payments->where('client_id',$clientId);
         }
@@ -390,8 +388,8 @@ class PaymentsController extends Controller
             }
             //Calculate amount before commission 
             $totalFee = 0;
-            foreach($payment->fees as $fee){
-                $totalFee = $totalFee + $fee->amount;
+            foreach($payment->items as $item){
+                $totalFee = $totalFee + $item->amount;
             }
             $payment->amount_before_commission = $payment->total_amount - $totalFee;
         }
@@ -417,13 +415,14 @@ class PaymentsController extends Controller
                 ->loadView('pdf.payments-report', $data)
                 ->download('payments-report.pdf')
             ;
-
         }else{
             return Excel::download(new PaymentsExport($from, $to,$clientId, $status, $user, $currency), 'payment-reports-'.$from.'_'.$to.'.xlsx');
-            dd('Excel');
         }
-        dd($payments);
-        
+    }
+    
+    private function generetateInvoiceNumber()
+    {
+        return time();
     }
 }
 

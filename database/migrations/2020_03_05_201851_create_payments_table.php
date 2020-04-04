@@ -18,7 +18,7 @@ class CreatePaymentsTable extends Migration
             $table->string('dosa_number', 255)->nullable();
             $table->string('invoice_number', 255)->nullable();
             $table->date('dosa_date')->nullable();
-            $table->integer('number')->nullable();
+            $table->string('number')->nullable();
             $table->decimal('total_amount', 10, 2);
             $table->string('reference', 255);
             $table->text('description');
