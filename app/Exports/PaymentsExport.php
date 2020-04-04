@@ -9,6 +9,7 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Auth;
 
 class PaymentsExport implements FromCollection, WithHeadings, ShouldAutoSize, WithEvents
 {
@@ -21,7 +22,8 @@ class PaymentsExport implements FromCollection, WithHeadings, ShouldAutoSize, Wi
      public function __construct(String $from = null , 
         String $to = null, 
         $clientId = null, 
-        $status = False, 
+        $status = False,
+        $user = 'ALL', 
         $currency= 'ALL'
         )
      {
@@ -29,13 +31,14 @@ class PaymentsExport implements FromCollection, WithHeadings, ShouldAutoSize, Wi
          $this->to   = $to;
          $this->clientId = $clientId;
          $this->status = $status;
+         $this->user = $user;
          $this->currency = $currency;
      }
      
      // Function select data from database 
      public function collection()
      {
-        $payments = Payment::select('currency','total_amount','description','dosa_date','number','client_id','status','plane_id')
+        $payments = Payment::select('currency','total_amount','description','dosa_date','number','client_id','status','plane_id','user_id')
             ->where('dosa_date','>',$this->from)
             ->where('dosa_date','<',$this->to)
             ->with('client')
@@ -45,14 +48,23 @@ class PaymentsExport implements FromCollection, WithHeadings, ShouldAutoSize, Wi
         if($this->clientId > 0){
             $payments = $payments->where('client_id',$this->clientId);
         }
+        if($this->user != 'ALL'){
+            $payments = $payments->where('user_id',$this->user->id)
+            ;
+        }
         if($this->currency != 'ALL'){
             $payments = $payments->where('currency',$this->currency);
         }
         if($this->status != 'ALL'){
-            $payments = $payments->where('status',$this->status);
+            if($this->status == 'FINISHED'){
+                $payments = $payments->where('status','!=','PENDING');
+            }else{
+                $payments = $payments->where('status',$this->status);
+            }
         }
         foreach($payments as $payment){
             $payment->plane_id = null;
+            $payment->user_id = null;
             if($payment->plane){
                 $payment->client_id = $payment->plane->tail_number.'/'.$payment->client->name;
             }else{

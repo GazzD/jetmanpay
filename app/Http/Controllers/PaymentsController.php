@@ -358,10 +358,12 @@ class PaymentsController extends Controller
         $status = $request->status;
         $excelToggle = $request->excelToggle; //If on = Excel, if null = PDF
         $client = Client::find($clientId);
+        $user = Auth::user();
         $payments = Payment::where('dosa_date','>',$from)
             ->where('dosa_date','<',$to)
             ->with('client')
             ->with('plane')
+            ->where('user_id',$user->id)
             ->get()
             ;
         if($clientId > 0){
@@ -371,7 +373,11 @@ class PaymentsController extends Controller
             $payments = $payments->where('currency',$currency);
         }
         if($status != 'ALL'){
-            $payments = $payments->where('status',$status);
+            if($status == 'FINISHED'){
+                $payments = $payments->where('status','!=','PENDING');
+            }else{
+                $payments = $payments->where('status',$status);
+            }
         }
         // $payments = Payment::with('plane')->with('client')->get();
         $totalBs = 0;
@@ -413,7 +419,7 @@ class PaymentsController extends Controller
             ;
 
         }else{
-            return Excel::download(new PaymentsExport($from, $to,$clientId, $status, $currency), 'payment-reports-'.$from.'_'.$to.'.xlsx');
+            return Excel::download(new PaymentsExport($from, $to,$clientId, $status, $user, $currency), 'payment-reports-'.$from.'_'.$to.'.xlsx');
             dd('Excel');
         }
         dd($payments);
