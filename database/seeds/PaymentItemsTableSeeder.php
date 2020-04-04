@@ -1,9 +1,9 @@
 <?php
 
-use App\PaymentFee;
+use App\PaymentItem;
 use Illuminate\Database\Seeder;
 
-class PaymentFeesTableSeeder extends Seeder
+class PaymentItemsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,123 +12,106 @@ class PaymentFeesTableSeeder extends Seeder
      */
     public function run()
     {
-        PaymentFee::create([
-            'old_code'          => '0001',
+        PaymentItem::create([
             'concept'           => 'Concept 1',
             'amount'            => 10,
-            'conversion_fee'    => 10,
+            'fee'    => 10,
             'payment_id'        => 1
         ]);
-        PaymentFee::create([
-            'old_code'          => '0002',
+        PaymentItem::create([
             'concept'           => 'Concept 2',
             'amount'            => 20,
-            'conversion_fee'    => 20,
+            'fee'    => 20,
             'payment_id'        => 1
         ]);
-        PaymentFee::create([
-            'old_code'          => '0003',
+        PaymentItem::create([
             'concept'           => 'Concept 3',
             'amount'            => 62620,
-            'conversion_fee'    => 20,
+            'fee'    => 20,
             'payment_id'        => 2
         ]);
-        PaymentFee::create([
-            'old_code'          => '0004',
+        PaymentItem::create([
             'concept'           => 'Concept 4',
             'amount'            => 20,
-            'conversion_fee'    => 20,
+            'fee'    => 20,
             'payment_id'        => 3
         ]);
-        PaymentFee::create([
-            'old_code'          => '0005',
+        PaymentItem::create([
             'concept'           => 'Concept 5',
             'amount'            => 20,
-            'conversion_fee'    => 20,
+            'fee'    => 20,
             'payment_id'        => 3
         ]);
-        PaymentFee::create([
-            'old_code'          => '0006',
+        PaymentItem::create([
             'concept'           => 'Concept 6',
             'amount'            => 20,
-            'conversion_fee'    => 20,
+            'fee'    => 20,
             'payment_id'        => 3
         ]);
-        PaymentFee::create([
-            'old_code'          => '0007',
+        PaymentItem::create([
             'concept'           => 'Concept 7',
             'amount'            => 20,
-            'conversion_fee'    => 20,
+            'fee'    => 20,
             'payment_id'        => 3
         ]);
-        PaymentFee::create([
-            'old_code'          => '0008',
+        PaymentItem::create([
             'concept'           => 'Concept 8',
             'amount'            => 20,
-            'conversion_fee'    => 20,
+            'fee'    => 20,
             'payment_id'        => 4
         ]);
-        PaymentFee::create([
-            'old_code'          => '0009',
+        PaymentItem::create([
             'concept'           => 'Concept 9',
             'amount'            => 20,
-            'conversion_fee'    => 20,
+            'fee'    => 20,
             'payment_id'        => 4
         ]);
-        PaymentFee::create([
-            'old_code'          => '0010',
+        PaymentItem::create([
             'concept'           => 'Concept 10',
             'amount'            => 20,
-            'conversion_fee'    => 20,
+            'fee'    => 20,
             'payment_id'        => 4
         ]);
-        PaymentFee::create([
-            'old_code'          => '0011',
+        PaymentItem::create([
             'concept'           => 'Concept 11',
             'amount'            => 20,
-            'conversion_fee'    => 20,
+            'fee'    => 20,
             'payment_id'        => 1
         ]);
-        PaymentFee::create([
-            'old_code'          => '0012',
+        PaymentItem::create([
             'concept'           => 'Concept 12',
             'amount'            => 20,
-            // 'conversion_fee'    => 20,
+            // 'fee'    => 20,
             'payment_id'        => 2
         ]);
-        PaymentFee::create([
-            'old_code'          => '0013',
+        PaymentItem::create([
             'concept'           => 'Concept 13',
             'amount'            => 20,
-            'conversion_fee'    => 20,
+            'fee'    => 20,
             'payment_id'        => 3
         ]);
-        PaymentFee::create([
-            'old_code'          => '0014',
+        PaymentItem::create([
             'concept'           => 'Concept 14',
             'amount'            => 20,
-            'conversion_fee'    => 20,
+            'fee'    => 20,
             'payment_id'        => 1
         ]);
-        PaymentFee::create([
-            'old_code'          => '0015',
+        PaymentItem::create([
             'concept'           => 'Concept 15',
             'amount'            => 20,
-            'conversion_fee'    => 20,
+            'fee'    => 20,
             'payment_id'        => 2
         ]);
-        PaymentFee::create([
-            'old_code'          => '0016',
+        PaymentItem::create([
             'concept'           => 'Concept 16',
             'amount'            => 20,
-            'conversion_fee'    => 20,
+            'fee'    => 20,
             'payment_id'        => 1
         ]);
-        PaymentFee::create([
-            'old_code'          => '0017',
+        PaymentItem::create([
             'concept'           => 'Concept 17',
             'amount'            => 20,
-            'conversion_fee'    => 20,
+            'fee'    => 20,
             'payment_id'        => 2
         ]);
     }
