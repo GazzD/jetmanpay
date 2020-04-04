@@ -79,7 +79,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-md-2 control-label">@lang('messages.payments.fees')</label>
+                    <label class="col-md-2 control-label">@lang('messages.payments.invoice_items')</label>
                     <div class="row">
                         <div class="col-md-5">
                             <input type="text" required="" placeholder="@lang('messages.payments.concept')" id="feeConcept" class="form-control" name="feeConcept">
@@ -94,7 +94,7 @@
                 </div>
                 <div id="feeList">
                 </div>
-                <a href="#" id="submit-btn" class="btn btn-primary">Guardar</a>
+                <a href="#" id="submit-btn" class="btn btn-primary">@lang('messages.payments.confirm')</a>
             </form>
         </div>
     </div>

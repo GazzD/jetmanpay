@@ -133,7 +133,7 @@ $(document).ready(function() {
             {"data":"total_amount"},
             {"data":"dosa_date"},
             {"data":"description"},
-            {"data":"dosa_number"},
+            {"data":"number"},
             {"data":"client.name"},
             {"data":"user.name"},
             {"data":"status"},

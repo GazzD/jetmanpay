@@ -73,10 +73,10 @@
               </tr>
             </thead>
             <tbody style="text-align: center;">
-              @foreach($payment->fees as $fee)
+              @foreach($payment->items as $item)
               <tr style="font-size: 13px;">
-                <td>{{ $fee->concept }}</td>
-                <td>{{ $currency }}{{ $fee->amount }}</td>
+                <td>{{ $item->concept }}</td>
+                <td>{{ $currency }}{{ $item->amount }}</td>
               </tr>
               @endforeach
             </tbody>

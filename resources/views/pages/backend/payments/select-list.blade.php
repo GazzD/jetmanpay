@@ -23,34 +23,33 @@
 
 <!-- Main content -->
 <section class="content">
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+    <div class="card card-default">
+        <div class="card-header">
+            <h3 class="card-title">@lang('messages.payments.add_tail')</h3>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-remove"></i></button>
             </div>
-        @endif
-        <div class="card card-default">
-            <div class="card-header">
-                <h3 class="card-title">@lang('messages.payments.add_tail')</h3>
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-remove"></i></button>
-                </div>
-            </div>
-            <div class="card-body">
-                <form method="post" action="{{route('payments/filter/plane/pending')}}" role="form" class="form-horizontal">
-                    @csrf
-                    <div class="form-group">
-                        <div class="col-md-10">
-                        <input type="text" required="" placeholder="@lang('messages.payments.plane_tail')" id="planeTail" class="form-control" name="planeTail">
-                        <button type="submit" id="submit-btn" style="margin-top: 10px;" class="btn btn-primary">@lang('messages.users.create')</button>
-                        </div>
+        </div>
+        <div class="card-body">
+            <form method="post" action="{{route('payments/filter/plane/pending')}}" role="form" class="form-horizontal">
+                @csrf
+                <div class="form-group">
+                    <div class="col-md-10">
+                    <input type="text" required="" placeholder="@lang('messages.payments.plane_tail')" id="planeTail" class="form-control" name="planeTail">
+                    <button type="submit" id="submit-btn" style="margin-top: 10px;" class="btn btn-primary">@lang('messages.users.create')</button>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
 </section>

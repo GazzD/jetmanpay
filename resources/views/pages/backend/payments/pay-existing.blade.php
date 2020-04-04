@@ -71,14 +71,14 @@
             </div>
         </div>
         <div class="form-group">
-            <label>@lang('messages.payments.fees')</label>
-            @foreach ($payment->fees as $fee)
+            <label>@lang('messages.payments.invoice_items')</label>
+            @foreach ($payment->items as $item)
                 <div class="row" style="margin-top:10px;">
                     <div class="col-md-10">
-                    <input type="text" value="{{$fee->concept}}" disabled placeholder="Concept" id="feeConcept" class="form-control" name="feeConcept">
+                    <input type="text" value="{{$item->concept}}" disabled placeholder="Concept" id="feeConcept" class="form-control" name="feeConcept">
                     </div>
                     <div class="col-md-2">
-                        <input type="text" value=" @if($payment->currency == 'USD')${{$fee->amount - $fee->conversion_fee}} @else {{$fee->amount - $fee->conversion_fee}} BsS @endif" disabled placeholder="Amount" id="feeAmount" class="form-control" name="feeConcept">
+                        <input type="text" value=" @if($payment->currency == 'USD')${{$item->amount - $item->fee}} @else {{$item->amount - $item->fee}} BsS @endif" disabled placeholder="Amount" id="feeAmount" class="form-control" name="feeConcept">
                     </div>
                 </div>
             @endforeach
