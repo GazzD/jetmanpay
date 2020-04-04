@@ -60,7 +60,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" name="reach" value="all">
+                    <input type="hidden" name="status" value="PENDING">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">

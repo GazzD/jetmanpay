@@ -53,7 +53,7 @@
         <div class="modal-content">
         <form method="POST" action="{{route('payments/reports')}}">
             @csrf
-            <input type="hidden" name="isPending" value="true">
+            <input type="hidden" name="status" value="ALL">
                 <div class="modal-header">
                     <h4 class="modal-title">@lang('messages.payments.generate_report')</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">

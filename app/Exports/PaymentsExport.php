@@ -21,14 +21,14 @@ class PaymentsExport implements FromCollection, WithHeadings, ShouldAutoSize, Wi
      public function __construct(String $from = null , 
         String $to = null, 
         $clientId = null, 
-        $isPending = False, 
+        $status = False, 
         $currency= 'ALL'
         )
      {
          $this->from = $from;
          $this->to   = $to;
          $this->clientId = $clientId;
-         $this->isPending = $isPending;
+         $this->status = $status;
          $this->currency = $currency;
      }
      
@@ -48,8 +48,8 @@ class PaymentsExport implements FromCollection, WithHeadings, ShouldAutoSize, Wi
         if($this->currency != 'ALL'){
             $payments = $payments->where('currency',$this->currency);
         }
-        if($this->isPending){
-            $payments = $payments->where('status','PENDING');
+        if($this->status != 'ALL'){
+            $payments = $payments->where('status',$this->status);
         }
         foreach($payments as $payment){
             $payment->plane_id = null;
