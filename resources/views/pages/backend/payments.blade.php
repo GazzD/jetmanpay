@@ -23,6 +23,11 @@
 
 <!-- Main content -->
 <section class="content">
+    <div class="row"  style="float:right;" >
+        <div class="col-md-12">
+            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#generateReport" style="margin-bottom: 10px;">@lang('messages.payments.generate_report')</button>
+        </div>
+    </div>
 	<table id="datatable" class="table table-striped table-bordered">
 		<thead>
 			<tr>
@@ -40,6 +45,78 @@
 	</table>
 </section>
 <!-- /.content -->
+
+ <!-- /.modal -->
+
+ <div class="modal fade" id="generateReport">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        <form method="POST" action="{{route('payments/reports')}}">
+            @csrf
+            <input type="hidden" name="status" value="FINISHED">
+                <div class="modal-header">
+                    <h4 class="modal-title">@lang('messages.payments.generate_report')</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="reach" value="all">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>@lang('messages.payments.begin_date')</label>
+                                <input class="form-control" type="date" name="from" required>
+                                
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>@lang('messages.payments.end_date')</label>
+                                <input class="form-control" type="date" name="to" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>@lang('messages.payments.client')</label>
+                                <select name="clientId" class="form-control">
+                                    <option value="-1">@lang('messages.payments.any')</option>
+                                    @foreach ($clients as $client)
+                                        <option value="{{$client->id}}">{{$client->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>@lang('messages.payments.currency')</label>
+                                <select name="currency" class="form-control">
+                                    <option value="ALL">@lang('messages.payments.any')</option>
+                                    <option value="USD">USD ($)</option>
+                                    <option value="VEF">VEF (BsS)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input type="checkbox" name="excelToggle" checked data-toggle="toggle" data-on="Excel <i class='fa fa-file-excel'></i>" data-off="PDF <i class='fa fa-file-pdf'></i>" data-onstyle="success" data-offstyle="danger" data-width="100">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">@lang('messages.payments.close')</button>
+                    <button type="submit" class="btn btn-primary">@lang('messages.payments.generate_report')</button>
+                </div>
+            </form>
+        </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->
 @endsection
 @section('extended-scripts')
 <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>

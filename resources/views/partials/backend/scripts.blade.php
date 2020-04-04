@@ -30,3 +30,5 @@
 <script src="{{asset('backend/dist/js/adminlte.js')}}"></script>
 <!-- Axios -->
 <script src="{{asset('backend/plugins/axios/axios.min.js')}}"></script>
+<!-- Bootstrap 4 switch -->
+<script src="{{asset('backend/plugins/bootstrap4-toggle/js/bootstrap4-toggle.min.js')}}"></script>
