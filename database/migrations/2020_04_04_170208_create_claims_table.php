@@ -15,13 +15,12 @@ class CreateClaimsTable extends Migration
     {
         Schema::create('claims', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
             $table->string('code')->nullable();
             $table->longText('description');
-            $table->date('date');
             $table->enum('status', array('PENDING', 'REVISED'))->default('PENDING');
             $table->enum('type', array('AMOUNT', 'FILE','OTHER'))->default('OTHER');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('payment_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
