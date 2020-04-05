@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\DataTables;
 use Illuminate\Http\Request;
+use App\Mail\CreatedClaim;
 use App\Claim; 
+use App\User; 
 
 class ClaimsController extends Controller
 {
@@ -28,7 +31,11 @@ class ClaimsController extends Controller
         $claim->save();
 
         //Send Email
-
+        $users = User::all();
+        foreach ($users as $user ) {
+            Mail::to($user->email)->send(new CreatedClaim($claim->id));
+            
+        }
         return redirect()->back()->withMessage(Lang::get('messahes.claims.claim_made_success'));
     }
 

@@ -283,7 +283,8 @@ class PaymentsController extends Controller
                                     </div>
                                     <!-- /.box-header -->
                                       '.csrf_field().'
-                                      <div class="box-body">
+                                      <div class="box-body row">
+                                      <div class="col-md-12">  
                                         <div class="form-group">
                                           <select class="form-control" name="type">
                                             <option value="AMOUNT">'.__('messages.claims.incorrect_amount').'</option>
@@ -291,8 +292,10 @@ class PaymentsController extends Controller
                                             <option value="OTHER">'.__('messages.claims.other').'</option>
                                           </select>
                                         </div>
-                                        <div class="form-group">
-                                          <textarea class="from-control" name="description" placeholder="'.__('messages.claims.description').'"></textarea>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <textarea  rows="4" cols="62" class="from-control" name="description" placeholder="'.__('messages.claims.description').'"></textarea>
+                                            </div>
                                         </div>
                                       </div>
                                       <!-- /.box-body -->
