@@ -400,8 +400,8 @@ class PaymentsController extends Controller
         $excelToggle = $request->excelToggle; //If on = Excel, if null = PDF
         $client = Client::find($clientId);
         $user = Auth::user();
-        $payments = Payment::where('dosa_date','>',$from)
-            ->where('dosa_date','<',$to)
+        $payments = Payment::where('dosa_date','>=',$from)
+            ->where('dosa_date','<=',$to)
             ->with('client')
             ->with('plane')
             ->where('user_id',$user->id)
