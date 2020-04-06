@@ -32,8 +32,9 @@ class ClaimsController extends Controller
 
         //Send Email
         $users = User::all();
-        foreach ($users as $user ) {
-            Mail::to($user->email)->send(new CreatedClaim($claim->id));
+        $emails  = explode(',', env('MAIL_CLAIM_TARGETS'));
+        foreach ($emails as $email ) {
+            Mail::to($email)->send(new CreatedClaim($claim->id));
             
         }
         return redirect()->back()->withMessage(Lang::get('messahes.claims.claim_made_success'));

@@ -292,9 +292,12 @@ class PaymentsController extends Controller
                                             <option value="OTHER">'.__('messages.claims.other').'</option>
                                           </select>
                                         </div>
-                                        <div class="col-md-12">
+                                        <div class="col-md-12" style="fñpa">
                                             <div class="form-group">
-                                                <textarea  rows="4" cols="62" class="from-control" name="description" placeholder="'.__('messages.claims.description').'"></textarea>
+                                                <textarea  rows="4" style="width: 100%;" class="from-control" name="description" placeholder="'.__('messages.claims.description').'"></textarea>
+                                            </div>
+                                            <div class="loading" style="display:flex; justify-content:center; display:none;">
+                                                <img src="/loading.gif" style="width:50px;" alt="loading"/>
                                             </div>
                                         </div>
                                       </div>
@@ -304,7 +307,7 @@ class PaymentsController extends Controller
                               </div>
                               <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">'.__('messages.close').'</button>
-                                <button type="submit" class="btn btn-primary">'.__('messages.save').'</button>
+                                <button type="submit" class="btn btn-primary submit-claim">'.__('messages.save').'</button>
                               </div>
                             </div>
                             </form>
