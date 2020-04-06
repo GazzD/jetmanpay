@@ -56,7 +56,7 @@ $(document).ready(function() {
             "url": "{{route('claims/fetch')}}",
         },
         "columns":[
-            {"data":"created_at"},
+            {"data":"date"},
             {"data":"code"},
             {"data":"type"},
             {"data":"status"},

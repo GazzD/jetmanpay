@@ -62,6 +62,10 @@ class ClaimsController extends Controller
         // Fetch claims
         $claims = Claim::where('user_id', auth()->user()->id)->with('user')->get();
         
+        foreach ($claims as $key => $claim) {
+            $claims[$key]->date = date_format($claim->created_at,"d/m/Y/ H:i:s");
+        }
+        
         // Return datatable
         return DataTables::of($claims)
             ->addColumn('action', function($data){
