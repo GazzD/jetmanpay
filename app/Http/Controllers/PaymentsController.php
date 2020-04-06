@@ -287,8 +287,8 @@ class PaymentsController extends Controller
                                       <div class="col-md-12">  
                                         <div class="form-group">
                                           <select class="form-control" name="type">
-                                            <option value="AMOUNT">'.__('messages.claims.incorrect_amount').'</option>
-                                            <option value="FILE">'.__('messages.claims.incorrect_file').'</option>
+                                            <option value="INCORRECT_AMOUNT">'.__('messages.claims.incorrect_amount').'</option>
+                                            <option value="INCORRECT_FILE">'.__('messages.claims.incorrect_file').'</option>
                                             <option value="OTHER">'.__('messages.claims.other').'</option>
                                           </select>
                                         </div>
