@@ -432,7 +432,7 @@ class PaymentsController extends Controller
             //Calculate amount before commission 
             $totalFee = 0;
             foreach($payment->items as $item){
-                $totalFee = $totalFee + $item->amount;
+                $totalFee = $totalFee + $item->fee;
             }
             $payment->amount_before_commission = $payment->total_amount - $totalFee;
         }
