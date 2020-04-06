@@ -140,6 +140,9 @@ $(document).ready(function() {
             {"data":"action"},
         ]
     });
+    $('.submit-claim').click(function(){
+        $('.loading').style.display="block";
+    });
 });
 </script>
 @endsection

@@ -235,13 +235,13 @@ class PaymentsController extends Controller
             $button .= '<li><a class="text-muted" href="'.route('payment-dosa', $data->id).'"><i class="nav-icon fas fa-file-alt" data-toggle="tooltip" data-placement="top" title="'.__('messages.pending-payments.view-dosa').'"></i></a></li>';
             $button .= '<li><a class="text-muted" href="'.route('payment-documents', $data->id).'"><i class="nav-icon far fa-file-alt" data-toggle="tooltip" data-placement="top" title="'.__('messages.pending-payments.view-documents').'"></i></a></li>';
             $button .= '<li><i class="text-muted fas fa-plus" data-toggle="modal" data-target="#upload-document-'.$data->id.'" data-placement="top" title="'.__('messages.pending-payments.upload-document').'"></i></li>';
-            $button .= '<li><a class="text-muted" href="#"><i class="nav-icon fas fa-exclamation" data-toggle="tooltip" data-placement="top" title="'.__('messages.pending-payments.add-claim').'"></i></a></li>';
+            $button .= '<li><i class="text-muted fas fa-exclamation" data-toggle="modal" data-target="#create-claim-'.$data->id.'" data-placement="top" title="'.__('messages.pending-payments.add-claim').'"></i></></li>';
             $button .= '</ul>';
             $button .= '<!-- Upload Document Modal -->
                         <div class="modal fade" id="upload-document-'.$data->id.'" tabindex="-1" role="dialog">
                           <div class="modal-dialog" role="document">
                             <!-- form start -->
-                            <form role="form" action="'.route('store-payment-documents', $data->id).'" class="form-horizontal form-label-left" enctype="multipart/form-data" method="post">
+                            <form role="form" action="'.route('store-payment-documents', $data->id).'" onsubmit="sendButton.disabled = true;" class="form-horizontal form-label-left" enctype="multipart/form-data" method="post">
                             <div class="modal-content">
                               <div class="modal-body">
                                 <div class="box box-primary">
@@ -264,7 +264,50 @@ class PaymentsController extends Controller
                               </div>
                               <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">'.__('messages.close').'</button>
-                                <button type="submit" class="btn btn-primary">'.__('messages.save').'</button>
+                                <button type="submit" name="sendButton" class="btn btn-primary">'.__('messages.save').'</button>
+                              </div>
+                            </div>
+                            </form>
+                          </div>
+                        </div>';
+            $button .= '<!-- Create claim Modal -->
+                        <div class="modal fade" id="create-claim-'.$data->id.'" tabindex="-1" role="dialog">
+                          <div class="modal-dialog" role="document">
+                            <!-- form start -->
+                            <form role="form" action="'.route('claims/store').'" onsubmit="sendButton.disabled = true;" class="form-horizontal form-label-left" method="post">
+                            <div class="modal-content">
+                              <div class="modal-body">
+                                <div class="box box-primary">
+                                    <div class="box-header with-border">
+                                      <h3 class="box-title">'.__('messages.claims.add_claim').'</h3>
+                                    </div>
+                                    <!-- /.box-header -->
+                                      '.csrf_field().'
+                                      <div class="box-body row">
+                                      <div class="col-md-12">  
+                                        <div class="form-group">
+                                          <select class="form-control" name="type">
+                                            <option value="AMOUNT">'.__('messages.claims.incorrect_amount').'</option>
+                                            <option value="FILE">'.__('messages.claims.incorrect_file').'</option>
+                                            <option value="OTHER">'.__('messages.claims.other').'</option>
+                                          </select>
+                                        </div>
+                                        <div class="col-md-12" style="fñpa">
+                                            <div class="form-group">
+                                                <textarea  rows="4" style="width: 100%;" class="from-control" name="description" placeholder="'.__('messages.claims.description').'"></textarea>
+                                            </div>
+                                            <div class="loading" style="display:flex; justify-content:center; display:none;">
+                                                <img src="/loading.gif" style="width:50px;" alt="loading"/>
+                                            </div>
+                                        </div>
+                                      </div>
+                                      <!-- /.box-body -->
+                                        <input type="hidden" name="paymentId" value="'.$data->id.'" />
+                                  </div>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">'.__('messages.close').'</button>
+                                <button type="submit" name="sendButton" class="btn btn-primary submit-claim">'.__('messages.save').'</button>
                               </div>
                             </div>
                             </form>
