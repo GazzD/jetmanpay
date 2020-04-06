@@ -32,13 +32,13 @@ class PlanesTableSeeder extends Seeder
         
         Plane::create([
             'id' => 4,
-            'tail_number' => 'COVIT19',
+            'tail_number' => 'AF00001',
             'client_id' => 2
         ]);
         
         Plane::create([
             'id' => 5,
-            'tail_number' => 'AF00001',
+            'tail_number' => 'AF00002',
             'client_id' => 2
         ]);
     }
