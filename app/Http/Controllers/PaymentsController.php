@@ -241,7 +241,7 @@ class PaymentsController extends Controller
                         <div class="modal fade" id="upload-document-'.$data->id.'" tabindex="-1" role="dialog">
                           <div class="modal-dialog" role="document">
                             <!-- form start -->
-                            <form role="form" action="'.route('store-payment-documents', $data->id).'" class="form-horizontal form-label-left" enctype="multipart/form-data" method="post">
+                            <form role="form" action="'.route('store-payment-documents', $data->id).'" onsubmit="sendButton.disabled = true;" class="form-horizontal form-label-left" enctype="multipart/form-data" method="post">
                             <div class="modal-content">
                               <div class="modal-body">
                                 <div class="box box-primary">
@@ -264,7 +264,7 @@ class PaymentsController extends Controller
                               </div>
                               <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">'.__('messages.close').'</button>
-                                <button type="submit" class="btn btn-primary">'.__('messages.save').'</button>
+                                <button type="submit" name="sendButton" class="btn btn-primary">'.__('messages.save').'</button>
                               </div>
                             </div>
                             </form>
@@ -274,7 +274,7 @@ class PaymentsController extends Controller
                         <div class="modal fade" id="create-claim-'.$data->id.'" tabindex="-1" role="dialog">
                           <div class="modal-dialog" role="document">
                             <!-- form start -->
-                            <form role="form" action="'.route('claims/store').'" class="form-horizontal form-label-left" method="post">
+                            <form role="form" action="'.route('claims/store').'" onsubmit="sendButton.disabled = true;" class="form-horizontal form-label-left" method="post">
                             <div class="modal-content">
                               <div class="modal-body">
                                 <div class="box box-primary">
@@ -307,7 +307,7 @@ class PaymentsController extends Controller
                               </div>
                               <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">'.__('messages.close').'</button>
-                                <button type="submit" class="btn btn-primary submit-claim">'.__('messages.save').'</button>
+                                <button type="submit" name="sendButton" class="btn btn-primary submit-claim">'.__('messages.save').'</button>
                               </div>
                             </div>
                             </form>
