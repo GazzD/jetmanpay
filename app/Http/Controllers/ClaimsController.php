@@ -9,7 +9,6 @@ use Yajra\DataTables\DataTables;
 use Illuminate\Http\Request;
 use App\Mail\CreatedClaim;
 use App\Claim; 
-use App\User; 
 
 class ClaimsController extends Controller
 {
@@ -25,13 +24,14 @@ class ClaimsController extends Controller
 
         $claim = new Claim();
         $claim->type = $type;
+        $claim->code = $this->generateRandomString();
         $claim->description = $description;
         $claim->user_id = $user->id;
         $claim->payment_id = $paymentId;
         $claim->save();
 
         //Send Email
-        $users = User::all();
+//         $users = User::all();
         $emails  = explode(',', env('MAIL_CLAIM_TARGETS'));
         foreach ($emails as $email ) {
             Mail::to($email)->send(new CreatedClaim($claim->id));
@@ -59,8 +59,9 @@ class ClaimsController extends Controller
     }
 
     public function fetch(){
-        $claims = Claim::with('user')
-        ->get();
+        // Fetch claims
+        $claims = Claim::where('user_id', auth()->user()->id)->with('user')->get();
+        
         // Return datatable
         return DataTables::of($claims)
             ->addColumn('action', function($data){
