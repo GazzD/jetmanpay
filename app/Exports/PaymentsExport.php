@@ -38,13 +38,41 @@ class PaymentsExport implements FromCollection, WithHeadings, ShouldAutoSize, Wi
      // Function select data from database 
      public function collection()
      {
-        $payments = Payment::select('currency','total_amount','description','dosa_date','number','client_id','status','plane_id','user_id')
-            ->where('dosa_date','>=',$this->from)
-            ->where('dosa_date','<=',$this->to)
-            ->with('client')
-            ->with('plane')
-            ->get()
-            ;
+        switch (auth()->user()->getRoleNames()[0]) {
+            case 'MANAGER':
+                $payments = Payment::select('currency','total_amount','description','dosa_date','number','client_id','status','plane_id','user_id')
+                    ->where('dosa_date','>=',$this->from)
+                    ->where('dosa_date','<=',$this->to)
+                    ->with('client')
+                    ->with('plane')
+                    ->get()
+                ;
+                break;
+            case 'OPERATOR':
+                $payments = Payment::select('currency','total_amount','description','dosa_date','number','client_id','status','plane_id','user_id')
+                    ->where('dosa_date','>=',$this->from)
+                    ->where('dosa_date','<=',$this->to)
+                    ->where('user_id',auth()->user()->id)
+                    ->with('client')
+                    ->with('plane')
+                    ->get()
+                ;
+                break;
+            case 'CLIENT':
+                $payments = Payment::select('currency','total_amount','description','dosa_date','number','client_id','status','plane_id','user_id')
+                    ->where('dosa_date','>=',$this->from)
+                    ->where('dosa_date','<=',$this->to)
+                    ->where('client_id',auth()->user()->client_id)
+                    ->with('client')
+                    ->with('plane')
+                    ->get()
+                ;
+                break;
+            
+            default:
+                return $payments = [];
+                break;
+        }
         if($this->clientId > 0){
             $payments = $payments->where('client_id',$this->clientId);
         }

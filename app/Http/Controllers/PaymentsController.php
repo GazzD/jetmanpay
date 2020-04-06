@@ -211,14 +211,44 @@ class PaymentsController extends Controller
     
     private function getPayments($justPending)
     {
-        // Build payment query
-        $query = Payment::where('user_id', auth()->user()->id)
-            ->with('client')
-            ->with('plane')
-            ->with('user')
-            ->with('items')
-            ->latest()
-        ;
+        //Get user role and filter payments acordingly
+        switch (auth()->user()->getRoleNames()[0]) {
+            case 'MANAGER':
+                // All payments
+                $query = Payment::with('client')
+                    ->with('plane')
+                    ->with('user')
+                    ->with('items')
+                    ->latest()
+                ;
+                break;
+            case 'OPERATOR':
+                // Payments made from that operator
+                $query = Payment::where('user_id',auth()->user()->id)
+                    ->with('client')
+                    ->with('plane')
+                    ->with('user')
+                    ->with('items')
+                    ->latest()
+                ;
+                break;
+            case 'CLIENT':
+                // Payments related to that client
+                $query = Payment::where('client_id',auth()->user()->client_id)
+                    ->with('client')
+                    ->with('plane')
+                    ->with('user')
+                    ->with('items')
+                    ->latest()
+                ;
+                break;
+            
+            default:
+                $query = []
+                ;
+                break;
+        }
+      
         
         // Validate status
         if ($justPending) {
@@ -328,15 +358,48 @@ class PaymentsController extends Controller
     
     public function pendingPaymentsByPlane(Request $request)
     {
-        // Opens a view with all pending payments from a plane id
-        $planeTail = $request->planeTail;
-        $payments = Payment::where('status','PENDING')
-            ->whereHas('plane', function($q) use($planeTail){
-                $q->where('tail_number',$planeTail);
-            })
-            ->with('client')
-            ->get()
-        ;
+        switch (auth()->user()->getRoleNames()[0]) {
+            case 'MANAGER':
+                 // Opens a view with all pending payments from a plane id
+                $planeTail = $request->planeTail;
+                $payments = Payment::where('status','PENDING')
+                    ->whereHas('plane', function($q) use($planeTail){
+                        $q->where('tail_number',$planeTail);
+                    })
+                    ->with('client')
+                    ->get()
+                ;
+                break;
+            case 'OPERATOR':
+                 // Opens a view with all pending payments made by that operator from a plane id
+                $planeTail = $request->planeTail;
+                $payments = Payment::where('status','PENDING')
+                    ->where('user_id',auth()->user()->id)
+                    ->whereHas('plane', function($q) use($planeTail){
+                        $q->where('tail_number',$planeTail);
+                    })
+                    ->with('client')
+                    ->get()
+                ;
+                break;
+            case 'CLIENT':
+                 // Opens a view with all pending payments made by that operator from a plane id
+                $planeTail = $request->planeTail;
+                $payments = Payment::where('status','PENDING')
+                    ->where('client_id',auth()->user()->client_id)
+                    ->whereHas('plane', function($q) use($planeTail){
+                        $q->where('tail_number',$planeTail);
+                    })
+                    ->with('client')
+                    ->get()
+                ;
+                break;
+            
+            default:
+                $payments = [];
+                break;
+        }
+       
         if($payments->count() == 0){
             return redirect()
                 ->route('payments/filter/plane')
@@ -400,13 +463,38 @@ class PaymentsController extends Controller
         $excelToggle = $request->excelToggle; //If on = Excel, if null = PDF
         $client = Client::find($clientId);
         $user = Auth::user();
-        $payments = Payment::where('dosa_date','>=',$from)
-            ->where('dosa_date','<=',$to)
-            ->with('client')
-            ->with('plane')
-            ->where('user_id',$user->id)
-            ->get()
-        ;
+        switch ($user->getRoleNames()[0]) {
+            case 'MANAGER':
+                $payments = Payment::where('dosa_date','>=',$from)
+                    ->where('dosa_date','<=',$to)
+                    ->with('client')
+                    ->with('plane')
+                    ->get()
+                ;
+                break;
+            case 'OPERATOR':
+                $payments = Payment::where('dosa_date','>=',$from)
+                    ->where('dosa_date','<=',$to)
+                    ->where('user_id',$user->id)
+                    ->with('client')
+                    ->with('plane')
+                    ->get()
+                ;
+                break;
+            case 'CLIENT':
+                $payments = Payment::where('dosa_date','>=',$from)
+                    ->where('dosa_date','<=',$to)
+                    ->where('client_id',$user->client_id)
+                    ->with('client')
+                    ->with('plane')
+                    ->get()
+                ;
+                break;
+            
+            default:
+                return redirect()->back();
+                break;
+        }
         if($clientId > 0){
             $payments = $payments->where('client_id',$clientId);
         }
