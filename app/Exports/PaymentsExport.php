@@ -39,8 +39,8 @@ class PaymentsExport implements FromCollection, WithHeadings, ShouldAutoSize, Wi
      public function collection()
      {
         $payments = Payment::select('currency','total_amount','description','dosa_date','number','client_id','status','plane_id','user_id')
-            ->where('dosa_date','>',$this->from)
-            ->where('dosa_date','<',$this->to)
+            ->where('dosa_date','>=',$this->from)
+            ->where('dosa_date','<=',$this->to)
             ->with('client')
             ->with('plane')
             ->get()

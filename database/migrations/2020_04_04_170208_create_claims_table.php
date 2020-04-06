@@ -18,7 +18,7 @@ class CreateClaimsTable extends Migration
             $table->string('code')->nullable();
             $table->longText('description');
             $table->enum('status', array('PENDING', 'REVISED'))->default('PENDING');
-            $table->enum('type', array('AMOUNT', 'FILE','OTHER'))->default('OTHER');
+            $table->enum('type', array('INCORRECT_AMOUNT', 'INCORRECT_FILE', 'OTHER'))->default('OTHER');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('payment_id')->constrained()->onDelete('cascade');
             $table->timestamps();

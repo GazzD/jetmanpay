@@ -287,8 +287,8 @@ class PaymentsController extends Controller
                                       <div class="col-md-12">  
                                         <div class="form-group">
                                           <select class="form-control" name="type">
-                                            <option value="AMOUNT">'.__('messages.claims.incorrect_amount').'</option>
-                                            <option value="FILE">'.__('messages.claims.incorrect_file').'</option>
+                                            <option value="INCORRECT_AMOUNT">'.__('messages.claims.incorrect_amount').'</option>
+                                            <option value="INCORRECT_FILE">'.__('messages.claims.incorrect_file').'</option>
                                             <option value="OTHER">'.__('messages.claims.other').'</option>
                                           </select>
                                         </div>
@@ -400,8 +400,8 @@ class PaymentsController extends Controller
         $excelToggle = $request->excelToggle; //If on = Excel, if null = PDF
         $client = Client::find($clientId);
         $user = Auth::user();
-        $payments = Payment::where('dosa_date','>',$from)
-            ->where('dosa_date','<',$to)
+        $payments = Payment::where('dosa_date','>=',$from)
+            ->where('dosa_date','<=',$to)
             ->with('client')
             ->with('plane')
             ->where('user_id',$user->id)
@@ -432,7 +432,7 @@ class PaymentsController extends Controller
             //Calculate amount before commission 
             $totalFee = 0;
             foreach($payment->items as $item){
-                $totalFee = $totalFee + $item->amount;
+                $totalFee = $totalFee + $item->fee;
             }
             $payment->amount_before_commission = $payment->total_amount - $totalFee;
         }
