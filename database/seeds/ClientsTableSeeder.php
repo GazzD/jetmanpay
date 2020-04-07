@@ -17,7 +17,7 @@ class ClientsTableSeeder extends Seeder
             'code'      => '00005',
             'name'      => 'Vene Airlines',
             ]);
-            Client::create([
+        Client::create([
             'id'      => 2,
             'code'      => '00006',
             'name'      => 'Test Airlines',

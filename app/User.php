@@ -41,5 +41,10 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Payment');
     }
+    
+    public function client()
+    {
+        return $this->belongsTo('App\Client');
+    }
 
 }

@@ -15,7 +15,7 @@ class RolesTableSeeder extends Seeder
     {
         $manager = Role::create(['name' => 'MANAGER']);
         $operator = Role::create(['name' => 'OPERATOR']);
-        Role::create(['name' => 'CLIENT']);
+        $client = Role::create(['name' => 'CLIENT']);
         Role::create(['name' => 'REVIEWER']);
         Role::create(['name' => 'STAFF']);
         
@@ -24,5 +24,8 @@ class RolesTableSeeder extends Seeder
         
         $user = User::find(2);
         $user->assignRole($operator);
+        
+        $user = User::find(3);
+        $user->assignRole($client);
     }
 }
