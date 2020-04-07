@@ -68,8 +68,13 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/users/create', 'UsersController@store')->name('users/store');
         Route::get('/users/fetch', 'UsersController@fetch')->name('users/fetch');
     });
-
-
+    
+    // Client exclusive routes
+    Route::group(['middleware' => ['role:CLIENT']], function () {
+        // Dosas
+        Route::get('/dosas', 'DosasController@index')->name('dosas');
+    });
+    
 });
 
 Route::get('locale/{locale}', function ($locale){

@@ -35,6 +35,9 @@ return [
         'claims'            => 'Reclamos',
         'settings'          => 'Ajustes',
         'documents'         => 'Documentos',
+        'dosas'             => 'Dosas',
+        'balance'           => 'Saldo',
+        
     ],
     'footer'   => [
         'all-rights-reserved' => 'Todos los derechos reservados <strong>JET MAN PAY.</strong>',

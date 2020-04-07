@@ -35,6 +35,8 @@ return [
         'claims'            => 'Claims',
         'settings'          => 'Settings',
         'documents'         => 'Documents',
+        'dosas'             => 'Dosas',
+        'balance'           => 'Balance',
     ],
     'footer'   => [
         'all-rights-reserved' => 'All rights reserved <strong>JET MAN PAY.</strong>',
