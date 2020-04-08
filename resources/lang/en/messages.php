@@ -135,6 +135,20 @@ return [
         'details'               => 'Details',
 
     ],
+    'recharges'  => [
+        'recharges'             => 'Recharges',
+        'date'                  => 'Date',
+        'image'                 => 'Image',
+        'type'                  => 'Type',
+        'status'                => 'Status',
+        'user'                  => 'User',
+        'amount'                => 'Amount',
+        'options'               => 'Options',
+        'create'                => 'Create',
+        'client'                => 'Client',
+        'details'               => 'Details',
+
+    ],
     'pending-payments'  => [
         'pending-payments'  => 'Pending payments',
         'tail-number'       => 'Tail number',

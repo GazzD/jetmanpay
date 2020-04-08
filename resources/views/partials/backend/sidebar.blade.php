@@ -147,6 +147,16 @@
             </a>
           </li>
           @endrole
+          @role('CLIENT|MANAGER')
+          <li class="nav-item">
+            <a href="{{route('recharges')}}" class="nav-link">
+              <i class="nav-icon fas fa-wallet"></i>
+              <p>
+                @lang('messages.recharges.recharges')
+              </p>
+            </a>
+          </li>
+          @endrole
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

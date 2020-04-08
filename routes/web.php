@@ -26,6 +26,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/payments/load-json', 'PaymentsController@storeJson')->name('store-json');
     Route::get('/payments/pending-payments', 'PaymentsController@fetchPendingPayments')->name('fetch-pending-payments');
     Route::get('/payments/fetch-payments', 'PaymentsController@fetchPayments')->name('fetch-payments');
+
+    // Recharges
+    Route::get('/recharges', 'RechargesController@index')->name('recharges');
+    Route::get('/recharges/create', 'RechargesController@create')->name('recharges/create');
+    Route::get('/recharges/fetch', 'RechargesController@fetch')->name('recharges/fetch');
+    Route::get('/recharges/details/{id}', 'RechargesController@details')->name('recharges/details');
+    Route::post('/recharges/update/{id}', 'RechargesController@update')->name('recharges/update');
+    Route::post('/recharges/store', 'RechargesController@store')->name('recharges/store');
     
     // Claims
     Route::get('/claims', 'ClaimsController@index')->name('claims');

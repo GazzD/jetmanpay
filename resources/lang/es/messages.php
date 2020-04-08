@@ -103,7 +103,7 @@ return [
         'status'                => 'Estado',
         'user'                  => 'Usuario',
         'description'           => 'Descripción',
-        'options'               => 'Opcopmes',
+        'options'               => 'Opciones',
         'claim_made_success'    => 'Reclamo enviado exitosamente',
         'add_claim'             => 'Añadir reclamo',
         'incorrect_amount'      => 'Monto incorrecto',
@@ -113,6 +113,20 @@ return [
         'claim_details'         => 'Detalles del reclamo',
         'check'                 => 'Marcar como revisado',
         'details'               => 'Detalles',
+
+    ],
+    'recharges'  => [
+        'recharges'             => 'Recargas',
+        'date'                  => 'Fecha',
+        'image'                 => 'Imagen',
+        'type'                  => 'Tipo',
+        'status'                => 'Estado',
+        'user'                  => 'Usuario',
+        'amount'                => 'Monto',
+        'options'               => 'Opciones',
+        'create'                => 'Crear',
+        'client'                => 'Cliente',
+        'details'               => 'Detalle',
 
     ],
     'users'  => [
