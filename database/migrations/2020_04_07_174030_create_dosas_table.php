@@ -25,18 +25,13 @@ class CreateDosasTable extends Migration
             $table->date('aperture_date')->nullable();
             $table->string('aircraft_movement_id')->nullable();
             $table->integer('ton_max_weight')->nullable();
-            
             $table->decimal('taxable_base_amount', 10, 2)->default(0);
             $table->decimal('exempt_vat_amount', 10, 2)->default(0);
             $table->decimal('total_dosa_amount', 10, 2)->default(0);
-            
             $table->dateTime('departure_time')->nullable();
             $table->dateTime('arrival_time')->nullable();
-            
-            
             $table->string('departure_flight_number')->nullable();
             $table->string('arrival_flight_number')->nullable();
-            
             $table->string('terminal_code')->nullable();
             $table->string('flight_type')->nullable();
             
@@ -44,8 +39,15 @@ class CreateDosasTable extends Migration
             $table->string('client_code')->nullable();
             $table->string('client_name')->nullable();
             
+            // Extra data
+            $table->string('url')->nullable();
+            $table->enum('status', array('PENDING', 'APPROVED','REJECTED'))->default('PENDING');
+            
+            // Foreign keys
             $table->foreignId('client_id')->nullable()->constrained()->onDelete('cascade');
-//             $table->enum('status', array('PENDING', 'APPROVED','REJECTED'))->default('PENDING');
+            $table->foreignId('payment_id')->nullable()->constrained()->onDelete('cascade');
+            
+            // Timestamps
             $table->timestamps();
         });
     }

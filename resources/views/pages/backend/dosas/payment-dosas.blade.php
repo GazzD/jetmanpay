@@ -33,7 +33,7 @@
                     <div class="info-box bg-info">
                         <span class="info-box-icon"><i class="far fa-file-alt"></i></span>
                         <div class="info-box-content">
-                            <span class="info-box-text">{{ $dosa->name }}</span>
+                            <span class="info-box-text">{{ $dosa->aircraft_movement_id }}</span>
                             <div class="progress">
                               <div class="progress-bar" style="width: 100%"></div>
                             </div>
