@@ -73,7 +73,7 @@
             </div>
         </div>
         @if(auth()->user()->hasRole('MANAGER') && $recharge->status == 'PENDING')
-            <button type="submit" id="submit-btn" class="btn btn-primary">@lang('messages.recharges.details')</button>
+            <button type="submit" id="submit-btn" class="btn btn-primary">@lang('messages.recharges.confirm')</button>
         @endif
     </form>
 </section>

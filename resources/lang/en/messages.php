@@ -17,6 +17,8 @@ return [
     'operator'  => 'Operator',
     'manager'   => 'Manager',
     'staff'     => 'Staff',
+    'treasurer1'=> 'Treasurer lvl 1',
+    'treasurer2'=> 'Treasurer lvl 2',
     'reviewer'  => 'Reviewer',
     'english'   => 'English',
     'spanish'   => 'Spanish',
@@ -147,6 +149,7 @@ return [
         'create'                => 'Create',
         'client'                => 'Client',
         'details'               => 'Details',
+        'confirm'               => 'Confirm',
 
     ],
     'pending-payments'  => [

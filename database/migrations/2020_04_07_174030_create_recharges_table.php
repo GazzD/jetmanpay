@@ -16,8 +16,9 @@ class CreateRechargesTable extends Migration
         Schema::create('recharges', function (Blueprint $table) {
             $table->id();
             $table->string('image');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('client_id')->constrained()->onDelete('cascade');
-            $table->enum('status', array('PENDING', 'APPROVED','REJECTED'))->default('PENDING');
+            $table->enum('status', array('REVISED1','REVISED2','PENDING', 'APPROVED','REJECTED'))->default('REVISED2');
             $table->timestamps();
         });
     }

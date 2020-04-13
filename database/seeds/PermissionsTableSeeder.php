@@ -21,6 +21,11 @@ class PermissionsTableSeeder extends Seeder
         $role = Role::findByName('MANAGER');
         $role->syncPermissions($permissions);
         
+        // Assing client's permissions
+        $permission = Permission::findByName('create-users');
+        $role = Role::findByName('CLIENT');
+        $role->syncPermissions($permission);
+        
         
         
         // An empty array of stored permission IDs

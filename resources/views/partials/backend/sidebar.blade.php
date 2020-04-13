@@ -29,7 +29,6 @@
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          @role('CLIENT')
           <li class="nav-item has-treeview menu-open">
             <a href="{{route('dashboard')}}" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -38,6 +37,7 @@
               </p>
             </a>
           </li>
+          @role('CLIENT')
           <li class="nav-item">
             <a href="{{route('dosas')}}" class="nav-link">
               <i class="nav-icon fas fa-money-check-alt"></i>
@@ -47,115 +47,98 @@
             </a>
           </li>
           @endrole
-          @role('OPERATOR|MANAGER')
-          <li class="nav-item has-treeview menu-open">
-            <a href="{{route('dashboard')}}" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                @lang('messages.sidebar.dashboard')
-              </p>
-            </a>
-          </li>
           @can('create-users')
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-users"></i>
-              <p>
-                @lang('messages.sidebar.users')
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{route('users')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>@lang('messages.sidebar.operators')</p>
-                </a>
-              </li>
-            </ul>
-          </li>
+            <li class="nav-item">
+              <a href="{{route('users')}}" class="nav-link">
+                <i class="nav-icon fas fa-users"></i>
+                <p>
+                  @lang('messages.sidebar.users')
+                </p>
+              </a>
+            </li>
           @endcan
-          <li class="nav-item">
-            <a href="{{route('payments')}}" class="nav-link">
-              <i class="nav-icon fas fa-money-check-alt"></i>
-              <p>
-                @lang('messages.sidebar.payments')
-              </p>
-            </a>
-          </li>
-          <li class="nav-item has-treeview">
-            <a href="{{route('pending-payments')}}" class="nav-link">
-              <i class="nav-icon fas fa-exclamation-triangle"></i>
-              <p>
-                @lang('messages.sidebar.pending-payments')
-              </p>
-            </a>
-          </li>
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-file-import"></i>
-              <p>
-                @lang('messages.sidebar.send-payments')
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{route('payments/filter/plane')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>@lang('messages.sidebar.by-airline')</p>
-                </a>
-              </li>
-              <li class="nav-item">
-              <a href="{{route('manual-payments')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>@lang('messages.sidebar.manual')</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item has-treeview">
-          <a href="{{route('claims')}}" class="nav-link">
-              <i class="nav-icon fas fa-exclamation"></i>
-              <p>
-                @lang('messages.sidebar.claims')
-              </p>
-            </a>
-          </li>
-          <li class="nav-item has-treeview">
-            <a href="{{route('users/profile')}}" class="nav-link">
-              <i class="nav-icon fas fa-cog"></i>
-              <p>
-                @lang('messages.sidebar.settings')
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{route('documents')}}" class="nav-link">
-              <i class="nav-icon fas fa-file-alt"></i>
-              <p>
-                @lang('messages.sidebar.documents')
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{route('load-json')}}" class="nav-link">
-              <i class="nav-icon fas fa-file-alt"></i>
-              <p>
-                @lang('messages.upload-json.upload-file')
-              </p>
-            </a>
-          </li>
+          @role('OPERATOR|MANAGER')
+            <li class="nav-item">
+              <a href="{{route('payments')}}" class="nav-link">
+                <i class="nav-icon fas fa-money-check-alt"></i>
+                <p>
+                  @lang('messages.sidebar.payments')
+                </p>
+              </a>
+            </li>
+            <li class="nav-item has-treeview">
+              <a href="{{route('pending-payments')}}" class="nav-link">
+                <i class="nav-icon fas fa-exclamation-triangle"></i>
+                <p>
+                  @lang('messages.sidebar.pending-payments')
+                </p>
+              </a>
+            </li>
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-file-import"></i>
+                <p>
+                  @lang('messages.sidebar.send-payments')
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{route('payments/filter/plane')}}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>@lang('messages.sidebar.by-airline')</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                <a href="{{route('manual-payments')}}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>@lang('messages.sidebar.manual')</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item has-treeview">
+            <a href="{{route('claims')}}" class="nav-link">
+                <i class="nav-icon fas fa-exclamation"></i>
+                <p>
+                  @lang('messages.sidebar.claims')
+                </p>
+              </a>
+            </li>
+            <li class="nav-item has-treeview">
+              <a href="{{route('users/profile')}}" class="nav-link">
+                <i class="nav-icon fas fa-cog"></i>
+                <p>
+                  @lang('messages.sidebar.settings')
+                </p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{route('documents')}}" class="nav-link">
+                <i class="nav-icon fas fa-file-alt"></i>
+                <p>
+                  @lang('messages.sidebar.documents')
+                </p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{route('load-json')}}" class="nav-link">
+                <i class="nav-icon fas fa-file-alt"></i>
+                <p>
+                  @lang('messages.upload-json.upload-file')
+                </p>
+              </a>
+            </li>
           @endrole
-          @role('CLIENT|MANAGER')
-          <li class="nav-item">
-            <a href="{{route('recharges')}}" class="nav-link">
-              <i class="nav-icon fas fa-wallet"></i>
-              <p>
-                @lang('messages.recharges.recharges')
-              </p>
-            </a>
-          </li>
+          @role('CLIENT|MANAGER|TREASURER1|TREASURER2')
+            <li class="nav-item">
+              <a href="{{route('recharges')}}" class="nav-link">
+                <i class="nav-icon fas fa-wallet"></i>
+                <p>
+                  @lang('messages.recharges.recharges')
+                </p>
+              </a>
+            </li>
           @endrole
         </ul>
       </nav>

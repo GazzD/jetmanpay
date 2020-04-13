@@ -24,7 +24,7 @@ class ClientsTableSeeder extends Seeder
         Client::create(['rif' => "J-30792685-6", 'code' => "00026", 'name' => "AEROLINEAS ANDINAS, C.A.",]);
         Client::create(['rif' => "J-00069224-6", 'code' => "00027", 'name' => "VIAJES FEBRES PARRA, S.A.",]);
         Client::create(['rif' => "J-00013485-4", 'code' => "00028", 'name' => "B.W.I.A. (BRITISH WEST INDIAN)",]);
-        Client::create(['rif' => "J-30488937-2", 'code' => "00029", 'name' => "COMPA╨?A PANAME╨A DE AVIACI╦N, S.A. (COPA)",]);
+        Client::create(['rif' => "J-30488937-2", 'code' => "00029", 'name' => "COMPAÑIA PANAME╨A DE AVIACI╦N, S.A. (COPA)",]);
         Client::create(['rif' => "J-00272513-3", 'code' => "00034", 'name' => "VIAJES  PREMIERE, C.A",]);
         Client::create(['rif' => "J-30807830-0", 'code' => "00035", 'name' => "COMUNICACIONES INALAMBRICAS CICA, C.A.",]);
         Client::create(['rif' => "J-30232636-2", 'code' => "00036", 'name' => "VIAJES Y TURISMO ZUMAQUE, C.A.",]);

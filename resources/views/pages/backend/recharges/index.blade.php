@@ -19,7 +19,7 @@
             </div>
         </div>
     </div>
-    @role('CLIENT')
+    @role('CLIENT|TREASURER1|TREASURER2')
         <div class="container-fluid">
             <div class="row mb-2" style="float:right;">
                 <a href="{{route('recharges/create')}}" class="btn btn-primary"> @lang('messages.recharges.create')</a>

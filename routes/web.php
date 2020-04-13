@@ -69,7 +69,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/users/change-password', 'UsersController@changePassword')->name('users/change-password');
     
     // Manager exclusive routes
-    Route::group(['middleware' => ['role:MANAGER']], function () {
+    Route::group(['middleware' => ['permission:create-users']], function () {
         // Users
         Route::get('/users', 'UsersController@index')->name('users');
         Route::get('/users/create', 'UsersController@create')->name('users/create');

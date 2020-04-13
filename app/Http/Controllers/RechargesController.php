@@ -14,6 +14,7 @@ class RechargesController extends Controller
 {
     public function index(Request $request)     
     {
+    
         return view('pages.backend.recharges.index');
     }
 
@@ -67,13 +68,28 @@ class RechargesController extends Controller
 
     public function fetch()
     {
-        if(auth()->user()->hasRole('CLIENT')){
-            $recharges = Recharge::where('client_id',auth()->user()->client_id)
+        $user = auth()->user();
+        $recharges = [];
+        if($user->hasRole('CLIENT')){
+            $recharges = Recharge::where('client_id',$user->client_id)
+                    ->where('status','APPROVED')
+                    ->orWhere('status','PENDING')
+                    ->orWhere('status','REJECTED')
+                    ->orWhere('status','')
                     ->with('client')
                     ->get()
                     ;
-        }else{
+        }elseif($user->hasRole('MANAGER')){
             $recharges = Recharge::with('client')->get();
+        }elseif($user->hasRole('TREASURER1')){
+            $recharges = Recharge::where('client_id',$user->client_id)
+                ->where('status',['REVISED1','REVISED2'])
+                ->get()
+                ;
+        }elseif($user->hasRole('TREASURER2')){
+            $recharges = Recharge::where('user_id',$user->id)
+                ->get()
+                ;
         }
         foreach ($recharges as $recharge) {
             $recharge->date = date_format($recharge->created_at,"d/m/Y/ H:i:s");
