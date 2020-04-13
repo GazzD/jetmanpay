@@ -41,28 +41,26 @@
         </div>
     @endif
     <form method="post" action="{{route('recharges/update', $recharge->id)}}" enctype="multipart/form-data" role="form" class="form-horizontal">
-        @if(auth()->user()->hasRole('MANAGER') && $recharge->status == 'PENDING')
-            @csrf
-            <div class="form-group">
-                <label class="col-md-2 control-label">@lang('messages.recharges.status')</label>
-                <div class="col-md-10">
+        @csrf
+        <div class="form-group">
+            <label class="col-md-2 control-label">@lang('messages.recharges.status')</label>
+            <div class="col-md-10">
+                @if($isEditable)
                     <select class="form-control" name="status">
-                        <option value="APPROVED">APPROVED</option>
-                        <option value="REJECTED">REJECTED</option>
-                    </select>   
-                </div>
+                        @foreach($options as $option)
+                            <option value="{{$option}}">{{$option}}</option>
+                        @endforeach
+                    </select>
+                @else
+                    <input type="text" class="form-control" disabled value="{{$recharge->status}}">   
+                @endif
             </div>
+        </div>
+        @if(auth()->user()->hasRole('MANAGER') && $isEditable)
             <div class="form-group">
                 <label class="col-md-2 control-label">@lang('messages.recharges.amount')</label>
                 <div class="col-md-10">
                     <input type="number" class="form-control" name="amount" required />
-                </div>
-            </div>
-        @else
-            <div class="form-group">
-                <label class="col-md-2 control-label">@lang('messages.recharges.status')</label>
-                <div class="col-md-10">
-                    <input type="text" disabled value="{{$recharge->status}}" class="form-control" name="picture">
                 </div>
             </div>
         @endif
@@ -72,7 +70,7 @@
                 <input type="text" disabled value="{{$recharge->client->name}}" class="form-control" name="picture">
             </div>
         </div>
-        @if(auth()->user()->hasRole('MANAGER') && $recharge->status == 'PENDING')
+        @if($isEditable)
             <button type="submit" id="submit-btn" class="btn btn-primary">@lang('messages.recharges.confirm')</button>
         @endif
     </form>
