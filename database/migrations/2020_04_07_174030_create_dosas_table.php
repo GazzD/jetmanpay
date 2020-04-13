@@ -45,7 +45,9 @@ class CreateDosasTable extends Migration
             $table->string('client_name')->nullable();
             
             $table->foreignId('client_id')->nullable()->constrained()->onDelete('cascade');
-//             $table->enum('status', array('PENDING', 'APPROVED','REJECTED'))->default('PENDING');
+            $table->foreignId('payment_id')->nullable()->constrained()->onDelete('cascade');
+            $table->string('url')->nullable();
+            $table->enum('status', array('PENDING', 'APPROVED','REJECTED'))->default('PENDING');
             $table->timestamps();
         });
     }

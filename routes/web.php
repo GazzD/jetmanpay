@@ -49,15 +49,15 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/payments/{paymentId}/pay/store', 'PaymentsController@payCreated')->name('payments/pay/store');     
     
     Route::get('/payments/manual', 'PaymentsController@manual')->name('manual-payments');
-    Route::get('/clients/fetch/plane/{id}', 'ClientsController@fetchByPlane')->name('fetch-clients-by-plane');
     Route::post('/payments/manual', 'PaymentsController@storeManual')->name('manual-payments');
+    Route::get('/clients/fetch/plane/{id}', 'ClientsController@fetchByPlane')->name('fetch-clients-by-plane');
     
     // Payment documents
     Route::get('/payments/{id}/documents/', 'PaymentDocumentsController@index')->name('payment-documents');
     Route::post('/payments/{id}/documents/', 'PaymentDocumentsController@store')->name('store-payment-documents');
     
     // Payment DOSA
-    Route::get('/payments/{id}/dosa/', 'PaymentDosasController@index')->name('payment-dosa');
+    Route::get('/payments/{id}/dosa/', 'DosasController@paymentDosas')->name('payment-dosa');
     
     // Payment recipe
     Route::get('/payments/{id}/receipt', 'PaymentsController@receipt')->name('payment-receipt');
@@ -80,7 +80,7 @@ Route::group(['middleware' => ['auth']], function () {
     // Client exclusive routes
     Route::group(['middleware' => ['role:CLIENT']], function () {
         // Dosas
-        Route::get('/dosas', 'DosasController@index')->name('dosas');
+        Route::get('/dosas', 'DosasController@clientDosas')->name('dosas');
     });
     
 });
