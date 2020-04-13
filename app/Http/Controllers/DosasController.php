@@ -2,7 +2,6 @@
 namespace app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Notification;
 use App\Dosa;
 use App\Payment;
 
@@ -21,12 +20,22 @@ class DosasController extends Controller
     
     public function clientDosas()
     {
-        // Validate user
-        $notifications = Notification::where('user_id', auth()->user()->id)->latest()->limit(10)->get();
         
+        $dosas = Dosa::where('client_id', auth()->user()->client_id)->get();
         return view('pages.backend.dosas.client-dosas')
-            ->with('notifications', $notifications)
+            ->with('dosas', $dosas)
         ;
     }
+    
+    public function dosaDetail($dosaId)
+    {
+        // Validate user
+        $dosa = Dosa::find($dosaId);
+        
+        return view('pages.backend.dosas.dosa-detail')
+            ->with('dosa', $dosa)
+        ;
+    }
+    
 }
 

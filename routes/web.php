@@ -56,7 +56,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/payments/{id}/documents/', 'PaymentDocumentsController@index')->name('payment-documents');
     Route::post('/payments/{id}/documents/', 'PaymentDocumentsController@store')->name('store-payment-documents');
     
-    // Payment DOSA
+    // Dosa
     Route::get('/payments/{id}/dosa/', 'DosasController@paymentDosas')->name('payment-dosa');
     
     // Payment recipe
@@ -81,6 +81,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['middleware' => ['role:CLIENT']], function () {
         // Dosas
         Route::get('/dosas', 'DosasController@clientDosas')->name('dosas');
+        Route::get('/dosas/{id}', 'DosasController@dosaDetail')->name('dosa-detail');
     });
     
 });

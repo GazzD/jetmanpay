@@ -195,8 +195,13 @@ return [
     'payment-documents'   => [
         'documents'             => 'Documentos',
     ],
-    'payment-dosa'   => [
-        'dosa'             => 'DOSA',
+    'dosa'   => [
+        'dosa'              => 'DOSA',
+        'airplane'          => 'Matrícula',
+        'billing_code'      => 'Factura',
+        'aperture_date'     => 'Fecha de apertura',
+        'total_amount'      => 'Monto',
+        'actions'           => 'Acciones'
     ],
     'upload-json' => [
         'json'              => 'JSON',

@@ -24,4 +24,5 @@
  <link rel="stylesheet" href="{{asset('backend/dist/css/adminlte-override.css')}}">
  
  <link href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
+ <link href="https://cdn.datatables.net/select/1.3.1/css/select.dataTables.min.css" rel="stylesheet">
  

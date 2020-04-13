@@ -194,8 +194,13 @@ return [
     'payment-documents'   => [
         'documents'             => 'Documents',
     ],
-    'payment-dosa'   => [
-        'dosa'             => 'DOSA',
+    'dosa'   => [
+        'dosa'              => 'DOSA',
+        'airplane'          => 'Airplane',
+        'billing_code'      => 'Billing code',
+        'aperture_date'     => 'Aperture date',
+        'total_amount'      => 'Total amount',
+        'actions'           => 'Actions'
     ],
     'upload-json' => [
         'json'              => 'JSON',
