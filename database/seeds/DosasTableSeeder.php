@@ -4,6 +4,7 @@ use App\Dosa;
 use function GuzzleHttp\json_decode;
 use Illuminate\Database\Seeder;
 use GuzzleHttp\Client;
+use App\Plane;
 
 class DosasTableSeeder extends Seeder
 {
@@ -47,7 +48,20 @@ class DosasTableSeeder extends Seeder
             $dosa->arrival_time = $dosaJson->hora_real_lleg;
             $dosa->departure_time = $dosaJson->hora_real_sal;
             
-            $dosa->client_id = \App\Client::where('code', $dosaJson->cod_cliente)->first()->id;
+            // Validate Client
+            $client = \App\Client::where('code', $dosaJson->cod_cliente)->first();
+            $dosa->client_id = $client ? $client->id: null;
+            
+            // Validate plane
+            $plane = Plane::where('tail_number', $dosaJson->matricula)->first();
+            if (!$plane) {
+                // Create not registered planes
+                $plane = new Plane();
+                $plane->tail_number = $dosaJson->matricula;
+                $plane->client_id = $dosa->client_id;
+                $plane->save();
+            }
+            $dosa->plane_id = $plane->id;
             
             $dosa->save();
         }

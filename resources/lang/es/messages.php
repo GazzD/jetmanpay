@@ -203,12 +203,15 @@ return [
         'documents'             => 'Documentos',
     ],
     'dosa'   => [
-        'dosa'              => 'DOSA',
-        'airplane'          => 'Matrícula',
-        'billing_code'      => 'Factura',
-        'aperture_date'     => 'Fecha de apertura',
-        'total_amount'      => 'Monto',
-        'actions'           => 'Acciones'
+        'dosa'                  => 'DOSA',
+        'airplane'              => 'Matrícula',
+        'billing_code'          => 'Factura',
+        'aperture_date'         => 'Fecha de apertura',
+        'total_amount'          => 'Monto',
+        'status'                => 'Estado',
+        'actions'               => 'Acciones',
+        'pay-dosas'             => 'Pagar DOSAS',
+        'insufficient-balance'  => 'Saldo insuficiente',
     ],
     'upload-json' => [
         'json'              => 'JSON',

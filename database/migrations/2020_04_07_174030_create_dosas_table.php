@@ -45,6 +45,7 @@ class CreateDosasTable extends Migration
             
             // Foreign keys
             $table->foreignId('client_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('plane_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('payment_id')->nullable()->constrained()->onDelete('cascade');
             
             // Timestamps

@@ -39,7 +39,7 @@
           </li>
           @role('CLIENT')
           <li class="nav-item">
-            <a href="{{route('dosas')}}" class="nav-link">
+            <a href="{{route('dosas/plane')}}" class="nav-link">
               <i class="nav-icon fas fa-money-check-alt"></i>
               <p>
                 @lang('messages.sidebar.dosas')

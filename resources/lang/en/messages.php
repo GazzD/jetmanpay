@@ -202,12 +202,15 @@ return [
         'documents'             => 'Documents',
     ],
     'dosa'   => [
-        'dosa'              => 'DOSA',
-        'airplane'          => 'Airplane',
-        'billing_code'      => 'Billing code',
-        'aperture_date'     => 'Aperture date',
-        'total_amount'      => 'Total amount',
-        'actions'           => 'Actions'
+        'dosa'                  => 'DOSA',
+        'airplane'              => 'Airplane',
+        'billing_code'          => 'Billing code',
+        'aperture_date'         => 'Aperture date',
+        'total_amount'          => 'Total amount',
+        'status'                => 'Status',
+        'actions'               => 'Actions',
+        'pay-dosas'             => 'Pay DOSAS',
+        'insufficient-balance'  => 'Insufficient balance',
     ],
     'upload-json' => [
         'json'              => 'JSON',

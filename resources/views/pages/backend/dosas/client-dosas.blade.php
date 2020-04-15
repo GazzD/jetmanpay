@@ -23,39 +23,48 @@
 
 <!-- Main content -->
 <section class="content">
-    <div class="row"  style="float:right;" >
-        <div class="col-md-12">
-            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#generateReport" style="margin-bottom: 10px;">@lang('messages.payments.generate_report')</button>
+    @if($errors->any())
+        <h4>{{$errors->first()}}</h4>
+    @endif
+	<form action="{{route('pay-dosa')}}" method="post">
+		@csrf
+        <div class="row"  style="float:right;" >
+            <div class="col-md-12">
+                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#generateReport" style="margin-bottom: 10px;">@lang('messages.payments.generate_report')</button>
+                <button type="submit" class="btn btn-warning" style="margin-bottom: 10px;">@lang('messages.dosa.pay-dosas')</button>
+            </div>
         </div>
-    </div>
-	<table id="datatable" class="table table-striped table-bordered">
-		<thead>
-			<tr>
-				<th></th>
-				<th>@lang('messages.dosa.airplane')</th>
-				<th>@lang('messages.dosa.billing_code')</th>
-				<th>@lang('messages.dosa.aperture_date')</th>
-				<th>@lang('messages.dosa.total_amount')</th>
-				<th>@lang('messages.dosa.actions')</th>
-			</tr>
-		</thead>
-		<tbody>
-			@foreach($dosas as $dosa)
-			<tr>
-				<td></td>
-				<td>{{ $dosa->airplane }}</td>
-				<td>{{ $dosa->billing_code }}</td>
-				<td>{{ $dosa->aperture_date }}</td>
-				<td>{{ $dosa->total_dosa_amount }} {{ $dosa->currency }}</td>
-				<td>
-					<ul class="fc-color-picker" id="color-chooser">
-						<li><a class="text-muted" href="{{route('dosa-detail', $dosa->id)}}"><i class="fas fa-search" data-toggle="tooltip" data-placement="top" title="@lang('messages.pending-payments.view-receipt')"></i></a></li>
-					</ul>
-				</td>
-			</tr>
-			@endforeach
-		</tbody>
-	</table>
+    	<table id="datatable" class="table table-striped table-bordered">
+    		<thead>
+    			<tr>
+    				<th width="5%"></th>
+    				<th>@lang('messages.dosa.airplane')</th>
+    				<th>@lang('messages.dosa.billing_code')</th>
+    				<th>@lang('messages.dosa.aperture_date')</th>
+    				<th>@lang('messages.dosa.total_amount')</th>
+    				<th>@lang('messages.dosa.status')</th>
+    				<th>@lang('messages.dosa.actions')</th>
+    			</tr>
+    		</thead>
+    		<tbody>
+    			@foreach($dosas as $dosa)
+    			<tr>
+    				<td><input type="checkbox" name="dosasToPay[]" style="margin: 0.5em 1.3em;" value="{{ $dosa->id }}"></td>
+    				<td>{{ $dosa->airplane }}</td>
+    				<td>{{ $dosa->billing_code }}</td>
+    				<td>{{ $dosa->aperture_date }}</td>
+    				<td>{{ $dosa->total_dosa_amount }} {{ $dosa->currency }}</td>
+    				<td>{{ $dosa->status }}</td>
+    				<td>
+    					<ul class="fc-color-picker" id="color-chooser">
+    						<li><a class="text-muted" href="{{route('dosa-detail', $dosa->id)}}"><i class="fas fa-search" data-toggle="tooltip" data-placement="top" title="@lang('messages.pending-payments.view-receipt')"></i></a></li>
+    					</ul>
+    				</td>
+    			</tr>
+    			@endforeach
+    		</tbody>
+    	</table>
+	</form>
 </section>
 <!-- /.content -->
 
@@ -66,11 +75,14 @@
 <script type="text/javascript">
 $(document).ready(function() {
     $('#datatable').DataTable({
-    	columnDefs: [ {
-            orderable: false,
-            className: 'select-checkbox',
-            targets:   0
-        } ],
+    	columnDefs: [{
+    	      orderable: false,
+    	      targets: 0
+    	    }, {
+    	      "targets": [2],
+    	      "visible": false,
+    	      "searchable": false
+    	    }],
         select: {
             style:    'os',
             selector: 'td:first-child'
