@@ -17,11 +17,10 @@
         <div class="info">
           @role('CLIENT')
             <a href="#" class="d-block">{{Auth::user()->client->name}}</a>
-            <a href="#" class="d-block">{{Auth::user()->name}}</a>
-            <a href="#" class="d-block">@lang('messages.sidebar.balance')({{Auth::user()->client->balance}})</a>
           @endrole
-          @role('OPERATOR|MANAGER')
             <a href="#" class="d-block">{{Auth::user()->name}}</a>
+          @role('CLIENT')
+            <a href="#" class="d-block">@lang('messages.sidebar.balance')({{Auth::user()->client->balance}})</a>
           @endrole
         </div>
       </div>
