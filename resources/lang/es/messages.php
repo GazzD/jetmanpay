@@ -132,6 +132,13 @@ return [
         'confirm'               => 'Confirmar',
 
     ],
+    'login'  => [
+        'title'             => 'Ingresa tus datos para iniciar sesión',
+        'remmember_me'      => 'Recuerdame',
+        'sign_in'           => 'Ingresar',
+        'forgot_password'   => '¿Olvidaste tu contraseña?',
+        'no_account'        => "¿No tienes cuenta?",
+    ],
     'users'  => [
         'name'                  => 'Nombre',
         'phone'                 => 'Teléfono',

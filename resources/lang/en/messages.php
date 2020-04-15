@@ -152,6 +152,13 @@ return [
         'confirm'               => 'Confirm',
 
     ],
+    'login'  => [
+        'title'             => 'Sign in to start your session',
+        'remmember_me'      => 'Remmember me',
+        'sign_in'           => 'Sign in',
+        'forgot_password'   => 'Forgot your password?',
+        'no_account'        => "Don't have an account?",
+    ],
     'pending-payments'  => [
         'pending-payments'  => 'Pending payments',
         'tail-number'       => 'Tail number',

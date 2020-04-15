@@ -8,7 +8,7 @@
     <!-- /.login-logo -->
     <div class="card">
       <div class="card-body login-card-body">
-        <p class="login-box-msg">Sign in to start your session</p>
+        <p class="login-box-msg">@lang('messages.login.title')</p>
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -41,20 +41,23 @@
               <div class="icheck-primary">
                 <input type="checkbox" id="remember" name="remmember">
                 <label for="remember">
-                  Remember Me
+                  @lang('messages.login.remmember_me')
                 </label>
               </div>
             </div>
             <!-- /.col -->
             <div class="col-4">
-              <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+              <button type="submit" class="btn btn-primary btn-block">@lang('messages.login.sign_in')</button>
             </div>
             <!-- /.col -->
           </div>
         </form>
         
         <p class="mb-1">
-          <a href="{{ route('password.request') }}">I forgot my password</a>
+          <a href="{{ route('password.request') }}">@lang('messages.login.forgot_password')</a>
+        </p>
+        <p class="mb-1">
+          <a href="{{ route('register') }}">@lang('messages.login.no_account')</a>
         </p>
       </div>
       <!-- /.login-card-body -->

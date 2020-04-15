@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 Auth::routes();
+Route::post('/staff', 'StaffController@store')->name('staff/store');
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/', 'DashboardController@index')->name('dashboard');
     Route::get('/documents', 'DocumentsController@index')->name('documents');
