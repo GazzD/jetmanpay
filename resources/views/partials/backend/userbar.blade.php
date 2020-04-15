@@ -10,9 +10,6 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
       <!-- Messages Dropdown Menu -->
-      @foreach(auth()->user()->roles as $authRole)
-        <li>{{$authRole->name}}</li>
-      @endforeach
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="fas fa-language" style="font-size: 1.5em;"></i>
