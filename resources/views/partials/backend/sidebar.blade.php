@@ -39,7 +39,7 @@
           @role('CLIENT')
           <li class="nav-item">
             <a href="{{route('planes')}}" class="nav-link">
-              <i class="nav-icon fas fa-money-check-alt"></i>
+              <i class="nav-icon fas fa-plane"></i>
               <p>
                 @lang('messages.sidebar.planes')
               </p>
