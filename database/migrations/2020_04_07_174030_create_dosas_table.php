@@ -15,6 +15,7 @@ class CreateDosasTable extends Migration
     {
         Schema::create('dosas', function (Blueprint $table) {
             $table->id();
+            $table->string('id_charge')->nullable();
             $table->string('airplane')->nullable();
             $table->string('billing_code')->nullable();
             $table->string('closure_code')->nullable();

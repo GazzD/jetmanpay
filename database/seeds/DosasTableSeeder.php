@@ -26,6 +26,7 @@ class DosasTableSeeder extends Seeder
         foreach ($responseObject->transferencia as $dosaJson) {
             $dosa = new Dosa();
             
+            $dosa->id_charge = $dosaJson->id_cobro;
             $dosa->airplane = $dosaJson->matricula;
             $dosa->billing_code = $dosaJson->cod_facturacion;
             $dosa->closure_code = $dosaJson->cod_cierre;
@@ -58,6 +59,8 @@ class DosasTableSeeder extends Seeder
                 // Create not registered planes
                 $plane = new Plane();
                 $plane->tail_number = $dosaJson->matricula;
+                $plane->passengers_number = $dosaJson->cant_pas_resident + $dosaJson->cant_pas_desembar;
+                $plane->weight = $dosaJson->peso_max_tonelada;
                 $plane->client_id = $dosa->client_id;
                 $plane->save();
             }
