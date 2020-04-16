@@ -87,6 +87,11 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/dosas', 'DosasController@filterByPlane')->name('dosas');
         Route::get('/dosas/{id}', 'DosasController@detail')->name('dosa-detail');
         Route::post('/dosas', 'DosasController@pay')->name('pay-dosa');
+        
+        // Planes
+        Route::get('/planes', 'PlanesController@index')->name('planes');
+        Route::get('/planes/fetch', 'PlanesController@fetchPlanes')->name('planes/fetch');
+        
     });
     
 });

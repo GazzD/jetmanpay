@@ -39,6 +39,7 @@ return [
         'documents'         => 'Documents',
         'dosas'             => 'Dosas',
         'balance'           => 'Balance',
+        'planes'            => 'Planes',
     ],
     'footer'   => [
         'all-rights-reserved' => 'All rights reserved <strong>JET MAN PAY.</strong>',
@@ -218,5 +219,11 @@ return [
         'send'              => 'Send',
         'upload-file'       => 'Upload JSON',
         'success-message'   => 'JSON file loaded successfully'
-    ]
+    ],
+    'planes' => [
+        'planes'            => 'Planes',
+        'tail-number'       => 'Tail number',
+        'passengers-number' => 'Passengers number',
+        'weight'            => 'Weight',
+    ],
 ];

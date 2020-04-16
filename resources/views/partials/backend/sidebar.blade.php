@@ -38,6 +38,14 @@
           </li>
           @role('CLIENT')
           <li class="nav-item">
+            <a href="{{route('planes')}}" class="nav-link">
+              <i class="nav-icon fas fa-money-check-alt"></i>
+              <p>
+                @lang('messages.sidebar.planes')
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="{{route('dosas/plane')}}" class="nav-link">
               <i class="nav-icon fas fa-money-check-alt"></i>
               <p>

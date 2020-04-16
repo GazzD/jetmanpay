@@ -39,6 +39,7 @@ return [
         'documents'         => 'Documentos',
         'dosas'             => 'Dosas',
         'balance'           => 'Saldo',
+        'planes'            => 'Aviones',
         
     ],
     'footer'   => [
@@ -219,5 +220,11 @@ return [
         'send'              => 'Enviar',
         'upload-file'       => 'Subir JSON',
         'success-message'   => 'Archivo json cargado correctamente'
-    ]
+    ],
+    'planes' => [
+        'planes'            => 'Aviones',
+        'tail-number'       => 'Matrícula',
+        'passengers-number' => 'Número de pasajeros',
+        'weight'            => 'Peso',
+    ],
 ];
