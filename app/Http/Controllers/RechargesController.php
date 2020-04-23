@@ -26,8 +26,8 @@ class RechargesController extends Controller
     public function store(Request $request)
     {
         // Validate file
-        $validator = Validator::make($request->all(), [
-            'picture' => 'required|mimes:jpeg,png',
+        $request->validate([
+            'picture' => 'required|mimes:jpeg,png'
         ]);
         $user = auth()->user();
         $fileName = Str::random(10).'.'.$request->picture->getClientOriginalExtension();
