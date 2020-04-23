@@ -262,7 +262,7 @@ class PaymentsController extends Controller
         if($user->hasRole('CLIENT')){
             $payment->status = 'APPROVED';
             if ($client->balance >= $totalAmount){
-                $client->balanca = $client->balance - $totalAmount;
+                $client->balance = $client->balance - $totalAmount;
                 $client->save();
             }else{
                 return redirect()->back()->withErrors(Lang::get('messages.dosa.insufficient-balance'));

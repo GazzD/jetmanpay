@@ -56,7 +56,7 @@
                 @endif
             </div>
         </div>
-        @if(auth()->user()->hasRole('MANAGER') && $isEditable)
+        @if(auth()->user()->hasRole('REVIEWER') && $isEditable)
             <div class="form-group">
                 <label class="col-md-2 control-label">@lang('messages.recharges.amount')</label>
                 <div class="col-md-10">

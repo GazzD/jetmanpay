@@ -53,7 +53,7 @@ class DosasTableSeeder extends Seeder
             
             // Validate Client
             $client = \App\Client::where('code', $dosaJson->cod_cliente)->first();
-            $dosa->client_id = $client ? $client->id: null;
+            $dosa->client_id = 1;//$client ? $client->id: null;
             
             // Validate plane
             $plane = Plane::where('tail_number', $dosaJson->matricula)->first();
@@ -63,7 +63,7 @@ class DosasTableSeeder extends Seeder
                 $plane->tail_number = $dosaJson->matricula;
                 $plane->passengers_number = $dosaJson->cant_pas_resident + $dosaJson->cant_pas_desembar;
                 $plane->weight = $dosaJson->peso_max_tonelada;
-                $plane->client_id = $dosa->client_id;
+                $plane->client_id = 1;
                 $plane->save();
             }
             $dosa->plane_id = $plane->id;

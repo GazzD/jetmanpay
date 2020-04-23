@@ -87,7 +87,7 @@ class RechargesController extends Controller
         $user = auth()->user();
         $options = [];
         $isEditable = False;
-        if($user->hasRole('MANAGER')){
+        if($user->hasRole('REVIEWER')){
             $options = [
                 'APPROVED',
                 'REJECTED'
@@ -124,7 +124,7 @@ class RechargesController extends Controller
     {
         $user = auth()->user();
         $recharges = [];
-        if($user->hasRole('MANAGER')){
+        if($user->hasRole('REVIEWER')){
             $recharges = Recharge::whereIn('status',['APPROVED','PENDING','REJECTED'])
                 ->with('client')
                 ->get()

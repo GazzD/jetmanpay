@@ -1,7 +1,7 @@
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
+    <a href="{{route('dashboard')}}" class="brand-link">
       <img src="{{asset('backend/dist/img/logo.png')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
            style="opacity: .8">
       <span class="brand-text font-weight-light">Jet Man Pay</span>
@@ -20,7 +20,8 @@
           @endrole
             <a href="#" class="d-block">{{Auth::user()->name}}</a>
           @role('CLIENT')
-            <a href="#" class="d-block">@lang('messages.sidebar.balance')({{Auth::user()->client->balance}})</a>
+            <a href="#" class="d-block">@lang('messages.sidebar.balance') ({{Currency::getSymbol(Auth::user()->client->currency)}})</a>
+            <a href="#" class="d-block"> {{Auth::user()->client->balance}}</a>
           @endrole
         </div>
       </div>
@@ -44,8 +45,9 @@
                 @lang('messages.sidebar.planes')
               </p>
             </a>
-          </li>
-         
+         </li>
+         @endrole
+         @role('CLIENT|REVIEWER')
           <li class="nav-item">
             <a href="{{route('recharges')}}" class="nav-link">
               <i class="nav-icon fas fa-wallet"></i>
@@ -129,16 +131,8 @@
                 </p>
               </a>
             </li>
-            <li class="nav-item">
-              <a href="{{route('load-json')}}" class="nav-link">
-                <i class="nav-icon fas fa-file-alt"></i>
-                <p>
-                  @lang('messages.upload-json.upload-file')
-                </p>
-              </a>
-            </li>
           @endrole
-          @role('CLIENT|MANAGER|TREASURER1|TREASURER2')
+          @role('CLIENT|TREASURER1|TREASURER2')
             <li class="nav-item">
               <a href="{{route('dosas/plane')}}" class="nav-link">
                 <i class="nav-icon fas fa-money-check-alt"></i>

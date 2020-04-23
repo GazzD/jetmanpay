@@ -215,6 +215,7 @@ return [
         'insufficient-balance'  => 'Saldo insuficiente',
         'select_dosas'          => 'Debes seleccionar las dosas a pagar',
         'tax'                   => 'Impuestos',
+        'search'                => 'Buscar',
     ],
     'upload-json' => [
         'json'              => 'JSON',

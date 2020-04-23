@@ -214,6 +214,7 @@ return [
         'insufficient-balance'  => 'Insufficient balance',
         'select_dosas'          => 'Must select the DOSAs to pay',
         'tax'                   => 'Tax',
+        'search'                => 'Search',
 
     ],
     'upload-json' => [

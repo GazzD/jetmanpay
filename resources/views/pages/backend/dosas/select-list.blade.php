@@ -52,7 +52,7 @@
                                 <option value="{{ $plane->tail_number }}">{{ $plane->tail_number }}</option>
                                 @endforeach
                             </select>
-                            <button type="submit" id="submit-btn" style="margin-top: 10px;" class="btn btn-primary">@lang('messages.users.create')</button>
+                            <button type="submit" id="submit-btn" style="margin-top: 10px;" class="btn btn-primary">@lang('messages.dosa.search')</button>
                         </div>
                     </div>
                 </div>
