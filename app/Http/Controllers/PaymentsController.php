@@ -254,12 +254,18 @@ class PaymentsController extends Controller
         $payment->description = $description; 
         $payment->total_amount = $totalAmount; 
         $payment->currency = $client->currency; 
-        $payment->plane_id = $plane->id; 
+        $payment->plane_id = $plane->id;
+        $payment->number = 'ISP-'.$this->generateRandomString();
+        $payment->dosa_date= date('Y-m-d');
+        $payment->invoice_number = time(); 
+        $payment->dosa_number = $this->generateRandomString(); 
         if($user->hasRole('CLIENT')){
             $payment->status = 'APPROVED';
             if ($client->balance >= $totalAmount){
                 $client->balanca = $client->balance - $totalAmount;
                 $client->save();
+            }else{
+                return redirect()->back()->withErrors(Lang::get('messages.dosa.insufficient-balance'));
             }
         }elseif($user->hasRole('TREASURER1')){
             $payment->status = 'REVISED1';

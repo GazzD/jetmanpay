@@ -31,6 +31,15 @@
                 <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-remove"></i></button>
             </div>
         </div>
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
         <div class="card-body">
         <form method="post" action="{{route('payments/dosa')}}" enctype=multipart/form-data role="form" class="form-horizontal">
                 <div class="row">
