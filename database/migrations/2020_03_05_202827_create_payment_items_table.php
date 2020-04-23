@@ -16,8 +16,8 @@ class CreatePaymentItemsTable extends Migration
         Schema::create('payment_items', function (Blueprint $table) {
             $table->id();
             $table->string('concept', 255);
-            $table->decimal('amount', 10, 2);
-            $table->decimal('fee', 10, 2)->nullable();
+            $table->decimal('amount', 12, 2);
+            $table->decimal('fee', 12, 2)->nullable();
             $table->foreignId('payment_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

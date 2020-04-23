@@ -17,6 +17,7 @@ class CreateClientsTable extends Migration
             $table->id();
             $table->string('code', 255);
             $table->string('name', 255);
+            $table->enum('currency', ['EU','USD','BS'])->default('BS');
             $table->decimal('balance', 10, 2)->default(0);
             $table->string('rif', 255)->nullable();
             $table->string('nit', 255)->nullable();

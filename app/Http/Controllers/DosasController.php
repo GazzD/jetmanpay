@@ -71,11 +71,34 @@ class DosasController extends Controller
     }
     
     public function pay(Request $request)
-    {
+    {   
+        $tax = $this->getTaxes(); //15 %
+        $taxMultiplier = ($tax/100)+1; //1.15
         $dosasToPay = $request->get('dosasToPay');
+        if(!$dosasToPay){
+            return redirect()->back()->withErrors([__('messages.dosa.select_dosas')]);
+        }
         $dosas = Dosa::where('client_id', auth()->user()->client_id)->where('status', 'PENDING')->whereIn('id', $dosasToPay)->get();
         $client = Client::find(auth()->user()->client_id);
-        dd($client->balance);
+        $totalAmount = 0;
+        foreach($dosas as $dosa){
+            $conversionRate = $this->getConversionRate($dosa->currency,$client->currency);
+            $dosa->convertedAmount = $dosa->total_dosa_amount * $conversionRate;
+            $totalAmount = $totalAmount + ($dosa->convertedAmount);
+        }
+
+        $taxAmount = $totalAmount * ($taxMultiplier-1); 
+        $totalAmount = $totalAmount * $taxMultiplier;
+        $plane = Plane::find($dosas[0]->plane_id);
+        return view('pages.backend.payments.dosa-payment')
+            ->with('plane',$plane)
+            ->with('dosas',$dosas)
+            ->with('tax',$tax)
+            ->with('client',$client)
+            ->with('totalAmount',$totalAmount)
+            ->with('taxAmount',$taxAmount)
+            ;
+
         $totalAmount = 0;
         foreach ($dosas as $dosa) {
             $totalAmount+=$dosa->total_dosa_amount;

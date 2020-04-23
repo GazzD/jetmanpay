@@ -212,6 +212,9 @@ return [
         'actions'               => 'Actions',
         'pay-dosas'             => 'Pay DOSAS',
         'insufficient-balance'  => 'Insufficient balance',
+        'select_dosas'          => 'Must select the DOSAs to pay',
+        'tax'                   => 'Tax',
+
     ],
     'upload-json' => [
         'json'              => 'JSON',

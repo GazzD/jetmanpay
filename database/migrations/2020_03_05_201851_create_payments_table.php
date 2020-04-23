@@ -19,11 +19,11 @@ class CreatePaymentsTable extends Migration
             $table->string('invoice_number', 255)->nullable();
             $table->date('dosa_date')->nullable();
             $table->string('number')->nullable();
-            $table->decimal('total_amount', 10, 2);
+            $table->decimal('total_amount', 12, 2);
             $table->string('reference', 255);
             $table->text('description');
-            $table->enum('status', array('PENDING', 'APPROVED', 'CANCELLED', 'REJECTED'))->default('PENDING');
-            $table->enum('currency', array('VEF', 'USD'))->default('USD');
+            $table->enum('status', array('PENDING', 'APPROVED', 'CANCELLED', 'REJECTED','REVISED1','REVISED2'))->default('PENDING');
+            $table->enum('currency', array('BS', 'USD'))->default('USD');
             $table->foreignId('client_id')->constrained()->onDelete('cascade');
             $table->foreignId('plane_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');

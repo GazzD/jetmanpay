@@ -5,6 +5,8 @@ use function GuzzleHttp\json_decode;
 use Illuminate\Database\Seeder;
 use GuzzleHttp\Client;
 use App\Plane;
+use App\User;
+use App\Client as Cliente; //Latino HEAT
 
 class DosasTableSeeder extends Seeder
 {
@@ -15,12 +17,12 @@ class DosasTableSeeder extends Seeder
      */
     public function run()
     {
+
         $baseUrl = env('DOSA_WEBSERVICE_ENDPOINT');
         
         $client = new Client(['base_uri' => $baseUrl]);
         
         $response = $client->request('GET', 'iaim_w2389009812.php?act=gettransfdosa|1');
-        
         $responseObject = json_decode($response->getBody()->getContents());
         
         foreach ($responseObject->transferencia as $dosaJson) {

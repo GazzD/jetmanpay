@@ -213,6 +213,8 @@ return [
         'actions'               => 'Acciones',
         'pay-dosas'             => 'Pagar DOSAS',
         'insufficient-balance'  => 'Saldo insuficiente',
+        'select_dosas'          => 'Debes seleccionar las dosas a pagar',
+        'tax'                   => 'Impuestos',
     ],
     'upload-json' => [
         'json'              => 'JSON',

@@ -13,4 +13,9 @@ class Client extends Model
     {
         return $this->belongsToMany('App\Payment');
     }
+
+    public function planes()
+    {
+        return $this->hasMany(Plane::class);
+    }
 }

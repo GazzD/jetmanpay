@@ -45,11 +45,12 @@
               </p>
             </a>
           </li>
+         
           <li class="nav-item">
-            <a href="{{route('dosas/plane')}}" class="nav-link">
-              <i class="nav-icon fas fa-money-check-alt"></i>
+            <a href="{{route('recharges')}}" class="nav-link">
+              <i class="nav-icon fas fa-wallet"></i>
               <p>
-                @lang('messages.sidebar.dosas')
+                @lang('messages.recharges.recharges')
               </p>
             </a>
           </li>
@@ -139,10 +140,10 @@
           @endrole
           @role('CLIENT|MANAGER|TREASURER1|TREASURER2')
             <li class="nav-item">
-              <a href="{{route('recharges')}}" class="nav-link">
-                <i class="nav-icon fas fa-wallet"></i>
+              <a href="{{route('dosas/plane')}}" class="nav-link">
+                <i class="nav-icon fas fa-money-check-alt"></i>
                 <p>
-                  @lang('messages.recharges.recharges')
+                  @lang('messages.sidebar.dosas')
                 </p>
               </a>
             </li>

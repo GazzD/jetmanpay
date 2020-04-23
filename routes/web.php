@@ -78,15 +78,21 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/users/fetch', 'UsersController@fetch')->name('users/fetch');
     });
     
-    // Client exclusive routes
-    Route::group(['middleware' => ['role:CLIENT']], function () {
+    //Client and treasurers exclusive routes
+    Route::group(['middleware' => ['role:CLIENT|TREASURER1|TREASURER2']], function () {
         // Dosas
+        Route::get('/dosas', 'DosasController@filterByPlane')->name('dosas');
+        Route::post('/dosas', 'DosasController@pay')->name('pay-dosa');
         Route::get('/dosas/plane', 'DosasController@filterByPlane')->name('dosas/plane');
         Route::post('/dosas/plane', 'DosasController@pendingByPlane')->name('dosas/plane');
+        Route::post('/payments/dosa', 'PaymentsController@storeDosa')->name('payments/dosa');
         Route::get('/dosas/plane/{tailNumber}', 'DosasController@clientDosas')->name('dosas/plane/tail-number');
-        Route::get('/dosas', 'DosasController@filterByPlane')->name('dosas');
         Route::get('/dosas/{id}', 'DosasController@detail')->name('dosa-detail');
-        Route::post('/dosas', 'DosasController@pay')->name('pay-dosa');
+    });
+
+    // Client exclusive routes
+    Route::group(['middleware' => ['role:CLIENT']], function () {
+        
         
         // Planes
         Route::get('/planes', 'PlanesController@index')->name('planes');

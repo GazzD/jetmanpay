@@ -4,6 +4,7 @@ namespace app\Http\Controllers;
 use App\Client;
 use App\Payment;
 use App\Plane;
+use App\Dosa;
 use App\Exports\PaymentsExport;
 use App\Http\Controllers\Controller;
 use function GuzzleHttp\json_decode;
@@ -219,6 +220,68 @@ class PaymentsController extends Controller
             ->with('payments',$payments)
         ;
     }
+
+    public function storeDosa(Request $request){
+        // Creates a payment based on dosas
+
+        $dosaIds = $request->dosaIds;
+        // dump($dosaIds);
+        $reference = $request->reference;
+        $description = $request->description;
+        $planeId = $request->planeId;
+        $tax = $this->getTaxes(); //15 %
+        $taxMultiplier = ($tax/100)+1; //1.15
+        $user = auth()->user();
+
+        $dosas = Dosa::where('client_id', $user->client_id)->where('status', 'PENDING')->whereIn('id', $dosaIds)->get();
+        // dd($dosas);
+        $plane = Plane::find($dosas[0]->plane_id);
+        $client = Client::find($user->client_id);
+        $totalAmount = 0;
+        foreach($dosas as $dosa){
+            $conversionRate = $this->getConversionRate($dosa->currency,$client->currency);
+            $dosa->convertedAmount = $dosa->total_dosa_amount * $conversionRate;
+            $totalAmount = $totalAmount + ($dosa->convertedAmount);
+        }
+
+        $taxAmount = $totalAmount * ($taxMultiplier-1); 
+        $totalAmount = $totalAmount * $taxMultiplier;
+
+        $payment = new Payment();
+        $payment->client_id = $client->id;
+        $payment->user_id = $user->id;
+        $payment->reference = $reference; 
+        $payment->description = $description; 
+        $payment->total_amount = $totalAmount; 
+        $payment->currency = $client->currency; 
+        $payment->plane_id = $plane->id; 
+        if($user->hasRole('CLIENT')){
+            $payment->status = 'APPROVED';
+            if ($client->balance >= $totalAmount){
+                $client->balanca = $client->balance - $totalAmount;
+                $client->save();
+            }
+        }elseif($user->hasRole('TREASURER1')){
+            $payment->status = 'REVISED1';
+        }elseif($user->hasRole('TREASURER2')){
+            $payment->status = 'REVISED2';
+        }
+        $payment->save();
+
+        foreach ($dosas as $dosa ) {
+            $paymentItem = new PaymentItem();
+            $paymentItem->concept = $dosa->aperture_code;
+            $paymentItem->amount = $dosa->convertedAmount;
+            $paymentItem->payment_id = $payment->id;
+            $paymentItem->save();
+            $newDosa = Dosa::find($dosa->id);
+            $newDosa->status = 'REVISION';
+            $newDosa->save();
+        }
+        
+        return redirect()->route('dosas');
+    }
+    
 
     public function payCreated(Request $request,$paymentId)
     {

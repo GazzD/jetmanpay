@@ -42,7 +42,7 @@ class CreateDosasTable extends Migration
             
             // Extra data
             $table->string('url')->nullable();
-            $table->enum('status', array('PENDING', 'APPROVED','REJECTED'))->default('PENDING');
+            $table->enum('status', array('PENDING', 'APPROVED','REJECTED','REVISION'))->default('PENDING');
             
             // Foreign keys
             $table->foreignId('client_id')->nullable()->constrained()->onDelete('cascade');
