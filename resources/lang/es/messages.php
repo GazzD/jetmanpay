@@ -80,6 +80,13 @@ return [
         'close'             => 'Cerrar',
         'currency'          => 'Moneda',
         'confirm'           => 'Confirmar',
+        'details'           => 'Detalle',
+        'revised1'          => 'Revisado nivel 1',
+        'revised2'          => 'Revisado nivel 2',
+        'pending'           => 'Pendiente por aprobación',
+        'approved'          => 'Aprobado',
+        'rejected'          => 'Rechazado',
+        'canceled'          => 'Cancelado',
     ],
     'reports' => [
         'payments_report'               => 'REPORTE DE PAGOS',

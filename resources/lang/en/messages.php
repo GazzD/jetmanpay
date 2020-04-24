@@ -79,6 +79,13 @@ return [
         'close'             => 'Close',
         'currency'          => 'Currency',
         'confirm'           => 'Confirm',
+        'details'           => 'Details',
+        'revised1'          => 'Revised lvl 1',
+        'revised2'          => 'Revised lvl 2',
+        'pending'           => 'Pending',
+        'approved'          => 'Approved',
+        'rejected'          => 'Rejected',
+        'canceled'          => 'Canceled',
     ],
     'reports' => [
         'payments_report'               => 'PAYMENTS REPORT',

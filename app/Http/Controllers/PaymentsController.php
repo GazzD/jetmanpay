@@ -297,18 +297,18 @@ class PaymentsController extends Controller
         $description = $request->description;
         $payment = Payment::find($paymentId);
         
-        // $client = Client::find($clientId);
-        // if($client->balance < $payment->total_amount){
-        //     return redirect()->back()->withErrors(Lang::get('validation.payments.not_enough_money'));
-        // }
+        $client = Client::find($clientId);
+        if($client->balance < $payment->total_amount){
+            return redirect()->back()->withErrors(Lang::get('validation.payments.not_enough_money'));
+        }
         
         $payment->reference = $reference;
         $payment->description = $description;
         $payment->status = 'APPROVED';
         $payment->save();
             
-        // $client->balance = $client->balance - $payment->total_amount;
-        // $client->save();
+        $client->balance = $client->balance - $payment->total_amount;
+        $client->save();
 
         return redirect()->route('payments');
     }
@@ -460,6 +460,20 @@ class PaymentsController extends Controller
             case 'CLIENT':
                 // Payments related to that client
                 $query = Payment::where('client_id',auth()->user()->client_id)
+                    ->where('status','PENDING')
+                    ->orwhere('status','REVISED1')
+                    ->with('client')
+                    ->with('plane')
+                    ->with('user')
+                    ->with('items')
+                    ->latest()
+                ;
+                break;
+            case 'TREASURER1':
+                // Payments related to that client
+                $query = Payment::where('client_id',auth()->user()->client_id)
+                    ->where('status','REVISED2')
+                    ->orWhere('status','REVISED1')
                     ->with('client')
                     ->with('plane')
                     ->with('user')
@@ -477,14 +491,14 @@ class PaymentsController extends Controller
         // Validate status
         if ($justPending) {
             $query->where('status', 'PENDING');
-        } else {
-            $query->where('status', '<>' ,'PENDING');
-        }
-        
+        } 
         // Return datatable
         return DataTables::of($query->get())
             ->addColumn('action', function($data){
                 $button = '<ul class="fc-color-picker" id="color-chooser">';
+                if(auth()->user()->hasRole(['TREASURER1','CLIENT'])){
+                    $button .= '<li><a class="text-muted" href="'.route('payments/details', $data->id).'"><i class="fas fa-edit" data-toggle="tooltip" data-placement="top" title="'.__('messages.payments.details').'"></i></a></li>';
+                }
                 $button .= '<li><a class="text-muted" href="'.route('payment-receipt', $data->id).'"><i class="fas fa-search" data-toggle="tooltip" data-placement="top" title="'.__('messages.pending-payments.view-receipt').'"></i></a></li>';
                 $button .= '<li><a class="text-muted" href="'.route('payment-dosa', $data->id).'"><i class="nav-icon fas fa-file-alt" data-toggle="tooltip" data-placement="top" title="'.__('messages.pending-payments.view-dosa').'"></i></a></li>';
                 $button .= '<li><a class="text-muted" href="'.route('payment-documents', $data->id).'"><i class="nav-icon far fa-file-alt" data-toggle="tooltip" data-placement="top" title="'.__('messages.pending-payments.view-documents').'"></i></a></li>';
@@ -573,6 +587,52 @@ class PaymentsController extends Controller
             ->make(true)
         ;
     }
+    public function details($id){
+        $payment = Payment::where('id',$id)
+            ->with('plane')
+            ->with('items')
+            ->with('client')
+            ->first()
+            ;
+        return view('pages.backend.payments.details')
+            ->with('payment',$payment)
+            ;
+    }
+    public function update(Request $request, $id){
+        $status = $request->status;
+        $payment = Payment::where('id',$id)
+            ->with('items')
+            ->first()
+            ;
+        $user = auth()->user();
+            if($user->hasRole('CLIENT')){
+                if($status != 'PENDING' && $status != 'CANCELED'){
+                    return redirect()->back();
+                }
+            }elseif($user->hasRole('TREASURER1')){
+                if($status != 'REVISED1' && $status != 'CANCELED'){
+                    return redirect()->back();
+                }
+            }
+        if($status == 'CANCELED'){
+            foreach($payment->items as $item){
+                $dosa = Dosa::where('aperture_code',$item->concept)
+                    ->where('client_id',$payment->client_id)
+                    ->first()
+                    ;
+                if($dosa){
+                    $dosa->status = 'PENDING';
+                    $dosa->save();
+                }
+            }
+            $payment->delete();
+        }else{
+            $payment->status = $status;
+            $payment->save();
+        }
+        return redirect()->route('payments');
+    }
+     
 }
 
 

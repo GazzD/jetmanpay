@@ -67,7 +67,7 @@
               </a>
             </li>
           @endcan
-          @role('OPERATOR|MANAGER')
+          @role('OPERATOR|MANAGER|TREASURER1|CLIENT')
             <li class="nav-item">
               <a href="{{route('payments')}}" class="nav-link">
                 <i class="nav-icon fas fa-money-check-alt"></i>
@@ -76,6 +76,8 @@
                 </p>
               </a>
             </li>
+          @endrole
+          @role('OPERATOR|MANAGER')
             <li class="nav-item has-treeview">
               <a href="{{route('pending-payments')}}" class="nav-link">
                 <i class="nav-icon fas fa-exclamation-triangle"></i>

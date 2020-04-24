@@ -24,8 +24,13 @@ class DosasController extends Controller
     
     public function filterByPlane()
     {
-        $planes = Plane::where('client_id', auth()->user()->client_id)->get();
-        // Opens a view with all planes to futher filter pending payments
+        $planes = Plane::where('client_id', auth()->user()->client_id)
+            ->whereHas('dosas', function($q){
+                $q->where('status', 'PENDING');
+            })
+            ->get()
+            ;
+        // Opens a view with all planes to futher filter pending dosas
         return view('pages.backend.dosas.select-list')->with('planes', $planes);
     }
     

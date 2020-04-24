@@ -20,7 +20,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/documents', 'DocumentsController@index')->name('documents');
 
     // Payments
-    Route::get('/payments', 'PaymentsController@payments')->name('payments');
+    
     Route::post('/payments/reports', 'PaymentsController@generateReport')->name('payments/reports');
     Route::get('/payments/pending', 'PaymentsController@pending')->name('pending-payments');
     Route::get('/payments/load-json', 'PaymentsController@json')->name('load-json');
@@ -91,6 +91,11 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/payments/dosa', 'PaymentsController@storeDosa')->name('payments/dosa');
         Route::get('/dosas/plane/{tailNumber}', 'DosasController@clientDosas')->name('dosas/plane/tail-number');
         Route::get('/dosas/{id}', 'DosasController@detail')->name('dosa-detail');
+
+        //Payments
+        Route::get('/payments', 'PaymentsController@payments')->name('payments');
+        Route::get('/payments/{id}', 'PaymentsController@details')->name('payments/details');
+        Route::post('/payments/{id}', 'PaymentsController@update')->name('payments/update');
     });
 
     // Client exclusive routes
