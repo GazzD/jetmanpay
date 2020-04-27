@@ -13,24 +13,22 @@ use Illuminate\Support\Facades\Auth;
 | contains the "web" middleware group. Now create something great!
 |
 */
+// Public routes
 Auth::routes();
 Route::post('/staff', 'StaffController@store')->name('staff/store');
+
+// Private routes
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/', 'DashboardController@index')->name('dashboard');
-    Route::get('/documents', 'DocumentsController@index')->name('documents');
-
-    // Payments
     
+    // Payments
     Route::post('/payments/reports', 'PaymentsController@generateReport')->name('payments/reports');
     Route::get('/payments/pending', 'PaymentsController@pending')->name('pending-payments');
-    Route::get('/payments/load-json', 'PaymentsController@json')->name('load-json');
-    Route::post('/payments/load-json', 'PaymentsController@storeJson')->name('store-json');
     Route::get('/payments/pending-payments', 'PaymentsController@fetchPendingPayments')->name('fetch-pending-payments');
     Route::get('/payments/fetch-payments', 'PaymentsController@fetchPayments')->name('fetch-payments');
     
-    //Client and treasurers exclusive routes
-    Route::group(['middleware' => ['role:CLIENT|TREASURER1|TREASURER2|REVIEWER']], function () {
-        // Recharges reviewer@.com
+    // Recharges 
+    Route::group(['middleware' => ['permission:admin-recharges']], function () {
         Route::get('/recharges', 'RechargesController@index')->name('recharges');
         Route::get('/recharges/create', 'RechargesController@create')->name('recharges/create');
         Route::get('/recharges/fetch', 'RechargesController@fetch')->name('recharges/fetch');
@@ -40,11 +38,13 @@ Route::group(['middleware' => ['auth']], function () {
     });
     
     // Claims
-    Route::get('/claims', 'ClaimsController@index')->name('claims');
-    Route::post('/claims/store', 'ClaimsController@store')->name('claims/store');
-    Route::get('/claims/check/{id}', 'ClaimsController@check')->name('claims/check');
-    Route::get('/claims/details/{id}', 'ClaimsController@details')->name('claims/details');
-    Route::get('/claims/fetch', 'ClaimsController@fetch')->name('claims/fetch');
+    Route::group(['middleware' => ['permission:admin-claims']], function () {
+        Route::get('/claims', 'ClaimsController@index')->name('claims');
+        Route::post('/claims/store', 'ClaimsController@store')->name('claims/store');
+        Route::get('/claims/check/{id}', 'ClaimsController@check')->name('claims/check');
+        Route::get('/claims/details/{id}', 'ClaimsController@details')->name('claims/details');
+        Route::get('/claims/fetch', 'ClaimsController@fetch')->name('claims/fetch');
+    });
     
     // Payment by airplane
     Route::get('/payments/filter/plane', 'PaymentsController@filterByPlane')->name('payments/filter/plane');
@@ -66,14 +66,8 @@ Route::group(['middleware' => ['auth']], function () {
     // Payment recipe
     Route::get('/payments/{id}/receipt', 'PaymentsController@receipt')->name('payment-receipt');
     
-    // Profile
-    Route::get('/users/profile', 'UsersController@profile')->name('users/profile');
-    Route::get('/users/edit-profile', 'UsersController@editProfile')->name('users/edit-profile');
-    Route::post('/users/edit-profile', 'UsersController@updateProfile')->name('users/update-profile');
-    Route::post('/users/change-password', 'UsersController@changePassword')->name('users/change-password');
-    
     // Manager exclusive routes
-    Route::group(['middleware' => ['permission:create-users']], function () {
+    Route::group(['middleware' => ['permission:admin-users']], function () {
         // Users
         Route::get('/users', 'UsersController@index')->name('users');
         Route::get('/users/create', 'UsersController@create')->name('users/create');
@@ -98,14 +92,23 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/payments/{id}', 'PaymentsController@update')->name('payments/update');
     });
 
-    // Client exclusive routes
-    Route::group(['middleware' => ['role:CLIENT']], function () {
-        
-        
-        // Planes
+    // Planes
+    Route::group(['middleware' => ['permission:admin-planes']], function () {
         Route::get('/planes', 'PlanesController@index')->name('planes');
         Route::get('/planes/fetch', 'PlanesController@fetchPlanes')->name('planes/fetch');
-        
+    });
+    
+    // Settings
+    Route::group(['middleware' => ['permission:admin-settings']], function () {
+        Route::get('/users/profile', 'UsersController@profile')->name('users/profile');
+        Route::get('/users/edit-profile', 'UsersController@editProfile')->name('users/edit-profile');
+        Route::post('/users/edit-profile', 'UsersController@updateProfile')->name('users/update-profile');
+        Route::post('/users/change-password', 'UsersController@changePassword')->name('users/change-password');
+    });
+    
+    // Documents
+    Route::group(['middleware' => ['permission:admin-documents']], function () {
+        Route::get('/documents', 'DocumentsController@index')->name('documents');
     });
     
 });
