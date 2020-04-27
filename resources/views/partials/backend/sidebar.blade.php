@@ -15,14 +15,14 @@
           <img src="{{asset('backend/dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          @role('CLIENT')
+          @if(isset(Auth::user()->client))
             <a href="#" class="d-block">{{Auth::user()->client->name}}</a>
-          @endrole
             <a href="#" class="d-block">{{Auth::user()->name}}</a>
-          @role('CLIENT')
             <a href="#" class="d-block">@lang('messages.sidebar.balance') ({{Currency::getSymbol(Auth::user()->client->currency)}})</a>
             <a href="#" class="d-block"> {{Auth::user()->client->balance}}</a>
-          @endrole
+          @else
+            <a href="#" class="d-block">{{Auth::user()->name}}</a>
+          @endif
         </div>
       </div>
 
@@ -37,7 +37,7 @@
               </p>
             </a>
           </li>
-          @role('CLIENT')
+          @can('admin-planes')
           <li class="nav-item">
             <a href="{{route('planes')}}" class="nav-link">
               <i class="nav-icon fas fa-plane"></i>
@@ -46,19 +46,29 @@
               </p>
             </a>
          </li>
-         @endrole
-         @role('CLIENT|REVIEWER')
-          <li class="nav-item">
+         @endcan
+         @can('admin-recharges')
+         <li class="nav-item">
             <a href="{{route('recharges')}}" class="nav-link">
               <i class="nav-icon fas fa-wallet"></i>
               <p>
                 @lang('messages.recharges.recharges')
               </p>
             </a>
-          </li>
-          @endrole
-          @can('create-users')
-            <li class="nav-item">
+         </li>
+         @endcan
+         @can('admin-dosas')
+           <li class="nav-item">
+             <a href="{{route('dosas/plane')}}" class="nav-link">
+               <i class="nav-icon fas fa-money-check-alt"></i>
+               <p>
+                 @lang('messages.sidebar.dosas')
+               </p>
+             </a>
+           </li>
+         @endcan
+         @can('admin-users')
+           <li class="nav-item">
               <a href="{{route('users')}}" class="nav-link">
                 <i class="nav-icon fas fa-users"></i>
                 <p>
@@ -67,7 +77,7 @@
               </a>
             </li>
           @endcan
-          @role('OPERATOR|MANAGER|TREASURER1|CLIENT')
+          @can('admin-payments')
             <li class="nav-item">
               <a href="{{route('payments')}}" class="nav-link">
                 <i class="nav-icon fas fa-money-check-alt"></i>
@@ -76,8 +86,8 @@
                 </p>
               </a>
             </li>
-          @endrole
-          @role('OPERATOR|MANAGER')
+          @endcan
+          @can('admin-pending-payments')
             <li class="nav-item has-treeview">
               <a href="{{route('pending-payments')}}" class="nav-link">
                 <i class="nav-icon fas fa-exclamation-triangle"></i>
@@ -86,6 +96,8 @@
                 </p>
               </a>
             </li>
+          @endcan
+          @can('admin-send-payments')
             <li class="nav-item has-treeview">
               <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-file-import"></i>
@@ -95,28 +107,36 @@
                 </p>
               </a>
               <ul class="nav nav-treeview">
+                @can('admin-payments-by-airline')
                 <li class="nav-item">
                   <a href="{{route('payments/filter/plane')}}" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>@lang('messages.sidebar.by-airline')</p>
                   </a>
                 </li>
+                @endcan
+                @can('admin-payments-manual')
                 <li class="nav-item">
-                <a href="{{route('manual-payments')}}" class="nav-link">
+                  <a href="{{route('manual-payments')}}" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>@lang('messages.sidebar.manual')</p>
                   </a>
                 </li>
+                @endcan
               </ul>
             </li>
+          @endcan
+          @can('admin-claims')
             <li class="nav-item has-treeview">
-            <a href="{{route('claims')}}" class="nav-link">
+              <a href="{{route('claims')}}" class="nav-link">
                 <i class="nav-icon fas fa-exclamation"></i>
                 <p>
                   @lang('messages.sidebar.claims')
                 </p>
               </a>
             </li>
+          @endcan
+          @can('admin-settings')
             <li class="nav-item has-treeview">
               <a href="{{route('users/profile')}}" class="nav-link">
                 <i class="nav-icon fas fa-cog"></i>
@@ -125,6 +145,8 @@
                 </p>
               </a>
             </li>
+          @endcan
+          @can('admin-documents')
             <li class="nav-item">
               <a href="{{route('documents')}}" class="nav-link">
                 <i class="nav-icon fas fa-file-alt"></i>
@@ -133,17 +155,7 @@
                 </p>
               </a>
             </li>
-          @endrole
-          @role('CLIENT|TREASURER1|TREASURER2')
-            <li class="nav-item">
-              <a href="{{route('dosas/plane')}}" class="nav-link">
-                <i class="nav-icon fas fa-money-check-alt"></i>
-                <p>
-                  @lang('messages.sidebar.dosas')
-                </p>
-              </a>
-            </li>
-          @endrole
+          @endcan
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
