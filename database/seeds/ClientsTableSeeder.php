@@ -12,7 +12,7 @@ class ClientsTableSeeder extends Seeder
      */
     public function run()
     {
-        Client::create(['rif' => "J200077743", 'code' => "00000", 'name' => "CONSORCIO VENEZOLANO DE INDUSTRIAS AERONA?TICAS Y SERVICIOS A?REOS, S. A. (CONVIASA)",]);
+        Client::create(['rif' => "J-20007774-3", 'code' => "00000", 'name' => "CONSORCIO VENEZOLANO DE INDUSTRIAS AERONAÚTICAS Y SERVICIOS AÉREOS, S. A. (CONVIASA)", 'balance' => 120000]);
         Client::create(['rif' => "J-30255832-8", 'code' => "00004", 'name' => "D┤ACH AVIACION Y SERVICIO TECNICO, S.R.L.",]);
         Client::create(['rif' => "J-30819225-2", 'code' => "00005", 'name' => "RUTAS AEREAS DE VENEZUELA RAV, S.A",]);
         Client::create(['rif' => "J-00000470-6", 'code' => "00006", 'name' => "AVENSA",]);
