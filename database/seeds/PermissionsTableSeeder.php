@@ -56,6 +56,7 @@ class PermissionsTableSeeder extends Seeder
             'admin-recharges',
             'admin-users',
             'admin-payments',
+            'admin-pending-payments',
             'admin-dosas',
             'admin-settings',
             'admin-documents'

@@ -21,7 +21,7 @@ class PaymentsController extends Controller
     public function pending()
     {
         $clients = Client::all();
-        return view('pages.backend.pending-payments')
+        return view('pages.backend.payments.pending-payments')
             ->with('clients',$clients)
         ;
     }
@@ -29,7 +29,7 @@ class PaymentsController extends Controller
     public function payments()
     {
         $clients = Client::all();
-        return view('pages.backend.payments')
+        return view('pages.backend.payments.index')
             ->with('clients',$clients)
         ;
     }
@@ -56,7 +56,8 @@ class PaymentsController extends Controller
         return redirect()->route('load-json')->with('status', __('messages.upload-json.success-message'));
     }
     
-    public function manual(Request $request){
+    public function manual(Request $request)
+    {
         // Opens a form to create AND pay directly an invoice
         $planes = Plane::all();
         return view('pages.backend.payments.manual-payment')
@@ -64,7 +65,8 @@ class PaymentsController extends Controller
         ;
     }
     
-    public function storeManual(Request $request){
+    public function storeManual(Request $request)
+    {
         // Creates a new payment and approves it
         $planeId = $request->planeId+0;
         $clientId = $request->clientId+0;
@@ -221,9 +223,10 @@ class PaymentsController extends Controller
         ;
     }
 
-    public function storeDosa(Request $request){
+    public function createPayment(Request $request)
+    {
+        dd('xxxx');
         // Creates a payment based on dosas
-
         $dosaIds = $request->dosaIds;
         // dump($dosaIds);
         $reference = $request->reference;
@@ -281,11 +284,11 @@ class PaymentsController extends Controller
             $paymentItem->payment_id = $payment->id;
             $paymentItem->save();
             $newDosa = Dosa::find($dosa->id);
-            $newDosa->status = 'REVISION';
+            $newDosa->status = 'APPROVED';
             $newDosa->save();
         }
         
-        return redirect()->route('dosas');
+        return redirect()->route('payments');
     }
     
 
@@ -460,8 +463,6 @@ class PaymentsController extends Controller
             case 'CLIENT':
                 // Payments related to that client
                 $query = Payment::where('client_id',auth()->user()->client_id)
-                    ->where('status','PENDING')
-                    ->orwhere('status','REVISED1')
                     ->with('client')
                     ->with('plane')
                     ->with('user')
@@ -472,8 +473,6 @@ class PaymentsController extends Controller
             case 'TREASURER1':
                 // Payments related to that client
                 $query = Payment::where('client_id',auth()->user()->client_id)
-                    ->where('status','REVISED2')
-                    ->orWhere('status','REVISED1')
                     ->with('client')
                     ->with('plane')
                     ->with('user')
@@ -490,8 +489,23 @@ class PaymentsController extends Controller
         
         // Validate status
         if ($justPending) {
-            $query->where('status', 'PENDING');
-        } 
+            switch (auth()->user()->getRoleNames()[0]) {
+                case 'MANAGER':
+                case 'OPERATOR':
+                    $query->where('status', 'PENDING');
+                    break;
+                case 'CLIENT':
+                    $query->where('status','PENDING');
+                    $query->orwhere('status','REVISED1');
+                    break;
+                case 'TREASURER1':
+                    $query->where('status','REVISED2');
+                    $query->orwhere('status','REVISED1');
+                    break;
+            }
+        } else {
+            $query->where('status', '<>','PENDING');
+        }
         // Return datatable
         return DataTables::of($query->get())
             ->addColumn('action', function($data){

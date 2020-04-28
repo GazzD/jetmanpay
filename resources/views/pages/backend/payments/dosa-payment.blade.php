@@ -41,7 +41,7 @@
         </div>
     @endif
         <div class="card-body">
-        <form method="post" action="{{route('payments/dosa')}}" enctype=multipart/form-data role="form" class="form-horizontal">
+        <form method="post" action="{{route('payments/dosa')}}" role="form" class="form-horizontal">
                 <div class="row">
                     @csrf
                     <div class="col-md-6">
