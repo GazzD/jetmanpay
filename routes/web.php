@@ -78,6 +78,8 @@ Route::group(['middleware' => ['auth']], function () {
     // Client and treasurers exclusive routes
     Route::group(['middleware' => ['role:CLIENT|TREASURER1|TREASURER2']], function () {
         // Dosas
+        Route::get('/dosas/approved', 'DosasController@filterByApproved')->name('dosas/approved');
+        Route::get('/dosas/fetch/approved', 'DosasController@fetchApproved')->name('dosas/fetch/approved');
         Route::get('/dosas', 'DosasController@filterByPlane')->name('dosas');
         Route::post('/dosas', 'DosasController@pay')->name('pay-dosa');
         Route::get('/dosas/plane', 'DosasController@filterByPlane')->name('dosas/plane');

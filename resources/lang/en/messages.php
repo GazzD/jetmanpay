@@ -40,6 +40,7 @@ return [
         'dosas'             => 'Dosas',
         'balance'           => 'Balance',
         'planes'            => 'Planes',
+        'approved_dosas'    => 'Approved Dosas',
     ],
     'footer'   => [
         'all-rights-reserved' => 'All rights reserved <strong>JET MAN PAY.</strong>',
@@ -221,7 +222,24 @@ return [
         'insufficient-balance'  => 'Insufficient balance',
         'select_dosas'          => 'Must select the DOSAs to pay',
         'tax'                   => 'Tax',
+        'currency'              => 'Currency',
+        'options'               => 'Options',
         'search'                => 'Search',
+        'approved_dosas'        => 'Approved DOSAs',
+        'details'               => 'Details',
+        'client'                => 'Client',
+        'aperture_code'         => 'Aperture Code',
+        'closure_code'          => 'Closure Code',
+        'ton_max_weight'        => 'Max weigth (TON)',
+        'taxable_base_amount'   => 'Taxable base amount',
+        'exempt_vat_amount'     => 'Exempt VAT amount',
+        'departure_time'        => 'Departure time',
+        'arrival_time'          => 'Arrival time',
+        'departure_flight_number' => 'Departure flight number',
+        'arrival_flight_number' => 'Arrival flight number',
+        'flight_type'           => 'flight type',
+        'client_name'           => 'Client name',
+
 
     ],
     'upload-json' => [

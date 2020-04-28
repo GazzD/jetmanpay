@@ -67,6 +67,16 @@
              </a>
            </li>
          @endcan
+         {{-- @can('get-approved-dosas') --}}
+           <li class="nav-item">
+             <a href="{{route('dosas/approved')}}" class="nav-link">
+               <i class="nav-icon fas fa-check"></i>
+               <p>
+                 @lang('messages.sidebar.approved_dosas')
+               </p>
+             </a>
+           </li>
+         {{-- @endcan --}}
          @can('admin-users')
            <li class="nav-item">
               <a href="{{route('users')}}" class="nav-link">

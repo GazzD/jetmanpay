@@ -40,6 +40,7 @@ return [
         'dosas'             => 'Dosas',
         'balance'           => 'Saldo',
         'planes'            => 'Aviones',
+        'approved_dosas'    => 'Dosas aprobadas',
         
     ],
     'footer'   => [
@@ -222,7 +223,24 @@ return [
         'insufficient-balance'  => 'Saldo insuficiente',
         'select_dosas'          => 'Debes seleccionar las dosas a pagar',
         'tax'                   => 'Impuestos',
+        'currency'              => 'Moneda',
+        'options'               => 'Opciones',
         'search'                => 'Buscar',
+        'approved_dosas'        => 'DOSAs aprobadas',
+        'details'               => 'Detalles',
+        'client'                => 'Cliente',
+        'aperture_code'         => 'Código de apertura',
+        'closure_code'          => 'Código de cierre',
+        'ton_max_weight'        => 'Peso máximo (TON)',
+        'taxable_base_amount'   => 'Monto sin impuestos',
+        'exempt_vat_amount'     => 'Monto exento VAT',
+        'departure_time'        => 'Fecha de salida',
+        'arrival_time'          => 'Fecha de llegada',
+        'departure_flight_number' => 'Número de vuelo de salida',
+        'arrival_flight_number' => 'Número de vuelo de llegada',
+        'flight_type'           => 'Tipo de vuelo',
+        'client_name'           => 'Nombre del cliente',
+
     ],
     'upload-json' => [
         'json'              => 'JSON',

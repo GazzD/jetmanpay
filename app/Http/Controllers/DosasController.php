@@ -5,9 +5,10 @@ use App\Client;
 use App\Dosa;
 use App\Payment;
 use App\Plane;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Lang;
+use App\Http\Controllers\Controller;
 
 class DosasController extends Controller
 {
@@ -66,7 +67,6 @@ class DosasController extends Controller
     
     public function detail($dosaId)
     {
-        // Validate user
         $dosa = Dosa::find($dosaId);
         
         // Render view
@@ -113,6 +113,33 @@ class DosasController extends Controller
             return redirect()->back()->withErrors(['msg', __('messages.dosa.insufficient-balance')]);
         
         dd($dosas);
+    }
+
+    public function filterByApproved()
+    {
+        return view('pages.backend.dosas.approved');
+    }
+
+    public function fetchApproved()
+    {
+        $user = auth()->user();
+        $dosas = Dosa::where('client_id',auth()->user()->client_id)
+            ->where('status','APPROVED')
+            ->get()
+            ;
+        
+        // Return datatable
+        return DataTables::of($dosas)
+            ->addColumn('action', function($data){
+            $button = '<ul class="fc-color-picker" id="color-chooser">';
+            $button .= '<li><a class="text-muted" href="'.route('dosa-detail', $data->id).'"><i class="fas fa-search" data-toggle="tooltip" data-placement="top" title="'.__('messages.dosas.details').'"></i></a></li>';
+            $button .= '</ul>';
+            
+            return $button;
+        })
+        ->rawColumns(['action'])
+        ->make(true)
+        ;
     }
     
 }
