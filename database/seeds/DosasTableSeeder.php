@@ -3,10 +3,12 @@
 use App\Dosa;
 use function GuzzleHttp\json_decode;
 use Illuminate\Database\Seeder;
-use GuzzleHttp\Client;
+use GuzzleHttp\Client as GuzzleClient;
 use App\Plane;
 use App\User;
-use App\Client as Cliente; //Latino HEAT
+use App\Client;
+
+use Illuminate\Support\Facades\DB;
 
 class DosasTableSeeder extends Seeder
 {
@@ -17,17 +19,23 @@ class DosasTableSeeder extends Seeder
      */
     public function run()
     {
-
+        // Dosa items
+        $dosaItems = array();
+        
+        // Get web service's base url
         $baseUrl = env('DOSA_WEBSERVICE_ENDPOINT');
+        $guzzleClient = new GuzzleClient(['base_uri' => $baseUrl]);
         
-        $client = new Client(['base_uri' => $baseUrl]);
+        // Get all new dosas
+        $dosaListResponse = $guzzleClient->request('GET', 'iaim_w2389009812.php?act=gettransfdosa|1');
+        $dosaListResponseObject = json_decode($dosaListResponse->getBody()->getContents());
         
-        $response = $client->request('GET', 'iaim_w2389009812.php?act=gettransfdosa|1');
-        $responseObject = json_decode($response->getBody()->getContents());
+        if(!$dosaListResponseObject) dd($dosaListResponseObject);
         
-        foreach ($responseObject->transferencia as $dosaJson) {
-            $dosa = new Dosa();
+        // Iterate over dosas
+        foreach ($dosaListResponseObject->transferencia as $dosaJson) {
             
+            $dosa = new Dosa();
             $dosa->id_charge = $dosaJson->id_cobro;
             $dosa->airplane = $dosaJson->matricula;
             $dosa->billing_code = $dosaJson->cod_facturacion;
@@ -52,7 +60,7 @@ class DosasTableSeeder extends Seeder
             $dosa->departure_time = $dosaJson->hora_real_sal;
             
             // Validate Client
-            $client = \App\Client::where('code', $dosaJson->cod_cliente)->first();
+            $client = Client::where('code', $dosaJson->cod_cliente)->first();
             $dosa->client_id = 1;//$client ? $client->id: null;
             
             // Validate plane
@@ -63,12 +71,39 @@ class DosasTableSeeder extends Seeder
                 $plane->tail_number = $dosaJson->matricula;
                 $plane->passengers_number = $dosaJson->cant_pas_resident + $dosaJson->cant_pas_desembar;
                 $plane->weight = $dosaJson->peso_max_tonelada;
-                $plane->client_id = 1;
+                $plane->client_id = 1;//$dosa->client_id;
                 $plane->save();
             }
             $dosa->plane_id = $plane->id;
             
+            // Store dosa
             $dosa->save();
+            
+            // Find dosa items
+            $dosaDetailResponse = $guzzleClient->request('GET', 'iaim_w2389009812.php?act=getdetdosa|'.$dosa->id_charge);
+            $dosaDetail = json_decode($dosaDetailResponse->getBody()->getContents());
+            
+            // Iterate over dosa items
+            foreach ($dosaDetail->detalle as $dosaItemJson) {
+                $dosaItem = array();
+                $dosaItem['step_number'] = $dosaItemJson->nro_paso;
+                $dosaItem['concept'] = $dosaItemJson->nombre_cobro;
+                $dosaItem['amount'] = $dosaItemJson->monto_cobro;
+                $dosaItem['payment_type'] = $dosaItemJson->tipo_cobro;
+                $dosaItem['tax_fee'] = $dosaItemJson->iva;
+                $dosaItem['arrival_date'] = $dosaItemJson->fecha_hora_llegada;
+                $dosaItem['departure_date'] = $dosaItemJson->fecha_hora_salida;
+                $dosaItem['calculation_values'] = $dosaItemJson->valores_calculo;
+                $dosaItem['dosa_id'] = $dosa->id;
+                $dosaItem['created_at'] =  \Carbon\Carbon::now();
+                $dosaItem['updated_at'] = \Carbon\Carbon::now(); 
+                
+                // Add to dosa items array
+                $dosaItems[] = $dosaItem;
+            }
         }
+        
+        // Store dosa items
+        DB::table('dosa_items')->insert($dosaItems);
     }
 }
