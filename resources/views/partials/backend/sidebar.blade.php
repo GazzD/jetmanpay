@@ -18,7 +18,7 @@
           @if(isset(Auth::user()->client))
             <a href="#" class="d-block">{{Auth::user()->client->name}}</a>
             <a href="#" class="d-block">{{Auth::user()->name}}</a>
-            <a href="#" class="d-block">@lang('messages.sidebar.balance') ({{Currency::getSymbol(Auth::user()->client->currency)}})</a>
+            <a href="#" class="d-block">@lang('pages/sidebar.balance') ({{Currency::getSymbol(Auth::user()->client->currency)}})</a>
             <a href="#" class="d-block"> {{Auth::user()->client->balance}}</a>
           @else
             <a href="#" class="d-block">{{Auth::user()->name}}</a>
@@ -33,7 +33,7 @@
             <a href="{{route('dashboard')}}" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
-                @lang('messages.sidebar.dashboard')
+                @lang('pages/sidebar.dashboard')
               </p>
             </a>
           </li>
@@ -42,7 +42,7 @@
             <a href="{{route('planes')}}" class="nav-link">
               <i class="nav-icon fas fa-plane"></i>
               <p>
-                @lang('messages.sidebar.planes')
+                @lang('pages/sidebar.planes')
               </p>
             </a>
          </li>
@@ -52,7 +52,7 @@
             <a href="{{route('recharges')}}" class="nav-link">
               <i class="nav-icon fas fa-wallet"></i>
               <p>
-                @lang('messages.recharges.recharges')
+                @lang('pages/sidebar.recharges')
               </p>
             </a>
          </li>
@@ -62,27 +62,27 @@
              <a href="{{route('dosas/plane')}}" class="nav-link">
                <i class="nav-icon fas fa-money-check-alt"></i>
                <p>
-                 @lang('messages.sidebar.dosas')
+                 @lang('pages/sidebar.dosas')
                </p>
              </a>
            </li>
          @endcan
-         {{-- @can('get-approved-dosas') --}}
+         @can('get-approved-dosas')
            <li class="nav-item">
              <a href="{{route('dosas/approved')}}" class="nav-link">
                <i class="nav-icon fas fa-check"></i>
                <p>
-                 @lang('messages.sidebar.approved_dosas')
+                 @lang('pages/sidebar.approved_dosas')
                </p>
              </a>
            </li>
-         {{-- @endcan --}}
+         @endcan
          @can('admin-users')
            <li class="nav-item">
               <a href="{{route('users')}}" class="nav-link">
                 <i class="nav-icon fas fa-users"></i>
                 <p>
-                  @lang('messages.sidebar.users')
+                  @lang('pages/sidebar.users')
                 </p>
               </a>
             </li>
@@ -92,7 +92,7 @@
               <a href="{{route('payments')}}" class="nav-link">
                 <i class="nav-icon fas fa-money-check-alt"></i>
                 <p>
-                  @lang('messages.sidebar.payments')
+                  @lang('pages/sidebar.payments')
                 </p>
               </a>
             </li>
@@ -102,7 +102,7 @@
               <a href="{{route('pending-payments')}}" class="nav-link">
                 <i class="nav-icon fas fa-exclamation-triangle"></i>
                 <p>
-                  @lang('messages.sidebar.pending-payments')
+                  @lang('pages/sidebar.pending-payments')
                 </p>
               </a>
             </li>
@@ -112,7 +112,7 @@
               <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-file-import"></i>
                 <p>
-                  @lang('messages.sidebar.send-payments')
+                  @lang('pages/sidebar.send-payments')
                   <i class="fas fa-angle-left right"></i>
                 </p>
               </a>
@@ -121,7 +121,7 @@
                 <li class="nav-item">
                   <a href="{{route('payments/filter/plane')}}" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>@lang('messages.sidebar.by-airline')</p>
+                    <p>@lang('pages/sidebar.by-airline')</p>
                   </a>
                 </li>
                 @endcan
@@ -129,7 +129,7 @@
                 <li class="nav-item">
                   <a href="{{route('manual-payments')}}" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>@lang('messages.sidebar.manual')</p>
+                    <p>@lang('pages/sidebar.manual')</p>
                   </a>
                 </li>
                 @endcan
@@ -141,7 +141,7 @@
               <a href="{{route('claims')}}" class="nav-link">
                 <i class="nav-icon fas fa-exclamation"></i>
                 <p>
-                  @lang('messages.sidebar.claims')
+                  @lang('pages/sidebar.claims')
                 </p>
               </a>
             </li>
@@ -151,7 +151,7 @@
               <a href="{{route('users/profile')}}" class="nav-link">
                 <i class="nav-icon fas fa-cog"></i>
                 <p>
-                  @lang('messages.sidebar.settings')
+                  @lang('pages/sidebar.settings')
                 </p>
               </a>
             </li>
@@ -161,7 +161,7 @@
               <a href="{{route('documents')}}" class="nav-link">
                 <i class="nav-icon fas fa-file-alt"></i>
                 <p>
-                  @lang('messages.sidebar.documents')
+                  @lang('pages/sidebar.documents')
                 </p>
               </a>
             </li>
