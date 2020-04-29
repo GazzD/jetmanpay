@@ -24,6 +24,7 @@ return [
     'settings'          => 'Ajustes',
     'documents'         => 'Documentos',
     'dosas'             => 'Dosas',
+    'pending-dosas'     => 'Dosas Pendientes',
     'balance'           => 'Saldo',
     'planes'            => 'Aviones',
     'recharges'         => 'Recargas',

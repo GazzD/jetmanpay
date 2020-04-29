@@ -25,6 +25,7 @@ return [
     'settings'          => 'Settings',
     'documents'         => 'Documents',
     'dosas'             => 'Dosas',
+    'pending-dosas'     => 'Pending Dosas',
     'balance'           => 'Balance',
     'planes'            => 'Planes',
     'recharges'         => 'Recharges',

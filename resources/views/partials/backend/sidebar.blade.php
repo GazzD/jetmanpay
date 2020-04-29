@@ -62,7 +62,7 @@
              <a href="{{route('dosas/plane')}}" class="nav-link">
                <i class="nav-icon fas fa-money-check-alt"></i>
                <p>
-                 @lang('pages/sidebar.dosas')
+                 @lang('pages/sidebar.pending-dosas')
                </p>
              </a>
            </li>
