@@ -126,21 +126,6 @@ return [
         'details'               => 'Detalles',
 
     ],
-    'recharges'  => [
-        'recharges'             => 'Recargas',
-        'date'                  => 'Fecha',
-        'image'                 => 'Imagen',
-        'type'                  => 'Tipo',
-        'status'                => 'Estado',
-        'user'                  => 'Usuario',
-        'amount'                => 'Monto',
-        'options'               => 'Opciones',
-        'create'                => 'Crear',
-        'client'                => 'Cliente',
-        'details'               => 'Detalle',
-        'confirm'               => 'Confirmar',
-
-    ],
     'login'  => [
         'title'             => 'Ingresa tus datos para iniciar sesión',
         'remmember_me'      => 'Recuerdame',

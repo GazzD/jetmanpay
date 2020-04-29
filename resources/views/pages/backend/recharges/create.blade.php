@@ -13,8 +13,8 @@
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">@lang('messages.home')</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('recharges') }}">@lang('messages.recharges.recharges')</a></li>
-                    <li class="breadcrumb-item active">@lang('messages.recharges.create')</li>
+                    <li class="breadcrumb-item"><a href="{{ route('recharges') }}">@lang('pages/recharges.recharges')</a></li>
+                    <li class="breadcrumb-item active">@lang('pages/recharges.create')</li>
                 </ol>
             </div>
         </div>
@@ -24,28 +24,44 @@
 
 <!-- Main content -->
 <section class="content">
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+    <div class="card card-primary card-outline">
+        <div class="card-body">
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            <form method="post" action="{{route('recharges/store')}}" enctype="multipart/form-data" role="form" class="form-horizontal">
+                @csrf
+				<div class="form-group">
+					<label for="picture">@lang('pages/recharges.image')</label>
+					<div class="input-group">
+						<div class="custom-file">
+							<input type="file" class="custom-file-input" required="required" id="picture" name="picture">
+							<label class="custom-file-label" for="picture">Choose file</label>
+						</div>
+						<div class="input-group-append">
+							<span class="input-group-text" id="">Upload</span>
+						</div>
+					</div>
+				</div>
+                <button type="submit" id="submit-btn" class="btn btn-primary">@lang('pages/recharges.create')</button>
+                <button onclick="window.history.back();" class="btn btn-default">@lang('Back')</button>
+            </form>
         </div>
-    @endif
-    <form method="post" action="{{route('recharges/store')}}" enctype="multipart/form-data" role="form" class="form-horizontal">
-        @csrf
-        <div class="form-group">
-            <label class="col-md-2 control-label">@lang('messages.recharges.image')</label>
-            <div class="col-md-10">
-              <input type="file" required="" class="form-control" name="picture">
-            </div>
-        </div>
-        <button type="submit" id="submit-btn" class="btn btn-primary">@lang('messages.recharges.create')</button>
-	</form>
+    </div>
 </section>
 <!-- /.content -->
 @endsection
 @section('extended-scripts')
-
+<script src="{{asset('backend/plugins/bs-custom-file-input/bs-custom-file-input.min.js')}}"></script>
+<script type="text/javascript">
+$(document).ready(function () {
+  bsCustomFileInput.init();
+});
+</script>
 @endsection
