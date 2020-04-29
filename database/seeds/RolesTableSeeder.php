@@ -15,14 +15,31 @@ class RolesTableSeeder extends Seeder
     {
         $manager = Role::create(['name' => 'MANAGER']);
         $operator = Role::create(['name' => 'OPERATOR']);
-        Role::create(['name' => 'CLIENT']);
-        Role::create(['name' => 'REVIEWER']);
-        Role::create(['name' => 'STAFF']);
+        $client = Role::create(['name' => 'CLIENT']);
+        $reviewer = Role::create(['name' => 'REVIEWER']);
+        $staff = Role::create(['name' => 'STAFF']);
+        $treasurer1 = Role::create(['name' => 'TREASURER1']);
+        $treasurer2 = Role::create(['name' => 'TREASURER2']);
         
         $user = User::find(1);
         $user->assignRole($manager);
         
         $user = User::find(2);
         $user->assignRole($operator);
+        
+        $user = User::find(3);
+        $user->assignRole($client);
+        
+        $user = User::find(4);
+        $user->assignRole($treasurer1);
+        
+        $user = User::find(5);
+        $user->assignRole($treasurer2);
+        
+        $user = User::find(6);
+        $user->assignRole($reviewer);
+        
+        $user = User::find(7);
+        $user->assignRole($staff);
     }
 }

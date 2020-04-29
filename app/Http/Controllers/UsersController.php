@@ -87,7 +87,9 @@ class UsersController extends Controller
     public function create(Request $request){
         // Find roles
         $roles = Role::where('name', 'MANAGER')->orWhere('name', 'OPERATOR')->get();
-        
+        if(auth()->user()->hasRole('CLIENT')){
+            $roles = Role::where('name','like','TREASURER%')->get();
+        }
         // Render view
         return view('pages.backend.users.create')
             ->with('roles', $roles)
@@ -110,7 +112,11 @@ class UsersController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
-        
+
+        //If the user was created by a client it also stores the client's id
+        if(auth()->user()->hasRole('CLIENT')){
+            $user->client_id = auth()->user()->client_id;
+        }
         // Store record
         $user->save();
         
@@ -124,8 +130,20 @@ class UsersController extends Controller
 
     public function fetch()
     {
+        $user = auth()->user();
         // Assign first role
-        $users = User::with('roles')->get();
+        if($user->hasRole('CLIENT')){
+            $users = User::where('client_id',$user->client_id)
+                ->whereHas('roles', function($roles){
+                    $roles->where('name','like','TREASURER%');
+                })
+                ->get()
+                ;
+        }elseif($user->hasRole('MANAGER')){
+            $users = User::with('roles')->get();
+        }else{
+            $users = [];
+        }
         foreach ($users as $i => $user) {
             $users[$i]->role = __('messages.'.strtolower($users[$i]->roles[0]->name));
         }

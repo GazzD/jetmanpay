@@ -16,6 +16,9 @@ return [
         'not_enough_money' => 'Fondos insuficientes.',
         'plane_not_found_or_pending' => 'Matrícula invalida o sin pagos pendientes.'
     ],
+    'dosas' => [
+        'plane_not_found' => 'Matrícula invalida.'
+    ],
     'accepted' => 'The :attribute must be accepted.',
     'active_url' => 'The :attribute is not a valid URL.',
     'after' => 'The :attribute must be a date after :date.',

@@ -16,6 +16,9 @@ return [
         'not_enough_money' => 'Not enough funds.',
         'plane_not_found_or_pending' => 'Invalid Tail number or not pending invoices',
     ],
+    'dosas' => [
+        'plane_not_found' => 'Invalid Tail number.'
+    ],
     'accepted' => 'The :attribute must be accepted.',
     'active_url' => 'The :attribute is not a valid URL.',
     'after' => 'The :attribute must be a date after :date.',

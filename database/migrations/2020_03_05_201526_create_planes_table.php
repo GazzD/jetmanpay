@@ -16,6 +16,8 @@ class CreatePlanesTable extends Migration
         Schema::create('planes', function (Blueprint $table) {
             $table->id();
             $table->string('tail_number', 255);
+            $table->integer('passengers_number')->nullable()->default(0);
+            $table->integer('weight')->default(0);
             $table->foreignId('client_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

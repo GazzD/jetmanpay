@@ -13,4 +13,10 @@ class Notification extends Model
     {
         return $this->belongsToMany('App\Payment');
     }
+    
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+    
 }

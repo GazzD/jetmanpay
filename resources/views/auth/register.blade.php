@@ -4,11 +4,20 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <div class="card">
                 <div class="card-header">{{ __('Register') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
+                    <form method="POST" enctype="multipart/form-data" action="{{ route('staff/store') }}">
                         @csrf
 
                         <div class="form-group row">
@@ -57,7 +66,28 @@
                             <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                                <input id="password-confirm" type="password" class="form-control" name="passwordConfirmation" required autocomplete="new-password">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="identification" class="col-md-4 col-form-label text-md-right">Identification card</label>
+
+                            <div class="col-md-6">
+                                <input id="identification" required type="file" class="form-control" name="identification">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="license" class="col-md-4 col-form-label text-md-right">License</label>
+
+                            <div class="col-md-6">
+                                <input id="license" required type="file" class="form-control" name="license">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="license" class="col-md-4 col-form-label text-md-right">Passport</label>
+
+                            <div class="col-md-6">
+                                <input id="passport" required type="file" class="form-control" name="passport">
                             </div>
                         </div>
 

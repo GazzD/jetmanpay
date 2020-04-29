@@ -35,7 +35,7 @@ class PaymentsTableSeeder extends Seeder
             'reference'     => 'REFERENCIA 2',
             'description'   => 'DESCRIPCIÓN 2',
             'status'        => 'PENDING',
-            'currency'      => 'VEF',
+            'currency'      => 'BS',
             'client_id'     => 1,
             'plane_id'      => 1,
             'user_id'       => 1

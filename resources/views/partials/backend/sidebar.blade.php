@@ -1,7 +1,7 @@
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
+    <a href="{{route('dashboard')}}" class="brand-link">
       <img src="{{asset('backend/dist/img/logo.png')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
            style="opacity: .8">
       <span class="brand-text font-weight-light">Jet Man Pay</span>
@@ -15,114 +15,157 @@
           <img src="{{asset('backend/dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">{{Auth::user()->name}}</a>
+          @if(isset(Auth::user()->client))
+            <a href="#" class="d-block">{{Auth::user()->client->name}}</a>
+            <a href="#" class="d-block">{{Auth::user()->name}}</a>
+            <a href="#" class="d-block">@lang('pages/sidebar.balance') ({{Currency::getSymbol(Auth::user()->client->currency)}})</a>
+            <a href="#" class="d-block"> {{Auth::user()->client->balance}}</a>
+          @else
+            <a href="#" class="d-block">{{Auth::user()->name}}</a>
+          @endif
         </div>
       </div>
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
-          @role('OPERATOR|MANAGER')
           <li class="nav-item has-treeview menu-open">
-            <a href="{{route('dashboard')}}" class="nav-link active">
+            <a href="{{route('dashboard')}}" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
-                @lang('messages.sidebar.dashboard')
+                @lang('pages/sidebar.dashboard')
               </p>
             </a>
           </li>
-          @can('create-users')
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-users"></i>
+          @can('admin-planes')
+          <li class="nav-item">
+            <a href="{{route('planes')}}" class="nav-link">
+              <i class="nav-icon fas fa-plane"></i>
               <p>
-                @lang('messages.sidebar.users')
-                <i class="fas fa-angle-left right"></i>
+                @lang('pages/sidebar.planes')
               </p>
             </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{route('users')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>@lang('messages.sidebar.operators')</p>
-                </a>
-              </li>
-            </ul>
-          </li>
+         </li>
+         @endcan
+         @can('admin-recharges')
+         <li class="nav-item">
+            <a href="{{route('recharges')}}" class="nav-link">
+              <i class="nav-icon fas fa-wallet"></i>
+              <p>
+                @lang('pages/sidebar.recharges')
+              </p>
+            </a>
+         </li>
+         @endcan
+         @can('admin-dosas')
+           <li class="nav-item">
+             <a href="{{route('dosas/plane')}}" class="nav-link">
+               <i class="nav-icon fas fa-money-check-alt"></i>
+               <p>
+                 @lang('pages/sidebar.pending-dosas')
+               </p>
+             </a>
+           </li>
+         @endcan
+         @can('get-approved-dosas')
+           <li class="nav-item">
+             <a href="{{route('dosas/approved')}}" class="nav-link">
+               <i class="nav-icon fas fa-check"></i>
+               <p>
+                 @lang('pages/sidebar.approved_dosas')
+               </p>
+             </a>
+           </li>
+         @endcan
+         @can('admin-users')
+           <li class="nav-item">
+              <a href="{{route('users')}}" class="nav-link">
+                <i class="nav-icon fas fa-users"></i>
+                <p>
+                  @lang('pages/sidebar.users')
+                </p>
+              </a>
+            </li>
           @endcan
-          <li class="nav-item">
-            <a href="{{route('payments')}}" class="nav-link">
-              <i class="nav-icon fas fa-money-check-alt"></i>
-              <p>
-                @lang('messages.sidebar.payments')
-              </p>
-            </a>
-          </li>
-          <li class="nav-item has-treeview">
-            <a href="{{route('pending-payments')}}" class="nav-link">
-              <i class="nav-icon fas fa-exclamation-triangle"></i>
-              <p>
-                @lang('messages.sidebar.pending-payments')
-              </p>
-            </a>
-          </li>
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-file-import"></i>
-              <p>
-                @lang('messages.sidebar.send-payments')
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{route('payments/filter/plane')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>@lang('messages.sidebar.by-airline')</p>
-                </a>
-              </li>
-              <li class="nav-item">
-              <a href="{{route('manual-payments')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>@lang('messages.sidebar.manual')</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item has-treeview">
-          <a href="{{route('claims')}}" class="nav-link">
-              <i class="nav-icon fas fa-exclamation"></i>
-              <p>
-                @lang('messages.sidebar.claims')
-              </p>
-            </a>
-          </li>
-          <li class="nav-item has-treeview">
-            <a href="{{route('users/profile')}}" class="nav-link">
-              <i class="nav-icon fas fa-cog"></i>
-              <p>
-                @lang('messages.sidebar.settings')
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{route('documents')}}" class="nav-link">
-              <i class="nav-icon fas fa-file-alt"></i>
-              <p>
-                @lang('messages.sidebar.documents')
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{route('load-json')}}" class="nav-link">
-              <i class="nav-icon fas fa-file-alt"></i>
-              <p>
-                @lang('messages.upload-json.upload-file')
-              </p>
-            </a>
-          </li>
-          @endrole
+          @can('admin-payments')
+            <li class="nav-item">
+              <a href="{{route('payments')}}" class="nav-link">
+                <i class="nav-icon fas fa-money-check-alt"></i>
+                <p>
+                  @lang('pages/sidebar.payments')
+                </p>
+              </a>
+            </li>
+          @endcan
+          @can('admin-pending-payments')
+            <li class="nav-item has-treeview">
+              <a href="{{route('pending-payments')}}" class="nav-link">
+                <i class="nav-icon fas fa-exclamation-triangle"></i>
+                <p>
+                  @lang('pages/sidebar.pending-payments')
+                </p>
+              </a>
+            </li>
+          @endcan
+          @can('admin-send-payments')
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-file-import"></i>
+                <p>
+                  @lang('pages/sidebar.send-payments')
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                @can('admin-payments-by-airline')
+                <li class="nav-item">
+                  <a href="{{route('payments/filter/plane')}}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>@lang('pages/sidebar.by-airline')</p>
+                  </a>
+                </li>
+                @endcan
+                @can('admin-payments-manual')
+                <li class="nav-item">
+                  <a href="{{route('manual-payments')}}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>@lang('pages/sidebar.manual')</p>
+                  </a>
+                </li>
+                @endcan
+              </ul>
+            </li>
+          @endcan
+          @can('admin-claims')
+            <li class="nav-item has-treeview">
+              <a href="{{route('claims')}}" class="nav-link">
+                <i class="nav-icon fas fa-exclamation"></i>
+                <p>
+                  @lang('pages/sidebar.claims')
+                </p>
+              </a>
+            </li>
+          @endcan
+          @can('admin-settings')
+            <li class="nav-item has-treeview">
+              <a href="{{route('users/profile')}}" class="nav-link">
+                <i class="nav-icon fas fa-cog"></i>
+                <p>
+                  @lang('pages/sidebar.settings')
+                </p>
+              </a>
+            </li>
+          @endcan
+          @can('admin-documents')
+            <li class="nav-item">
+              <a href="{{route('documents')}}" class="nav-link">
+                <i class="nav-icon fas fa-file-alt"></i>
+                <p>
+                  @lang('pages/sidebar.documents')
+                </p>
+              </a>
+            </li>
+          @endcan
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

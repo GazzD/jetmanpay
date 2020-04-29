@@ -13,4 +13,9 @@ class Plane extends Model
     public function client(){
         return $this->belongsTo('App\Client');
     }
+
+    public function dosas()
+    {
+        return $this->hasMany(Dosa::class);
+    }
 }
