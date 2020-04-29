@@ -146,21 +146,6 @@ return [
         'details'               => 'Details',
 
     ],
-    'recharges'  => [
-        'recharges'             => 'Recharges',
-        'date'                  => 'Date',
-        'image'                 => 'Image',
-        'type'                  => 'Type',
-        'status'                => 'Status',
-        'user'                  => 'User',
-        'amount'                => 'Amount',
-        'options'               => 'Options',
-        'create'                => 'Create',
-        'client'                => 'Client',
-        'details'               => 'Details',
-        'confirm'               => 'Confirm',
-
-    ],
     'login'  => [
         'title'             => 'Sign in to start your session',
         'remmember_me'      => 'Remmember me',

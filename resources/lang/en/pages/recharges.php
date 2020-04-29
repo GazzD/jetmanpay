@@ -26,5 +26,6 @@ return [
     'details'               => 'Details',
     'confirm'               => 'Confirm',
     'back'                  => 'Back',
-    
+    'choose-file'           => 'Choose File',
+    'upload'                => 'Upload',
 ];

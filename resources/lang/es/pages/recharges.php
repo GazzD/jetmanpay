@@ -25,4 +25,6 @@ return [
     'details'               => 'Detalle',
     'confirm'               => 'Confirmar',
     'back'                  => 'Volver',
+    'choose-file'           => 'Escoger archivo',
+    'upload'                => 'Subir',
 ];

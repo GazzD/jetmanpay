@@ -1,6 +1,6 @@
 @extends('layouts.backend')
 
-@section('title', __('messages.recharges.recharges'))
+@section('title', __('pages/recharges.recharges'))
 
 @section('content')
 
@@ -9,12 +9,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0 text-dark">@lang('messages.recharges.recharges')</h1>
+                <h1 class="m-0 text-dark">@lang('pages/recharges.recharges')</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">@lang('messages.home')</a></li>
-                    <li class="breadcrumb-item active">@lang('messages.recharges.recharges')</li>
+                    <li class="breadcrumb-item active">@lang('pages/recharges.recharges')</li>
                 </ol>
             </div>
         </div>
@@ -22,7 +22,7 @@
     @role('CLIENT|TREASURER1|TREASURER2')
         <div class="container-fluid">
             <div class="row mb-2" style="float:right;">
-                <a href="{{route('recharges/create')}}" class="btn btn-primary"> @lang('messages.recharges.create')</a>
+                <a href="{{route('recharges/create')}}" class="btn btn-primary"> @lang('pages/recharges.create')</a>
             </div>
         </div>
     @endrole
@@ -34,10 +34,10 @@
 	<table id="datatable" class="table table-striped table-bordered">
 		<thead>
 			<tr>
-				<th>@lang('messages.recharges.date')</th>
-				<th>@lang('messages.recharges.user')</th>
-				<th>@lang('messages.recharges.status')</th>
-				<th>@lang('messages.recharges.options')</th>
+				<th>@lang('pages/recharges.date')</th>
+				<th>@lang('pages/recharges.user')</th>
+				<th>@lang('pages/recharges.status')</th>
+				<th>@lang('pages/recharges.options')</th>
 			</tr>
 		</thead>
 	</table>

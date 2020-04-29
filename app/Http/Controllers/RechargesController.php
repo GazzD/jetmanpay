@@ -127,29 +127,35 @@ class RechargesController extends Controller
         if($user->hasRole('REVIEWER')){
             $recharges = Recharge::whereIn('status',['APPROVED','PENDING','REJECTED'])
                 ->with('client')
+                ->latest()
                 ->get()
                 ;
         }elseif($user->hasRole('CLIENT')){
             $recharges = Recharge::where('client_id',$user->client_id)
                     ->whereIn('status',['APPROVED','PENDING','REJECTED','REVISED1'])
                     ->with('client')
+                    ->latest()
                     ->get()
                     ;
         }elseif($user->hasRole('TREASURER1')){
             $recharges = Recharge::where('client_id',$user->client_id)
                 ->whereIn('status',['REVISED1','REVISED2'])
                 ->with('client')
+                ->latest()
                 ->get()
                 ;
         }elseif($user->hasRole('TREASURER2')){
             $recharges = Recharge::where('user_id',$user->id)
                 ->with('client')
+                ->latest()
                 ->get()
                 ;
         }
+        
         foreach ($recharges as $recharge) {
             $recharge->date = date_format($recharge->created_at,"d/m/Y/ H:i:s");
         }
+        
         // Return datatable
         return DataTables::of($recharges)
             ->addColumn('action', function($data){
