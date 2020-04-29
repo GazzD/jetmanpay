@@ -50,7 +50,7 @@
 					</div>
 				</div>
                 <button type="submit" id="submit-btn" class="btn btn-primary">@lang('pages/recharges.create')</button>
-                <button onclick="window.history.back();" class="btn btn-default">@lang('Back')</button>
+                <button onclick="window.history.back();" class="btn btn-default">@lang('pages/recharges.back')</button>
             </form>
         </div>
     </div>
@@ -61,7 +61,7 @@
 <script src="{{asset('backend/plugins/bs-custom-file-input/bs-custom-file-input.min.js')}}"></script>
 <script type="text/javascript">
 $(document).ready(function () {
-  bsCustomFileInput.init();
+	bsCustomFileInput.init();
 });
 </script>
 @endsection

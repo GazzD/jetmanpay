@@ -24,4 +24,5 @@ return [
     'client'                => 'Cliente',
     'details'               => 'Detalle',
     'confirm'               => 'Confirmar',
+    'back'                  => 'Volver',
 ];

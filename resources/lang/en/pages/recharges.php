@@ -25,5 +25,6 @@ return [
     'client'                => 'Client',
     'details'               => 'Details',
     'confirm'               => 'Confirm',
+    'back'                  => 'Back',
     
 ];
