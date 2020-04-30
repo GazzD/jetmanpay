@@ -20,6 +20,8 @@ return [
     'treasurer1'=> 'Tesorero nivel 1',
     'treasurer2'=> 'Tesorero nivel 2',
     'reviewer'  => 'Reviewer',
+    'government'=> 'Gobierno',
+    'admin'     => 'Admin',
     'english'   => 'Inglés',
     'spanish'   => 'Español',
     'home'      => 'Inicio',

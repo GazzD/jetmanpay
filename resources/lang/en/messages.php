@@ -20,6 +20,8 @@ return [
     'treasurer1'=> 'Treasurer lvl 1',
     'treasurer2'=> 'Treasurer lvl 2',
     'reviewer'  => 'Reviewer',
+    'government'=> 'Government',
+    'admin'     => 'Admin',
     'english'   => 'English',
     'spanish'   => 'Spanish',
     'home'      => 'Home',

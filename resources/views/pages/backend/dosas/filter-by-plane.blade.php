@@ -65,13 +65,9 @@
 @section('extended-css')
 <link rel="stylesheet" href="{{asset('backend/plugins/select2/css/select2.min.css')}}">
 <style>
-.select2-container--default .select2-selection--single {
-    margin: 0;
-    padding: 0;
-}
-/* .select2-container--default .select2-selection--single .select2-selection__rendered { */
-/*     line-height: 15px; */
-/* } */
+    .select2-container .select2-selection--single {
+        height: 38px;
+    }
 </style>
 @endsection
 @section('extended-scripts')

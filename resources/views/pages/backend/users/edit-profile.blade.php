@@ -1,6 +1,6 @@
 @extends('layouts.backend')
 
-@section('title', __('messages.dashboard.dashboard'))
+@section('title', __('pages/users.users'))
 
 @section('content')
 <!-- Content Header (Page header) -->

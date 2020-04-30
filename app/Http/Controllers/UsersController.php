@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
+use App\Client;
 
 class UsersController extends Controller
 {
@@ -84,14 +85,30 @@ class UsersController extends Controller
         
     }
 
-    public function create(Request $request){
-        // Find roles
-        $roles = Role::where('name', 'MANAGER')->orWhere('name', 'OPERATOR')->get();
-        if(auth()->user()->hasRole('CLIENT')){
-            $roles = Role::where('name','like','TREASURER%')->get();
+    public function create(Request $request)
+    {
+        $clients = [];
+        
+        // Filter roles
+        switch (auth()->user()->getRoleNames()[0]) {
+            case 'ADMIN':
+                $roles = Role::all();
+                $clients = Client::all();
+                break;
+            case 'MANAGER':
+                $roles = Role::whereIn('name', ['MANAGER', 'OPERATOR'])->get();
+                break;
+            case 'CLIENT':
+                $roles = Role::whereIn('name', ['TREASURER2', 'TREASURER1'])->get();
+                break;
+            default:
+                $roles = [];
+                break;
         }
+        
         // Render view
         return view('pages.backend.users.create')
+            ->with('clients', $clients)
             ->with('roles', $roles)
         ;
     }
@@ -125,25 +142,34 @@ class UsersController extends Controller
         
         // Redirect to list
         return redirect()->route('users');
-
     }
 
     public function fetch()
     {
-        $user = auth()->user();
-        // Assign first role
-        if($user->hasRole('CLIENT')){
-            $users = User::where('client_id',$user->client_id)
-                ->whereHas('roles', function($roles){
-                    $roles->where('name','like','TREASURER%');
-                })
-                ->get()
+        // Filter users by role
+        switch (auth()->user()->getRoleNames()[0]) {
+            case 'ADMIN':
+                $users = User::with('roles')->get();
+                break;
+            case 'MANAGER':
+                $users = User::whereHas('roles', function($roles){
+                    $roles->whereIn('name', ['MANAGER', 'OPERATOR']);
+                })->get();
+                break;
+            case 'CLIENT':
+                $users = User::where('client_id',auth()->user()->client_id)
+                    ->whereHas('roles', function($roles){
+                        $roles->where('name','like','TREASURER%');
+                    })
+                    ->get()
                 ;
-        }elseif($user->hasRole('MANAGER')){
-            $users = User::with('roles')->get();
-        }else{
-            $users = [];
+                break;
+            default:
+                $users = [];
+                break;
         }
+        
+        // Translate roles
         foreach ($users as $i => $user) {
             $users[$i]->role = __('messages.'.strtolower($users[$i]->roles[0]->name));
         }

@@ -25,6 +25,7 @@ return [
     'email'                 => 'Correo',
     'role'                  => 'Rol',
     'create'                => 'Crear',
+    'client'                => 'Cliente',
     'save'                  => 'Guardar',
     'edit'                  => 'Editar',
     'edit-password'         => 'Editar Contraseña',

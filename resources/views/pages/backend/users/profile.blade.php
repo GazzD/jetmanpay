@@ -1,6 +1,6 @@
 @extends('layouts.backend')
 
-@section('title', __('messages.dashboard.dashboard'))
+@section('title', __('pages/users.users'))
 
 @section('content')
 <!-- Content Header (Page header) -->
@@ -105,10 +105,10 @@
                   @csrf
                   <div class="box-body">
                     <div class="form-group">
-                      <input type="password" required="true" class="form-control" name="password" placeholder="@lang('messages.users.password')">
+                      <input type="password" required="required" class="form-control" name="password" placeholder="@lang('messages.users.password')">
                     </div>
                     <div class="form-group">
-                      <input type="password" required="true" class="form-control" name="passwordConfirmation" placeholder="@lang('messages.users.password-confirmation')">
+                      <input type="password" required="required" class="form-control" name="passwordConfirmation" placeholder="@lang('messages.users.password-confirmation')">
                     </div>
                   </div>
               </div>
