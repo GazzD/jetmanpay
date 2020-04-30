@@ -45,7 +45,7 @@
                 @csrf
                 <div class="form-group">
                     <div class="col-md-10">
-                    <input type="text" required="" placeholder="@lang('messages.payments.plane_tail')" id="planeTail" class="form-control" name="planeTail">
+                    <input type="text" required="required" placeholder="@lang('messages.payments.plane_tail')" id="planeTail" class="form-control" name="planeTail">
                     <button type="submit" id="submit-btn" style="margin-top: 10px;" class="btn btn-primary">@lang('messages.users.create')</button>
                     </div>
                 </div>
