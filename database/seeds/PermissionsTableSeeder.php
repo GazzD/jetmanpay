@@ -3,7 +3,6 @@
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
-use Illuminate\Support\Facades\DB;
 
 class PermissionsTableSeeder extends Seeder
 {
@@ -27,6 +26,15 @@ class PermissionsTableSeeder extends Seeder
         Permission::create(['name' => 'admin-dosas']);
         Permission::create(['name' => 'admin-settings']);
         Permission::create(['name' => 'admin-documents']);
+        
+        $adminPermissions = [
+            'admin-users',
+            'admin-payments',
+            'admin-pending-payments',
+            'admin-claims',
+            'admin-settings',
+            'admin-documents'
+        ];
         
         $managerPermissions = [
             'admin-users',
@@ -87,6 +95,17 @@ class PermissionsTableSeeder extends Seeder
             'admin-documents'
         ];
         
+        $governmentPermissions = [
+            'admin-payments',
+            'admin-settings',
+            'admin-documents'
+        ];
+        
+        // Assing admin's permissions
+        $role = Role::findByName('ADMIN');
+        $permissions = Permission::whereIn('name', $adminPermissions)->get();
+        $role->syncPermissions($permissions);
+        
         // Assing manager's permissions
         $role = Role::findByName('MANAGER');
         $permissions = Permission::whereIn('name', $managerPermissions)->get();
@@ -122,37 +141,10 @@ class PermissionsTableSeeder extends Seeder
         $permissions = Permission::whereIn('name', $staffPermissions)->get();
         $role->syncPermissions($permissions);
         
-        // An empty array of stored permission IDs
-//         $permission_ids = []; 
-//         // Iterate though all routes
-//         foreach (\Route::getRoutes() as $route)
-//         {
-//             // Get route action
-//             $action = $route->getActionname();
-//             // Separating controller and method
-//             $_action = explode('@',$action);
-            
-//             $controller = $_action[0];
-//             $method = end($_action);
-            
-//             // Check if this permission is already exists
-//             $permission_check = Permission::where(['controller'=>$controller,'method'=>$method])
-//                 ->first()
-//             ;
-//             if(!$permission_check){
-//                 $permission = new Permission();
-//                 $permission->controller = $controller;
-//                 $permission->method = $method;
-//                 $permission->save();
-//                 // Add stored permission id in array
-//                 $permission_ids[] = $permission->id;
-//             }
-//         }
-        // Find manager role.
-//         $admin_role = Role::where('name','MANAGER')->first();
-        
-        // Attach all permissions to admin role
-//         $admin_role->permissions()->attach($permission_ids);
+        // Assing admin's permissions
+        $role = Role::findByName('GOVERNMENT');
+        $permissions = Permission::whereIn('name', $governmentPermissions)->get();
+        $role->syncPermissions($permissions);
         
     }
 }

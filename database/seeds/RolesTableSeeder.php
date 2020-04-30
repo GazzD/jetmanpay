@@ -13,6 +13,7 @@ class RolesTableSeeder extends Seeder
      */
     public function run()
     {
+        $admin = Role::create(['name' => 'ADMIN']);
         $manager = Role::create(['name' => 'MANAGER']);
         $operator = Role::create(['name' => 'OPERATOR']);
         $client = Role::create(['name' => 'CLIENT']);
@@ -20,6 +21,7 @@ class RolesTableSeeder extends Seeder
         $staff = Role::create(['name' => 'STAFF']);
         $treasurer1 = Role::create(['name' => 'TREASURER1']);
         $treasurer2 = Role::create(['name' => 'TREASURER2']);
+        $government = Role::create(['name' => 'GOVERNMENT']);
         
         $user = User::find(1);
         $user->assignRole($manager);
@@ -41,5 +43,11 @@ class RolesTableSeeder extends Seeder
         
         $user = User::find(7);
         $user->assignRole($staff);
+        
+        $user = User::find(8);
+        $user->assignRole($government);
+        
+        $user = User::find(9);
+        $user->assignRole($admin);
     }
 }
