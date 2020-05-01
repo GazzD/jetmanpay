@@ -4,7 +4,7 @@ return [
     
     /*
      |--------------------------------------------------------------------------
-     | Recharges Language Lines
+     | Sidebar Language Lines
      |--------------------------------------------------------------------------
      |
      | The following language lines are all internal messages for various

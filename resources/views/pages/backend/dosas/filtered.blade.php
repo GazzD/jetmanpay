@@ -8,12 +8,13 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0 text-dark">@lang('messages.dosa.dosa')</h1>
+                <h1 class="m-0 text-dark">@lang('pages/dosas.dosa')</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">@lang('messages.home')</a></li>
-                    <li class="breadcrumb-item active">@lang('messages.dosa.dosa')</li>
+                    <li class="breadcrumb-item"><a href="{{ route('dosas/plane') }}">@lang('pages/dosas.pending-dosas')</a></li>
+                    <li class="breadcrumb-item active">@lang('pages/dosas.dosa')</li>
                 </ol>
             </div>
         </div>
@@ -31,19 +32,19 @@
         <div class="row"  style="float:right;" >
             <div class="col-md-12">
                 <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#generateReport" style="margin-bottom: 10px;">@lang('messages.payments.generate_report')</button>
-                <button type="submit" class="btn btn-warning" style="margin-bottom: 10px;">@lang('messages.dosa.pay-dosas')</button>
+                <button type="submit" class="btn btn-warning" style="margin-bottom: 10px;">@lang('pages/dosas.pay-dosas')</button>
             </div>
         </div>
     	<table id="datatable" class="table table-striped table-bordered">
     		<thead>
     			<tr>
     				<th width="5%"></th>
-    				<th>@lang('messages.dosa.airplane')</th>
-    				<th>@lang('messages.dosa.billing_code')</th>
-    				<th>@lang('messages.dosa.aperture_date')</th>
-    				<th>@lang('messages.dosa.total_amount')</th>
-    				<th>@lang('messages.dosa.status')</th>
-    				<th>@lang('messages.dosa.actions')</th>
+    				<th>@lang('pages/dosas.airplane')</th>
+    				<th>@lang('pages/dosas.billing_code')</th>
+    				<th>@lang('pages/dosas.aperture_date')</th>
+    				<th>@lang('pages/dosas.total_amount')</th>
+    				<th>@lang('pages/dosas.status')</th>
+    				<th>@lang('pages/dosas.actions')</th>
     			</tr>
     		</thead>
     		<tbody>
