@@ -43,4 +43,5 @@ return [
     'client_name'           => 'Client name',
     'pending-dosas'         => 'Pending Dosas',
     'plane-tail'            => 'Plain Tail',
+    'back'                  => 'Back',
 ];

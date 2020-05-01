@@ -4,7 +4,7 @@ return [
     
     /*
      |--------------------------------------------------------------------------
-     | Recharges Language Lines
+     | Dosas Language Lines
      |--------------------------------------------------------------------------
      |
      | The following language lines are all internal messages for various
@@ -12,6 +12,7 @@ return [
      | these language lines according to your application's requirements.
      |
      */
+    
     'dosa'                  => 'DOSA',
     'airplane'              => 'Matrícula',
     'billing_code'          => 'Factura',
@@ -42,4 +43,5 @@ return [
     'client_name'           => 'Nombre del cliente',
     'pending-dosas'         => 'Dosas Pendientes',
     'plane-tail'            => 'Matrícula',
+    'back'                  => 'Volver',
 ];
