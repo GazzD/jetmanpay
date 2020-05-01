@@ -66,6 +66,7 @@
                     <div class="col-md-10">
                     	<div class="form-group">
                             <select name="clientId" class="form-control select2" style="width: 100%;">
+                            	<option value="-1">@lang('pages/users.choose-one')</option>
                                 @foreach($clients as $client)
                                     <option value="{{$client->id}}">{{ $client->name }}</option>
                                 @endforeach

@@ -34,4 +34,5 @@ return [
     'password'              => 'Password',
     'password-confirmation' => 'Password confirmation',
     'back'                  => 'Back',
+    'choose-one'            => 'Choose one...',
 ];

@@ -33,4 +33,5 @@ return [
     'password'              => 'Contraseña',
     'password-confirmation' => 'Confirma tu contraseña',
     'back'                  => 'Volver',
+    'choose-one'            => 'Seleccione uno...',
 ];

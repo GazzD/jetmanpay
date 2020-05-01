@@ -129,11 +129,16 @@ class UsersController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
-
-        //If the user was created by a client it also stores the client's id
-        if(auth()->user()->hasRole('CLIENT')){
+        
+        // If the user was created by a client it also stores the client's id
+        if(auth()->user()->hasRole('CLIENT')) {
             $user->client_id = auth()->user()->client_id;
         }
+        
+        // If admin can create users with client
+        if(auth()->user()->hasRole('ADMIN') && isset($request->clientId) && $request->clientId != -1)
+            $user->client_id = $request->clientId;
+            
         // Store record
         $user->save();
         
