@@ -13,7 +13,7 @@
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">@lang('messages.home')</a></li>
-                    <li class="breadcrumb-item active">@lang('messages.sidebar.by-airline')</li>
+                    <li class="breadcrumb-item active">@lang('pages/dosas.pending-dosas')</li>
                 </ol>
             </div>
         </div>
@@ -23,42 +23,37 @@
 
 <!-- Main content -->
 <section class="content">
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-    <div class="card card-default">
-        <div class="card-header">
-            <h3 class="card-title">@lang('messages.payments.add_tail')</h3>
-            <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
-                <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-remove"></i></button>
-            </div>
-        </div>
-        <div class="card-body">
-            <form method="post" action="{{route('dosas/plane')}}" role="form" class="form-horizontal">
-                @csrf
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>@lang('messages.payments.plane_tail')</label>
-                            <select class="form-control select2" name="tailNumber" style="width: 100%;">
-                                @foreach($planes as $plane)
-                                <option value="{{ $plane->tail_number }}">{{ $plane->tail_number }}</option>
-                                @endforeach
-                            </select>
-                            <button type="submit" id="submit-btn" style="margin-top: 10px;" class="btn btn-primary">@lang('messages.dosa.search')</button>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
+	<form method="post" action="{{route('dosas/plane')}}" role="form" class="form-horizontal">
+		@csrf 
+		@if ($errors->any())
+		<div class="alert alert-danger">
+			<ul>
+				@foreach ($errors->all() as $error)
+				<li>{{ $error }}</li>
+				@endforeach
+			</ul>
+		</div>
+		@endif
+		<div class="card card-primary card-outline">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>@lang('pages/dosas.plane-tail')</label>
+							<select class="form-control select2" name="tailNumber" style="width: 100%;">
+								@foreach($planes as $plane)
+									<option value="{{ $plane->tail_number }}">{{ $plane->tail_number }}</option>
+								@endforeach
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="card-footer">
+				<button type="submit" id="submit-btn" style="margin-top: 10px;" class="btn btn-primary">@lang('pages/dosas.search')</button>
+			</div>
+		</div>
+	</form>
 </section>
 <!-- /.content -->
 @endsection
