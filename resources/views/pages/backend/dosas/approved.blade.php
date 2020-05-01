@@ -1,6 +1,6 @@
 @extends('layouts.backend')
 
-@section('title', __('messages.dosa.approved_dosas'))
+@section('title', __('pages/dosas.approved_dosas'))
 
 @section('content')
 
@@ -9,12 +9,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0 text-dark">@lang('messages.dosa.approved_dosas')</h1>
+                <h1 class="m-0 text-dark">@lang('pages/dosas.approved_dosas')</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">@lang('messages.home')</a></li>
-                    <li class="breadcrumb-item active">@lang('messages.dosa.approved_dosas')</li>
+                    <li class="breadcrumb-item active">@lang('pages/dosas.approved_dosas')</li>
                 </ol>
             </div>
         </div>
@@ -27,11 +27,11 @@
 	<table id="datatable" class="table table-striped table-bordered">
 		<thead>
 			<tr>
-				<th>@lang('messages.dosa.airplane')</th>
-				<th>@lang('messages.dosa.billing_code')</th>
-				<th>@lang('messages.dosa.total_amount')</th>
-				<th>@lang('messages.dosa.currency')</th>
-				<th>@lang('messages.dosa.options')</th>
+				<th>@lang('pages/dosas.airplane')</th>
+				<th>@lang('pages/dosas.billing_code')</th>
+				<th>@lang('pages/dosas.total_amount')</th>
+				<th>@lang('pages/dosas.currency')</th>
+				<th>@lang('pages/dosas.options')</th>
 			</tr>
 		</thead>
 	</table>
