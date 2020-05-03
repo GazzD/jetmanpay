@@ -78,45 +78,7 @@ class DosasController extends Controller
         ;
     }
     
-    public function pay(Request $request)
-    {
-//         dd($request->all());
-        // Get tax
-        $tax = $this->getTaxes(); //15 %
-        $taxMultiplier = ($tax/100)+1; //1.15
-        
-        // Validate dosas to pay
-        if(!$request->get('dosasToPay')){
-            return redirect()->back()->withErrors([__('messages.dosa.select_dosas')]);
-        }
-        $dosas = Dosa::where('client_id', auth()->user()->client_id)->where('status', 'PENDING')->whereIn('id', $request->get('dosasToPay'))->get();
-        $client = Client::find(auth()->user()->client_id);
-        
-        // Calculate total dosas to pay
-        $totalAmount = 0;
-        foreach($dosas as $dosa) {
-            $conversionRate = $this->getConversionRate($dosa->currency,$client->currency);
-            $dosa->convertedAmount = $dosa->total_dosa_amount * $conversionRate;
-            $totalAmount = $totalAmount + ($dosa->convertedAmount);
-        }
-        
-        $taxAmount = $totalAmount * ($taxMultiplier-1); 
-        $totalAmount = $totalAmount * $taxMultiplier;
-        
-        // Get plane
-        $plane = Plane::find($dosas[0]->plane_id);
-        
-        // Load payment form view
-        return view('pages.backend.payments.dosa-payment')
-            ->with('plane',$plane)
-            ->with('dosas',$dosas)
-            ->with('tax',$tax)
-            ->with('client',$client)
-            ->with('totalAmount',$totalAmount)
-            ->with('taxAmount',$taxAmount)
-        ;
-        
-    }
+    
 
     public function filterByApproved()
     {

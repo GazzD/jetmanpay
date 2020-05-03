@@ -27,7 +27,7 @@
     @if($errors->any())
         <h4>{{$errors->first()}}</h4>
     @endif
-	<form action="{{route('pay-dosa')}}" method="post">
+	<form action="{{route('payments/dosa/create')}}" method="post">
 		@csrf
         <div class="row"  style="float:right;" >
             <div class="col-md-12">

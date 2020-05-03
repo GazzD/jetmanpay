@@ -24,8 +24,8 @@ Route::group(['middleware' => ['auth']], function () {
     // Pending Payments
     Route::group(['middleware' => ['permission:admin-pending-payments']], function () {
         Route::post('/payments/reports', 'PaymentsController@generateReport')->name('payments/reports');
-        Route::get('/payments/pending', 'PaymentsController@pending')->name('pending-payments');
-        Route::get('/payments/pending-payments', 'PaymentsController@fetchPendingPayments')->name('fetch-pending-payments');
+        Route::get('/payments/pending', 'PaymentsController@indexPending')->name('payments/pending');
+        Route::get('/payments/fetch/pending', 'PaymentsController@fetchPending')->name('fetch-pending-payments');
         Route::get('/payments/fetch-payments', 'PaymentsController@fetchPayments')->name('fetch-payments');
     });
     
@@ -65,6 +65,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/payments/manual', 'PaymentsController@storeManual')->name('manual-payments');
     Route::get('/clients/fetch/plane/{id}', 'ClientsController@fetchByPlane')->name('fetch-clients-by-plane');
     
+    //Payment by DOSA
+    Route::post('/payments/dosa/create', 'PaymentsController@createByDosa')->name('payments/dosa/create');
+    Route::post('/payments/dosa/store', 'PaymentsController@storeByDosa')->name('payments/dosa/store');
+    // Route::post('/payments/pending', 'PaymentsController@indexPending')->name('payments/dosa/pending');
+    
     // Payment documents
     Route::get('/payments/{id}/documents/', 'PaymentDocumentsController@index')->name('payment-documents');
     Route::post('/payments/{id}/documents/', 'PaymentDocumentsController@store')->name('store-payment-documents');
@@ -93,7 +98,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/dosas', 'DosasController@pay')->name('pay-dosa');
         Route::get('/dosas/plane', 'DosasController@filterByPlane')->name('dosas/plane');
         Route::post('/dosas/plane', 'DosasController@pendingByPlane')->name('dosas/plane');
-        Route::post('/payments/dosa', 'PaymentsController@createPayment')->name('payments/dosa');
         Route::get('/dosas/plane/{tailNumber}', 'DosasController@clientDosas')->name('dosas/plane/tail-number');
         Route::get('/dosas/{id}', 'DosasController@detail')->name('dosa-detail');
     });

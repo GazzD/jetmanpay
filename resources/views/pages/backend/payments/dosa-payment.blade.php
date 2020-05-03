@@ -41,7 +41,7 @@
         </div>
     @endif
         <div class="card-body">
-        <form method="post" action="{{route('payments/dosa')}}" role="form" class="form-horizontal">
+        <form method="post" action="{{route('payments/dosa/store')}}" role="form" class="form-horizontal">
                 <div class="row">
                     @csrf
                     <div class="col-md-6">
@@ -86,19 +86,21 @@
                 <div class="form-group">
                     <label class="col-md-2 control-label">@lang('messages.payments.invoice_items')</label>
                     @foreach($dosas as $dosa)
-                        <div class="row" style="margin-top:10px;">
-                            <div class="col-md-9">
-                                <input type="text" disabled="" value="{{$dosa->aperture_code}}" class="form-control" name="feeConcept[]">
+                        @foreach($dosa->items as $item)
+                            <div class="row" style="margin-top:10px;">
+                                <div class="col-md-9">
+                                    <input type="text" disabled="" value="{{$item->concept}}" class="form-control" name="feeConcept[]">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" disabled="" value="{{$item->convertedAmount}} {{$client->currency}}" name="feeAmount[]" class="form-control" name="feeConcept">
+                                </div>
                             </div>
-                            <div class="col-md-3">
-                                <input type="text" disabled="" value="{{$dosa->convertedAmount}} {{$client->currency}}" name="feeAmount[]" class="form-control" name="feeConcept">
-                            </div>
-                        </div>
+                        @endforeach
                         <input type="hidden" value="{{$dosa->id}}" name="dosaIds[]">
                     @endforeach
                     <div class="row" style="margin-top:10px;">
                         <div class="col-md-9">
-                            <input type="text" disabled="" value="@lang('messages.dosa.tax') ({{$tax}}%) " class="form-control" name="feeConcept[]">
+                            <input type="text" disabled="" value="@lang('pages/dosas.tax') ({{$tax}}%) " class="form-control" name="feeConcept[]">
                         </div>
                         <div class="col-md-3">
                             <input type="text" disabled="" value="{{$taxAmount}} {{$client->currency}}" name="feeAmount[]" class="form-control" name="feeConcept">

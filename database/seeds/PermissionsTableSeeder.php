@@ -74,7 +74,8 @@ class PermissionsTableSeeder extends Seeder
             'admin-payments',
             'admin-dosas',
             'admin-settings',
-            'admin-documents'
+            'admin-documents',
+            'admin-pending-payments',
         ];
         
         $treasurer2Permissions = [

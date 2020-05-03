@@ -85,22 +85,32 @@
                 </div>
                 <div class="form-group">
                     <label class="col-md-2 control-label">@lang('messages.payments.invoice_items')</label>
-                    @foreach($payment->items as $item)
-                        <div class="row" style="margin-top:10px;">
-                            <div class="col-md-9">
-                                <input type="text" disabled="" value="{{$item->concept}}" class="form-control" name="feeConcept[]">
+                    @foreach($payment->dosas as $dosa)
+                        @foreach ($dosa->items as $item)
+                            <div class="row" style="margin-top:10px;">
+                                <div class="col-md-9">
+                                    <input type="text" disabled="" value="{{$item->concept}}" class="form-control" name="feeConcept[]">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" disabled="" value="{{$item->convertedAmount}} {{$payment->client->currency}}" name="feeAmount[]" class="form-control" name="feeConcept">
+                                </div>
                             </div>
-                            <div class="col-md-3">
-                                <input type="text" disabled="" value="{{$item->amount}} {{$payment->client->currency}}" name="feeAmount[]" class="form-control" name="feeConcept">
-                            </div>
-                        </div>
+                        @endforeach
                     @endforeach
+                    <div class="row" style="margin-top:10px;">
+                        <div class="col-md-9">
+                            <input type="text" disabled="" value="@lang('pages/dosas.tax') ({{$tax}}%) " class="form-control" name="feeConcept[]">
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" disabled="" value="{{$taxAmount}} {{$payment->client->currency}}" name="feeAmount[]" class="form-control" name="feeConcept">
+                        </div>
+                    </div>
                     <div class="row" style="margin-top:10px;">
                         <div class="col-md-9">
                             <input type="text" disabled="" value="Total" class="form-control" name="tax">
                         </div>
                         <div class="col-md-3">
-                            <input type="text" disabled="" value="{{$payment->total_amount}} {{$payment->client->currency}}" name="totalAmount" class="form-control" name="feeConcept">
+                            <input type="text" disabled="" value="{{$totalAmount}} {{$payment->client->currency}}" name="totalAmount" class="form-control" name="feeConcept">
                         </div>
                     </div>
                 </div>
@@ -110,11 +120,12 @@
                             <label>@lang('messages.payments.status')</label>
                             <select class="form-control" name="status" required id="status">
                                 @role('CLIENT')
-                                    <option value="PENDING">@lang('messages.payments.pending')</option>
-                                    <option value="CANCELED">@lang('messages.payments.canceled')</option>
+                                    <option value="APPROVED">@lang('messages.payments.approved')</option>
+                                    <option value="CANCELLED">@lang('messages.payments.canceled')</option>
                                 @endrole
                                 @role('TREASURER1')
                                     <option value="REVISED1">@lang('messages.payments.revised1')</option>
+                                    <option value="CANCELLED">@lang('messages.payments.canceled')</option>
                                 @endrole
                             </select>
                         </div>
