@@ -358,7 +358,7 @@ class PaymentsController extends Controller
            $dosa->save();
         }
 
-        return redirect()->route('dosas/plane');
+        return redirect()->route('payments');
     }
 
     public function generateReport(Request $request)

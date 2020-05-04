@@ -19,6 +19,7 @@ class PermissionsTableSeeder extends Seeder
         Permission::create(['name' => 'admin-recharges']);
         Permission::create(['name' => 'admin-payments']);
         Permission::create(['name' => 'admin-pending-payments']);
+        Permission::create(['name' => 'admin-completed-payments']);
         Permission::create(['name' => 'admin-send-payments']);
         Permission::create(['name' => 'admin-payments-by-airline']);
         Permission::create(['name' => 'admin-payments-manual']);
@@ -39,6 +40,7 @@ class PermissionsTableSeeder extends Seeder
         $managerPermissions = [
             'admin-users',
             'admin-payments',
+            'admin-completed-payments',
             'admin-pending-payments',
             'admin-send-payments',
             'admin-payments-by-airline',
@@ -50,6 +52,7 @@ class PermissionsTableSeeder extends Seeder
         
         $operatorPermissions = [
             'admin-payments',
+            'admin-completed-payments',
             'admin-pending-payments',
             'admin-send-payments',
             'admin-payments-by-airline',
@@ -64,6 +67,7 @@ class PermissionsTableSeeder extends Seeder
             'admin-recharges',
             'admin-users',
             'admin-payments',
+            'admin-completed-payments',
             'admin-pending-payments',
             'admin-dosas',
             'admin-settings',
@@ -72,6 +76,8 @@ class PermissionsTableSeeder extends Seeder
         
         $treasurerPermissions = [
             'admin-payments',
+            'admin-completed-payments',
+            'admin-pending-payments',
             'admin-dosas',
             'admin-settings',
             'admin-documents',
@@ -80,6 +86,8 @@ class PermissionsTableSeeder extends Seeder
         
         $treasurer2Permissions = [
             'admin-payments',
+            'admin-completed-payments',
+            'admin-pending-payments',
             'admin-dosas',
             'admin-settings',
             'admin-documents'

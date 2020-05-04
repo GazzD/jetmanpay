@@ -106,19 +106,13 @@
                 </p>
               </a>
             </li>
+          @endcan
+          @can('admin-completed-payments')
             <li class="nav-item has-treeview">
               <a href="{{route('payments/completed')}}" class="nav-link">
                 <i class="nav-icon fas fa-check"></i>
                 <p>
                   @lang('pages/sidebar.completed-payments')
-                </p>
-              </a>
-            </li>
-            <li class="nav-item has-treeview">
-              <a href="{{route('payments')}}" class="nav-link">
-                <i class="nav-icon fas fa-box"></i>
-                <p>
-                  @lang('pages/sidebar.all-payments')
                 </p>
               </a>
             </li>
