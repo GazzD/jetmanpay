@@ -52,7 +52,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['middleware' => ['permission:admin-claims']], function () {
         Route::get('/claims', 'ClaimsController@index')->name('claims');
         Route::post('/claims/store', 'ClaimsController@store')->name('claims/store');
-        Route::get('/claims/check/{id}', 'ClaimsController@check')->name('claims/check');
+        Route::post('/claims/check', 'ClaimsController@check')->name('claims/check');
         Route::get('/claims/details/{id}', 'ClaimsController@details')->name('claims/details');
         Route::get('/claims/fetch', 'ClaimsController@fetch')->name('claims/fetch');
     });
@@ -67,7 +67,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/payments/manual', 'PaymentsController@storeManual')->name('manual-payments');
     Route::get('/clients/fetch/plane/{id}', 'ClientsController@fetchByPlane')->name('fetch-clients-by-plane');
     
-    //Payment by DOSA
+    // Payment by DOSA
     Route::post('/payments/dosa/create', 'PaymentsController@createByDosa')->name('payments/dosa/create');
     Route::post('/payments/dosa/store', 'PaymentsController@storeByDosa')->name('payments/dosa/store');
     // Route::post('/payments/pending', 'PaymentsController@indexPending')->name('payments/dosa/pending');
