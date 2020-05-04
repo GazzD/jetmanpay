@@ -10,7 +10,6 @@ use App\Http\Controllers\Controller;
 use function GuzzleHttp\json_decode;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
 use Barryvdh\DomPDF\Facade as PDF;
 use Maatwebsite\Excel\Facades\Excel;
@@ -106,10 +105,13 @@ class PaymentsController extends Controller
     public function receipt($id)
     {
         // Get payment
-        $payment = Payment::with('items')->with('client')
+        $payment = Payment::with('dosas')
+            ->with('dosas.items')
+            ->with('client')
             ->with('plane')
-            ->find($id);
-
+            ->find($id)
+        ;
+        
         $color = '#FFF';
         switch ($payment->status) {
             case 'APPROVED':
@@ -123,6 +125,7 @@ class PaymentsController extends Controller
                 $color = '#FF9544';
                 break;
         }
+        
         $currency = 'x';
         switch ($payment->currency) {
             case 'USD':
@@ -132,30 +135,49 @@ class PaymentsController extends Controller
                 $currency = 'BsS';
                 break;
         }
-
+        
         // Calculate taxes
         $tax = 0;
         $subtotal = 0;
         $appfee = 0;
-        foreach ($payment->items as $item) {
-            $tax += $item->fee;
-            $subtotal += $item->amount - $item->fee;
+        foreach ($payment->dosas as $dosa) {
+            $tax += $dosa->exempt_vat_amount;
+            $subtotal += $dosa->taxable_base_amount;
         }
-
+        
+        $hasStreet = $payment->client->street ? true: false;
+        $hasSector = $payment->client->sector ? true: false;
+        $hasCity = $payment->client->city ? true: false;
+        $hasState = $payment->client->state ? true: false;
+        
+        $address = '';
+        $address .= $payment->client->state;
+        if ($hasState) $address .= ', ';
+        $address .= $payment->client->city;
+        if ($hasCity) $address .= ', ';
+        $address .= $payment->client->sector;
+        if ($hasSector) $address .= ', ';
+        $address .= $payment->client->street;
+        if ($hasStreet) $address .= ', ';
+        $address .= $payment->client->office;
+        
+        $address = $address == '' ? '-' : $address;
+        
         $data = [
             'payment' => $payment,
             'color' => $color,
             'currency' => $currency,
             'tax' => $tax,
             'subtotal' => $subtotal,
-            'appfee' => $appfee
+            'appfee' => $appfee,
+            'address' => $address,
         ];
-
+        
         $pdf = PDF::setOptions([
             'isHtml5ParserEnabled' => true,
             'isRemoteEnabled' => true
         ]);
-
+        
         return $pdf->loadView('pdf.payment-receipt', $data)->download('IPS Bill receipt.pdf');
     }
 
@@ -172,10 +194,11 @@ class PaymentsController extends Controller
                 // Opens a view with all pending payments from a plane id
                 $planeTail = $request->planeTail;
                 $payments = Payment::where('status', 'PENDING')->whereHas('plane', function ($q) use ($planeTail) {
-                    $q->where('tail_number', $planeTail);
-                })
+                        $q->where('tail_number', $planeTail);
+                    })
                     ->with('client')
-                    ->get();
+                    ->get()
+                ;
                 break;
             case 'OPERATOR':
                 // Opens a view with all pending payments made by that operator from a plane id

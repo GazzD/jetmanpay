@@ -1,17 +1,53 @@
 <html>
 <head>
-  <style>
-    @page { font-family: "Arial Narrow", Arial, sans-serif; margin: 100px 25px;}
-    header { position: fixed; top: -100px; left: -25px; right: -25px; background-color: lightblue; height: 50px; }
-    .main { font-size: 15px; }
-    .sub { font-size: 13px; }
-    .payment-info { line-height: 0.5; margin-top: 20px;}
-    .payment-table { text-align: center; }
-    .payment-total { margin-top: 10px; }
-    footer { position: fixed; bottom: -100px; left: -25px; right: -25px; line-height: 1; background-color: gray; height: 120px; text-align: center; color: #FFF; }
-/*     footer>p footer>a { font-size: 58px; font-weight: 100; } */
-/*     p:last-child { page-break-after: never; } */
-  </style>
+<style>
+    @page {
+    	font-family: "Arial Narrow", Arial, sans-serif;
+    	margin: 100px 25px;
+    }
+    
+    header {
+    	position: fixed;
+    	top: -100px;
+    	left: -25px;
+    	right: -25px;
+    	background-color: lightblue;
+    	height: 50px;
+    }
+    
+    .main {
+    	font-size: 15px;
+    }
+    
+    .sub {
+    	font-size: 13px;
+    }
+    
+    .payment-info {
+    	line-height: 0.5;
+    	margin-top: 20px;
+    }
+    
+    .payment-table {
+    	text-align: center;
+    }
+    
+    .payment-total {
+    	margin-top: 10px;
+    }
+    
+    footer {
+    	position: fixed;
+    	bottom: -100px;
+    	left: -25px;
+    	right: -25px;
+    	line-height: 1;
+    	background-color: gray;
+    	height: 120px;
+    	text-align: center;
+    	color: #FFF;
+    }
+</style>
 </head>
 <body>
   <header>
@@ -23,18 +59,18 @@
     <p>Opa locka , FL 33054, United States</p>
   </footer>
   <main>
-    <br />
+      <br />    <br />    <br />
     <div class="payment-info">
         <p class="main">TAIL NUMBER</p>
         <p class="sub">{{ $payment->plane->tail_number}}</p>
         <p class="main">BILL NUMBER</p>
-        <p class="sub">IPS-{{ $payment->number }}</p>
+        <p class="sub">{{ $payment->number }}</p>
         <p class="main">BILL REFERENCE</p>
         <p class="sub">{{ $payment->reference }}</p>
         <p class="main">INVOICE NUMBER/DOSA</p>
         <p class="sub">{{ $payment->invoice_number }}/{{ $payment->dosa_number }}</p>
         <p class="main">ADDRESS</p>
-        <p class="sub">Iere House, Golden Grove Road, Piarco, Trinidad And Tobago, Arima-Tunapuna-Piarco, (00000)</p>
+        <p class="sub">{{ $address }}</p>
     </div>
     <div class="payment-table">
         <p style="font-size: 20px; text-align: center;">PAYMENT CONFIRMATION</p>
@@ -72,12 +108,15 @@
                 <th>AMOUNT</th>
               </tr>
             </thead>
-            <tbody style="text-align: center;">
-              @foreach($payment->items as $item)
-              <tr style="font-size: 13px;">
-                <td>{{ $item->concept }}</td>
-                <td>{{ $currency }}{{ $item->amount }}</td>
-              </tr>
+            <tbody>
+              @foreach($payment->dosas as $dosa)
+              	  <tr><td><b>DOSA {{$dosa->id_charge}}</b></td></tr>
+                  @foreach($dosa->items as $item)
+                  <tr style="font-size: 13px;">
+                    <td>{{ $item->concept }}</td>
+                    <td style="text-align: center;">{{ $currency }}{{ $item->amount }}</td>
+                  </tr>
+                  @endforeach
               @endforeach
             </tbody>
         </table>
