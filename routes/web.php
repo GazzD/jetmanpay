@@ -25,13 +25,15 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['middleware' => ['permission:admin-pending-payments']], function () {
         Route::post('/payments/reports', 'PaymentsController@generateReport')->name('payments/reports');
         Route::get('/payments/pending', 'PaymentsController@indexPending')->name('payments/pending');
-        Route::get('/payments/fetch/pending', 'PaymentsController@fetchPending')->name('fetch-pending-payments');
-        Route::get('/payments/fetch-payments', 'PaymentsController@fetchPayments')->name('fetch-payments');
+        Route::get('/payments/completed', 'PaymentsController@indexCompleted')->name('payments/completed');
+        Route::get('/payments/fetch/pending', 'PaymentsController@fetchPending')->name('payments/fetch/pending');
+        Route::get('/payments/fetch/completed', 'PaymentsController@fetchCompleted')->name('payments/fetch/completed');
     });
     
     // Payments
     Route::group(['middleware' => ['permission:admin-payments']], function () {
-        Route::get('/payments', 'PaymentsController@payments')->name('payments');
+        Route::get('/payments', 'PaymentsController@index')->name('payments');
+        Route::get('/payments/fetch/all', 'PaymentsController@fetchAll')->name('payments/fetch/all');
         Route::get('/payments/{id}', 'PaymentsController@details')->name('payments/details');
         Route::post('/payments/{id}', 'PaymentsController@update')->name('payments/update');
     });

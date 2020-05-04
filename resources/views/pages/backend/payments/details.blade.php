@@ -8,12 +8,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0 text-dark">@lang('messages.manual-payments.manual-payments')</h1>
+                <h1 class="m-0 text-dark">@lang('pages/payments.details')</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">@lang('messages.home')</a></li>
-                    <li class="breadcrumb-item active">@lang('messages.manual-payments.manual-payments')</li>
+                    <li class="breadcrumb-item active">@lang('pages/payments.details')</li>
                 </ol>
             </div>
         </div>
@@ -23,13 +23,9 @@
 
 <!-- Main content -->
 <section class="content">
-    <div class="card card-default">
+    <div class="card card-primary card-outline">
         <div class="card-header">
-            <h3 class="card-title">@lang('messages.payments.confirm_payment')</h3>
-            <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
-                <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-remove"></i></button>
-            </div>
+            <h3 class="card-title">@lang('pages/payments.details')</h3>
         </div>
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -41,7 +37,7 @@
             </div>
         @endif
         <div class="card-body">
-        <form method="post" action="{{route('payments/update',$payment->id)}}" enctype=multipart/form-data role="form" class="form-horizontal">
+        <form method="post" @if($payment->status == 'PENDING') action="{{route('payments/update',$payment->id)}}" @endif enctype=multipart/form-data role="form" class="form-horizontal">
                 <div class="row">
                     @csrf
                     <div class="col-md-6">
@@ -118,22 +114,28 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>@lang('messages.payments.status')</label>
-                            <select class="form-control" name="status" required id="status">
-                                @role('CLIENT')
-                                    <option value="APPROVED">@lang('messages.payments.approved')</option>
-                                    <option value="CANCELLED">@lang('messages.payments.canceled')</option>
-                                @endrole
-                                @role('TREASURER1')
-                                    <option value="REVISED1">@lang('messages.payments.revised1')</option>
-                                    <option value="CANCELLED">@lang('messages.payments.canceled')</option>
-                                @endrole
-                            </select>
+                            @if($payment->status == 'PENDING') 
+                                <select class="form-control" name="status" required id="status">
+                                    @role('CLIENT')
+                                        <option value="APPROVED">@lang('messages.payments.approved')</option>
+                                        <option value="CANCELLED">@lang('messages.payments.canceled')</option>
+                                    @endrole
+                                    @role('TREASURER1')
+                                        <option value="REVISED1">@lang('messages.payments.revised1')</option>
+                                        <option value="CANCELLED">@lang('messages.payments.canceled')</option>
+                                    @endrole
+                                </select>
+                            @else
+                            <input type="text" placeholder="@lang('messages.payments.status')" disabled id="reference" value="{{$payment->status}}" class="form-control" name="reference">
+                            @endif
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
-
-                    <button type="submit" id="submit-btn" class="btn btn-primary">@lang('messages.payments.confirm')</button>
+                    @if($payment->status == 'PENDING') 
+                        <button type="submit" id="submit-btn" class="btn btn-primary">@lang('messages.payments.confirm')</button>
+                    @endif
+                    <a href="{{route('payments/pending')}}" id="submit-btn" class="btn btn-default">@lang('pages/payments.back')</a>
                 </div>
             </form>
         </div>

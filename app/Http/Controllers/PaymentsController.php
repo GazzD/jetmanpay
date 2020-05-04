@@ -18,6 +18,18 @@ use Maatwebsite\Excel\Facades\Excel;
 class PaymentsController extends Controller
 {
 
+    public function index()
+    {
+        $clients = Client::all();
+        return view('pages.backend.payments.index')->with('clients', $clients);
+    }
+
+    public function fetchAll(Request $request)
+    {
+        // Datatable functionality (pagination, filter, order)
+        return $this->getPayments('ALL');
+    }
+
     public function indexPending()
     {
         $clients = Client::all();
@@ -27,7 +39,7 @@ class PaymentsController extends Controller
     public function fetchPending(Request $request)
     {
         // Datatable functionality (pagination, filter, order)
-        return $this->getPayments(true);
+        return $this->getPayments('PENDING');
     }
 
     public function indexCompleted()
@@ -39,7 +51,7 @@ class PaymentsController extends Controller
     public function fetchCompleted(Request $request)
     {
         // Datatable functionality (pagination, filter, order)
-        return $this->getPayments(false);
+        return $this->getPayments('COMPLETED');
     }
 
     public function manual(Request $request)
@@ -523,45 +535,35 @@ class PaymentsController extends Controller
         return time();
     }
 
-    private function getPayments($justPending)
+    private function getPayments($reach)
     {
         // Get user role and filter payments acordingly
         switch (auth()->user()->getRoleNames()[0]) {
             case 'MANAGER':
                 // All payments
-                $query = Payment::with('client')->with('plane')
-                    ->with('user')
-                    ->latest();
+                $query = Payment::where('id','>',0)
+                    ;
                 break;
             case 'OPERATOR':
                 // Payments made from that operator
-                $query = Payment::where('user_id', auth()->user()->id)->with('client')
-                    ->with('plane')
-                    ->with('user')
-                    ->latest();
+                $query = Payment::where('user_id', auth()->user()->id);
                 break;
             case 'CLIENT':
                 // Payments related to that client
-                $query = Payment::where('client_id', auth()->user()->client_id)->with('client')
-                    ->with('plane')
-                    ->with('user')
-                    ->latest();
+                $query = Payment::where('client_id', auth()->user()->client_id);
                 break;
             case 'TREASURER1':
                 // Payments related to that client
-                $query = Payment::where('client_id', auth()->user()->client_id)->with('client')
-                    ->with('plane')
-                    ->with('user')
-                    ->latest();
+                $query = Payment::where('client_id', auth()->user()->client_id);
                 break;
 
             default:
                 $query = [];
                 break;
         }
-
-        // Validate status
-        if ($justPending) {
+        
+        // Validate reach
+        if ($reach == 'PENDING') {
             switch (auth()->user()->getRoleNames()[0]) {
                 case 'MANAGER':
                 case 'OPERATOR':
@@ -575,9 +577,18 @@ class PaymentsController extends Controller
                     $query->where('status', 'REVISED2');
                     break;
             }
-        } else {
-            $query->where('status', '<>', 'PENDING');
+        } elseif($reach == 'COMPLETED') {
+            
+            $query->where('status', '<>', 'PENDING')
+                ->where('status','<>', 'REVISED1')
+                ->where('status','<>', 'REVISED2')
+                ;
+           
         }
+        $query->with('client')
+            ->with('plane')
+            ->with('user')
+            ;
         // Return datatable
         return DataTables::of($query->get())->addColumn('action', function ($data) {
             $button = '<ul class="fc-color-picker" id="color-chooser">';

@@ -17,6 +17,8 @@ return [
     'operators'         => 'Operadores',
     'payments'          => 'Pagos realizados',
     'pending-payments'  => 'Pagos pendientes',
+    'completed-payments'=> 'Pagos completados',
+    'all-payments'      => 'Todos los Pagos',
     'send-payments'     => 'Enviar pagos',
     'by-airline'        => 'Por Avión',
     'manual'            => 'Manual',
