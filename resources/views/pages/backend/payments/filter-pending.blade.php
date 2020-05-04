@@ -13,7 +13,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">@lang('messages.home')</a></li>
-                        <li class="breadcrumb-item"><a href="{{route('payments/filter/plane')}}">@lang('messages.sidebar.by-airline')</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('payments/filter/plane')}}">@lang('pages/payments.by-airline')</a></li>
                         <li class="breadcrumb-item active">@lang('messages.payments.select_invocice')</li>
                     </ol>
                 </div>
@@ -25,17 +25,17 @@
     <!-- Main content -->
     <section class="content">
         <div class="card card-default">
-        @foreach($payments as $payment)
-        <div class="row">
-            <h3 style="margin: 0.5em 1em;">
-                <a href="{{route('payments/pay/create',$payment->id)}}">
-                    {{$payment->invoice_number}} ({{$payment->total_amount}} {{$payment->currency}})
-                </a>
-            </h3>
+            @foreach($payments as $payment)
+            <div class="row">
+                <h3 style="margin: 0.5em 1em;">
+                    <a href="{{route('payments/pay/create',$payment->id)}}">
+                        {{$payment->invoice_number}} ({{$payment->total_amount}} {{$payment->currency}})
+                    </a>
+                </h3>
+            </div>
+            <hr style="margin-bottom: 0;">
+            @endforeach
         </div>
-        <hr style="margin-bottom: 0;">
-        @endforeach
-    </div>
     </section>
 
 <!-- /.content -->

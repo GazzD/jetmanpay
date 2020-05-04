@@ -14,4 +14,8 @@ return [
      */
     'details'               => 'Details',
     'back'                  => 'Back',
+    'create'                => 'Create',
+    'by-airline'            => 'By airline',
+    'send-payment'          => 'Send payment',
+    'tail-number'           => 'Tail number',
 ];

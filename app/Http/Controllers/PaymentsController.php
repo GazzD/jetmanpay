@@ -126,7 +126,8 @@ class PaymentsController extends Controller
                 break;
         }
         
-        $currency = 'x';
+        $currency = Curre;
+        
         switch ($payment->currency) {
             case 'USD':
                 $currency = '$';
@@ -183,8 +184,11 @@ class PaymentsController extends Controller
 
     public function filterByPlane()
     {
+        $planes = Plane::all();
         // Opens a view with all planes to futher filter pending payments
-        return view('pages.backend.payments.select-list');
+        return view('pages.backend.payments.select-list')
+            ->with('planes', $planes)
+        ;
     }
 
     public function pendingPaymentsByPlane(Request $request)
@@ -220,12 +224,11 @@ class PaymentsController extends Controller
                     ->with('client')
                     ->get();
                 break;
-
             default:
                 $payments = [];
                 break;
         }
-
+        
         if ($payments->count() == 0) {
             return redirect()->route('payments/filter/plane')->withErrors(Lang::get('validation.payments.plane_not_found_or_pending'));
         }
@@ -418,6 +421,7 @@ class PaymentsController extends Controller
                 return redirect()->back();
                 break;
         }
+        
         // Filter by selected client (-1 value is all clients)
         if ($clientId != -1) {
             $payments = $payments->where('client_id', $clientId);
@@ -531,7 +535,7 @@ class PaymentsController extends Controller
                 $dosa->status = 'PENDING';
                 $dosa->save();
             }
-        }elseif($status == 'APPROVED') {
+        } elseif($status == 'APPROVED') {
             $totalAmount = 0;
             foreach($payment->dosas as $dosa) {
                 foreach ($dosa->items as $item ) {
@@ -541,10 +545,10 @@ class PaymentsController extends Controller
                 }
             }
             $totalAmount = $totalAmount * $taxMultiplier;
-            if($totalAmount <= $client->balance){
+            if($totalAmount <= $client->balance) {
                 $client->balance = $client->balance - $totalAmount;
                 $client->save();
-            }else{
+            } else {
                 return redirect()->back()->withErrors(Lang::get('messages.dosa.insufficient-balance'));
             }
         }
@@ -615,11 +619,7 @@ class PaymentsController extends Controller
         // Return datatable
         return DataTables::of($query->get())->addColumn('action', function ($data) {
             $button = '<ul class="fc-color-picker" id="color-chooser">';
-            if (auth()->user()
-                ->hasRole([
-                'TREASURER1',
-                'CLIENT'
-            ])) {
+            if (auth()->user()->hasRole(['TREASURER1','CLIENT'])) {
                 $button .= '<li><a class="text-muted" href="' . route('payments/details', $data->id) . '"><i class="fas fa-edit" data-toggle="tooltip" data-placement="top" title="' . __('messages.payments.details') . '"></i></a></li>';
             }
             $button .= '<li><a class="text-muted" href="' . route('payment-receipt', $data->id) . '"><i class="fas fa-search" data-toggle="tooltip" data-placement="top" title="' . __('messages.pending-payments.view-receipt') . '"></i></a></li>';

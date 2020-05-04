@@ -1,7 +1,6 @@
 <?php
 namespace app\Http\Controllers;
 
-use App\Client;
 use App\Dosa;
 use App\Payment;
 use App\Plane;
@@ -15,10 +14,10 @@ class DosasController extends Controller
     
     public function paymentDosas($paymentId)
     {
-        $payment = Payment::find($paymentId);
-        $dosas = Dosa::where('payment_id', $paymentId)->get();
+        $payment = Payment::with('dosas')->find($paymentId);
+//         $dosas = Dosa::where('payment_id', $paymentId)->get();
         return view('pages.backend.dosas.payment-dosas')
-            ->with('dosas', $dosas)
+            ->with('dosas', $payment->dosas)
             ->with('payment', $payment)
         ;
     }

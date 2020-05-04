@@ -14,4 +14,8 @@ return [
      */
     'details'               => 'Detalles',
     'back'                  => 'Volver',
+    'create'                => 'Crear',
+    'by-airline'            => 'Por avión',
+    'send-payment'          => 'Enviar pago',
+    'tail-number'           => 'Matrícula',
 ];
