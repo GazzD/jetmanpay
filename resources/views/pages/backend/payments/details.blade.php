@@ -131,14 +131,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    @if($payment->status == 'PENDING') 
-                        <button type="submit" id="submit-btn" class="btn btn-primary">@lang('messages.payments.confirm')</button>
-                    @endif
-                    <a href="{{route('payments/pending')}}" id="submit-btn" class="btn btn-default">@lang('pages/payments.back')</a>
-                </div>
+            </div>
+            <div class="card-footer">
+                @if($payment->status == 'PENDING') 
+                    <button type="submit" id="submit-btn" class="btn btn-primary">@lang('messages.payments.confirm')</button>
+                @endif
+                <a href="{{route('payments/pending')}}" id="submit-btn" class="btn btn-default">@lang('pages/payments.back')</a>
+            </div>
             </form>
-        </div>
     </div>
 </section>
 <!-- /.content -->
