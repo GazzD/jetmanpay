@@ -13,6 +13,7 @@ use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Lang;
 use Barryvdh\DomPDF\Facade as PDF;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Enums\Currency;
 
 class PaymentsController extends Controller
 {
@@ -126,16 +127,7 @@ class PaymentsController extends Controller
                 break;
         }
         
-        $currency = Curre;
-        
-        switch ($payment->currency) {
-            case 'USD':
-                $currency = '$';
-                break;
-            case 'VEF':
-                $currency = 'BsS';
-                break;
-        }
+        $currency = Currency::getSymbol($payment->currency);
         
         // Calculate taxes
         $tax = 0;

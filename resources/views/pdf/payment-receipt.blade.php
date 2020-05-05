@@ -73,6 +73,7 @@
         <p class="sub">{{ $address }}</p>
     </div>
     <div class="payment-table">
+    	@if($payment->status == 'APPROVED')
         <p style="font-size: 20px; text-align: center;">PAYMENT CONFIRMATION</p>
         <table style="width:100%">
             <thead>
@@ -96,6 +97,27 @@
               </tr>
             </tbody>
         </table>
+        @else
+        <p style="font-size: 20px; text-align: center;">PENDING PAYMENT</p>
+        <table style="width:100%">
+            <thead>
+              <tr style="font-size: 16px; margin-bottom: 100px;">
+                <th>DATE</th>
+                <th>COMPANY NAME</th>
+                <th>FISCAL INFORMATION REGISTER</th>
+                <th>BILL DESCRIPTION</th>
+              </tr>
+            </thead>
+            <tbody style="text-align: center;">
+              <tr style="font-size: 13px;">
+                <td>{{ $payment->dosa_date }}</td>
+                <td>{{ $payment->client->name }}</td>
+                <td>{{ $payment->client->rif }}</td>
+                <td>{{ $payment->description }}</td>
+              </tr>
+            </tbody>
+        </table>
+        @endif
     </div>
     <div class="payment-table" style="color:{{$color}};">
         <h1>{{ $payment->status }}</h1>
@@ -133,19 +155,19 @@
             <tbody>
               <tr style="font-size: 13px;">
                 <td>SUB TOTAL</td>
-                <td>{{ $currency }}{{ $subtotal }}</td>
+                <td>{{ Currency::formatAmount($subtotal, $payment->currency) }}</td>
               </tr>
               <tr style="font-size: 13px;">
                 <td>TAX</td>
-                <td>{{ $currency }}{{ $tax }}</td>
+                <td>{{ Currency::formatAmount($tax, $payment->currency) }}</td>
               </tr>
               <tr style="font-size: 13px;">
                 <td>APP FEE</td>
-                <td>{{ $currency }}{{ $appfee }}</td>
+                <td>{{ Currency::formatAmount($appfee, $payment->currency) }}</td>
               </tr>
               <tr style="font-size: 13px;">
                 <td>TOTAL</td>
-                <td>{{ $currency }}{{ $payment->total_amount }}</td>
+                <td>{{ Currency::formatAmount($payment->total_amount, $payment->currency) }}</td>
               </tr>
             </tbody>
         </table>
