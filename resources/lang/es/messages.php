@@ -89,6 +89,7 @@ return [
         'total_bs'                      => 'MONTO TOTAL (VEF)',
         'total_usd'                     => 'MONTO TOTAL (USD)',
         'currency'                      => 'MONEDA',
+        'bill_reference'                => 'REFERENCIA DE FACTURA',
     ],
     'claims'  => [
         'claims'                => 'Reclamos',

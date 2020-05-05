@@ -89,6 +89,7 @@ return [
         'total_bs'                      => 'TOTAL AMOUNT (VEF)',
         'total_usd'                     => 'TOTAL AMOUNT (USD)',
         'currency'                      => 'CURRENCY',
+        'bill_reference'                => 'BILL REFERENCE',
     ],
     'claims'  => [
         'claims'                => 'Claims',

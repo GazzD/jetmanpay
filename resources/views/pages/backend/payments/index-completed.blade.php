@@ -108,7 +108,9 @@
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">@lang('messages.payments.close')</button>
-                    <button type="submit" class="btn btn-primary">@lang('messages.payments.generate_report')</button>
+                    @can('generate-payments-reports')
+                        <button type="submit" class="btn btn-primary">@lang('messages.payments.generate_report')</button>
+                    @endcan
                 </div>
             </form>
         </div>

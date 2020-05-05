@@ -19,7 +19,8 @@ class PaymentsExport implements FromCollection, WithHeadings, ShouldAutoSize, Wi
     * @return \Illuminate\Support\Collection
     */
      // Varible form and to 
-     public function __construct(String $from = null , 
+     public function __construct(
+        String $from = null , 
         String $to = null, 
         $clientId = null, 
         $status = False,
@@ -38,39 +39,30 @@ class PaymentsExport implements FromCollection, WithHeadings, ShouldAutoSize, Wi
      // Function select data from database 
      public function collection()
      {
+        $payments = Payment::select('currency','total_amount','reference','description','dosa_date','number','client_id','status','plane_id','user_id')
+            ->where('dosa_date','>=',$this->from)
+            ->where('dosa_date','<=',$this->to)
+            ;
+        
         switch (auth()->user()->getRoleNames()[0]) {
             case 'MANAGER':
-                $payments = Payment::select('currency','total_amount','description','dosa_date','number','client_id','status','plane_id','user_id')
-                    ->where('dosa_date','>=',$this->from)
-                    ->where('dosa_date','<=',$this->to)
-                    ->with('client')
-                    ->with('plane')
-                    ->get()
-                ;
+                
+                break;
+            case 'GOVERNMENT':
                 break;
             case 'OPERATOR':
-                $payments = Payment::select('currency','total_amount','description','dosa_date','number','client_id','status','plane_id','user_id')
-                    ->where('dosa_date','>=',$this->from)
-                    ->where('dosa_date','<=',$this->to)
-                    ->where('user_id',auth()->user()->id)
-                    ->with('client')
-                    ->with('plane')
-                    ->get()
+                $payments = $payments->where('user_id',auth()->user()->id)
                 ;
                 break;
             case 'CLIENT':
-                $payments = Payment::select('currency','total_amount','description','dosa_date','number','client_id','status','plane_id','user_id')
-                    ->where('dosa_date','>=',$this->from)
-                    ->where('dosa_date','<=',$this->to)
-                    ->where('client_id',auth()->user()->client_id)
-                    ->with('client')
-                    ->with('plane')
-                    ->get()
+                $payments = $payments->where('client_id',auth()->user()->client_id)
                 ;
                 break;
             
             default:
-                return $payments = [];
+                $payments = Payment::select('currency','total_amount','reference','description','dosa_date','number','client_id','status','plane_id','user_id')
+                ->where('id','<',0)
+                ;
                 break;
         }
         if($this->clientId > 0){
@@ -90,6 +82,13 @@ class PaymentsExport implements FromCollection, WithHeadings, ShouldAutoSize, Wi
                 $payments = $payments->where('status',$this->status);
             }
         }
+        // Run the query
+        $payments = $payments
+            ->with('plane')
+            ->with('client')
+            ->get()
+            ;
+
         foreach($payments as $payment){
             $payment->plane_id = null;
             $payment->user_id = null;
@@ -99,6 +98,9 @@ class PaymentsExport implements FromCollection, WithHeadings, ShouldAutoSize, Wi
                 $payment->client_id = null;
             }
         }
+
+
+        // Calculate totals per currency
         $totalBs = 0;
         $totalUSD = 0;
         foreach ($payments as $payment){
@@ -127,10 +129,12 @@ class PaymentsExport implements FromCollection, WithHeadings, ShouldAutoSize, Wi
         $bssRow = new Payment();
         $bssRow->currency = Lang::get('messages.reports.total_bs');
         $bssRow->total_amount = $totalBs;
+        
         $payments->push($emptyRow);
         $payments->push($dateRow);
         $payments->push($usdRow);
         $payments->push($bssRow);
+
         return $payments;  
      }
      /**
@@ -150,8 +154,9 @@ class PaymentsExport implements FromCollection, WithHeadings, ShouldAutoSize, Wi
      public function headings(): array
      {
          return [
-            Lang::get('messages.payments.currency'),
+            Lang::get('messages.reports.currency'),
             Lang::get('messages.reports.total_amount'),
+            Lang::get('messages.reports.bill_reference'),
             Lang::get('messages.reports.description'),
             Lang::get('messages.reports.date'),
             Lang::get('messages.reports.receipt'),
