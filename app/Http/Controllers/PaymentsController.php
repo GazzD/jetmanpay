@@ -10,14 +10,25 @@ use App\Http\Controllers\Controller;
 use function GuzzleHttp\json_decode;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
 use Barryvdh\DomPDF\Facade as PDF;
 use Maatwebsite\Excel\Facades\Excel;
-use App\PaymentItem;
+use App\Enums\Currency;
 
 class PaymentsController extends Controller
 {
+
+    public function index()
+    {
+        $clients = Client::all();
+        return view('pages.backend.payments.index')->with('clients', $clients);
+    }
+
+    public function fetchAll(Request $request)
+    {
+        // Datatable functionality (pagination, filter, order)
+        return $this->getPayments('ALL');
+    }
 
     public function indexPending()
     {
@@ -28,7 +39,7 @@ class PaymentsController extends Controller
     public function fetchPending(Request $request)
     {
         // Datatable functionality (pagination, filter, order)
-        return $this->getPayments(true);
+        return $this->getPayments('PENDING');
     }
 
     public function indexCompleted()
@@ -40,7 +51,7 @@ class PaymentsController extends Controller
     public function fetchCompleted(Request $request)
     {
         // Datatable functionality (pagination, filter, order)
-        return $this->getPayments(false);
+        return $this->getPayments('COMPLETED');
     }
 
     public function manual(Request $request)
@@ -53,52 +64,55 @@ class PaymentsController extends Controller
     public function storeManual(Request $request)
     {
         // Creates a new payment and approves it
-        $planeId = $request->planeId + 0;
-        $clientId = $request->clientId + 0;
-        $currency = $request->currency;
-        $reference = $request->reference;
-        $description = $request->description;
-        $paymentItemList = $request->feeList;
-        $totalAmount = 0;
-        $userId = Auth::user()->id;
+        // $planeId = $request->planeId + 0;
+        // $clientId = $request->clientId + 0;
+        // $currency = $request->currency;
+        // $reference = $request->reference;
+        // $description = $request->description;
+        // $paymentItemList = $request->feeList;
+        // $totalAmount = 0;
+        // $userId = Auth::user()->id;
 
-        // Calculating total amount
-        foreach ($paymentItemList as $paymentItemArray) {
-            $totalAmount = $totalAmount + $paymentItemArray['amount'];
-        }
+        // // Calculating total amount
+        // foreach ($paymentItemList as $paymentItemArray) {
+        //     $totalAmount = $totalAmount + $paymentItemArray['amount'];
+        // }
 
-        $payment = new Payment();
-        $payment->invoice_number = $this->generetateInvoiceNumber();
-        $payment->plane_id = $planeId;
-        $payment->client_id = $clientId;
-        $payment->user_id = $userId;
-        $payment->currency = $currency;
-        $payment->number = 'ISP-' . $this->generateRandomString();
-        $payment->reference = $reference;
-        $payment->description = $description;
-        $payment->status = 'APPROVED';
-        $payment->total_amount = $totalAmount;
-        $payment->dosa_date = date('Y-m-d H:i:s');
-        $payment->save();
+        // $payment = new Payment();
+        // $payment->invoice_number = $this->generetateInvoiceNumber();
+        // $payment->plane_id = $planeId;
+        // $payment->client_id = $clientId;
+        // $payment->user_id = $userId;
+        // $payment->currency = $currency;
+        // $payment->number = 'ISP-' . $this->generateRandomString();
+        // $payment->reference = $reference;
+        // $payment->description = $description;
+        // $payment->status = 'APPROVED';
+        // $payment->total_amount = $totalAmount;
+        // $payment->dosa_date = date('Y-m-d H:i:s');
+        // $payment->save();
 
-        foreach ($paymentItemList as $paymentItemArray) {
-            $paymentItem = new PaymentItem();
-            $paymentItem->concept = $paymentItemArray['concept'];
-            $paymentItem->amount = $paymentItemArray['amount'];
-            $paymentItem->payment_id = $payment->id;
-            $paymentItem->save();
-        }
+        // foreach ($paymentItemList as $paymentItemArray) {
+        //     $paymentItem = new PaymentItem();
+        //     $paymentItem->concept = $paymentItemArray['concept'];
+        //     $paymentItem->amount = $paymentItemArray['amount'];
+        //     $paymentItem->payment_id = $payment->id;
+        //     $paymentItem->save();
+        // }
 
-        return $payment;
+        // return $payment;
     }
 
     public function receipt($id)
     {
         // Get payment
-        $payment = Payment::with('items')->with('client')
+        $payment = Payment::with('dosas')
+            ->with('dosas.items')
+            ->with('client')
             ->with('plane')
-            ->find($id);
-
+            ->find($id)
+        ;
+        
         $color = '#FFF';
         switch ($payment->status) {
             case 'APPROVED':
@@ -112,46 +126,61 @@ class PaymentsController extends Controller
                 $color = '#FF9544';
                 break;
         }
-        $currency = 'x';
-        switch ($payment->currency) {
-            case 'USD':
-                $currency = '$';
-                break;
-            case 'VEF':
-                $currency = 'BsS';
-                break;
-        }
-
+        
+        $currency = Currency::getSymbol($payment->currency);
+        
         // Calculate taxes
         $tax = 0;
         $subtotal = 0;
         $appfee = 0;
-        foreach ($payment->items as $item) {
-            $tax += $item->fee;
-            $subtotal += $item->amount - $item->fee;
+        foreach ($payment->dosas as $dosa) {
+            $tax += $dosa->exempt_vat_amount;
+            $subtotal += $dosa->taxable_base_amount;
         }
-
+        
+        $hasStreet = $payment->client->street ? true: false;
+        $hasSector = $payment->client->sector ? true: false;
+        $hasCity = $payment->client->city ? true: false;
+        $hasState = $payment->client->state ? true: false;
+        
+        $address = '';
+        $address .= $payment->client->state;
+        if ($hasState) $address .= ', ';
+        $address .= $payment->client->city;
+        if ($hasCity) $address .= ', ';
+        $address .= $payment->client->sector;
+        if ($hasSector) $address .= ', ';
+        $address .= $payment->client->street;
+        if ($hasStreet) $address .= ', ';
+        $address .= $payment->client->office;
+        
+        $address = $address == '' ? '-' : $address;
+        
         $data = [
             'payment' => $payment,
             'color' => $color,
             'currency' => $currency,
             'tax' => $tax,
             'subtotal' => $subtotal,
-            'appfee' => $appfee
+            'appfee' => $appfee,
+            'address' => $address,
         ];
-
+        
         $pdf = PDF::setOptions([
             'isHtml5ParserEnabled' => true,
             'isRemoteEnabled' => true
         ]);
-
+        
         return $pdf->loadView('pdf.payment-receipt', $data)->download('IPS Bill receipt.pdf');
     }
 
     public function filterByPlane()
     {
+        $planes = Plane::all();
         // Opens a view with all planes to futher filter pending payments
-        return view('pages.backend.payments.select-list');
+        return view('pages.backend.payments.select-list')
+            ->with('planes', $planes)
+        ;
     }
 
     public function pendingPaymentsByPlane(Request $request)
@@ -161,10 +190,11 @@ class PaymentsController extends Controller
                 // Opens a view with all pending payments from a plane id
                 $planeTail = $request->planeTail;
                 $payments = Payment::where('status', 'PENDING')->whereHas('plane', function ($q) use ($planeTail) {
-                    $q->where('tail_number', $planeTail);
-                })
+                        $q->where('tail_number', $planeTail);
+                    })
                     ->with('client')
-                    ->get();
+                    ->get()
+                ;
                 break;
             case 'OPERATOR':
                 // Opens a view with all pending payments made by that operator from a plane id
@@ -186,24 +216,109 @@ class PaymentsController extends Controller
                     ->with('client')
                     ->get();
                 break;
-
             default:
                 $payments = [];
                 break;
         }
-
+        
         if ($payments->count() == 0) {
             return redirect()->route('payments/filter/plane')->withErrors(Lang::get('validation.payments.plane_not_found_or_pending'));
         }
         return view('pages.backend.payments.filter-pending')->with('payments', $payments);
     }
-
-    public function createPayment(Request $request)
+    
+    public function createPayByAirplane(Request $request, $paymentId)
     {
-        dd('xxxx');
-        // Creates a payment based on dosas
+        // Find pending payment
+        $payment = Payment::where('id', $paymentId)->with('client')
+            ->with('dosas')
+            ->first()
+        ;
+        $taxes = 0;
+        $subTotal = 0;
+        // Calculate taxes and subtotal
+        foreach ($payment->dosas as $dosa) {
+            $taxes += $dosa->exempt_vat_amount;
+            $subTotal += $dosa->taxable_base_amount;
+        }
+        
+        $payment->taxes = $taxes;
+        $payment->subTotal = $subTotal;
+        return view('pages.backend.payments.pay-existing')->with('payment', $payment);
+    }
+    
+    public function payCreated(Request $request, $paymentId)
+    {
+        // Edit pending payment to change it's satus to APPROVED
+        $reference = $request->reference;
+        $description = $request->description;
+        $payment = Payment::find($paymentId);
+        $client = Client::find($payment->client_id);
+        
+        if ($client->balance < $payment->total_amount) {
+            return redirect()->back()->withErrors(Lang::get('validation.payments.not_enough_money'));
+        }
+        
+        $payment->reference = $reference;
+        $payment->description = $description;
+        $payment->status = 'APPROVED';
+        $payment->save();
+        
+        $client->balance = $client->balance - $payment->total_amount;
+        $client->save();
+        
+        return redirect()->route('payments');
+    }
+    
+    public function createByDosa(Request $request)
+    {
+        // Get tax
+        $tax = $this->getTaxes(); //15 %
+        $taxMultiplier = ($tax/100)+1; //1.15
+        
+        // Validate dosas to pay
+        if(!$request->get('dosasToPay')){
+            return redirect()->back()->withErrors([__('messages.dosa.select_dosas')]);
+        }
+        $dosas = Dosa::where('client_id', auth()->user()->client_id)->where('status', 'PENDING')
+            ->whereIn('id', $request->get('dosasToPay'))
+            ->with('items')
+            ->get()
+        ;
+        $client = Client::find(auth()->user()->client_id);
+        
+        // Calculate total and individual dosa's amount converted to the client's currency
+        $totalAmount = 0;
+        foreach($dosas as $dosa) {
+            foreach ($dosa->items as $item ) {
+                $conversionRate = $this->getConversionRate($dosa->currency,$client->currency);
+                $item->convertedAmount = $item->amount * $conversionRate;
+                // dd($item->amount,$item->convertedAmount);
+                $totalAmount = $totalAmount + ($item->convertedAmount);
+            }
+        }
+        
+        $taxAmount = $totalAmount * ($taxMultiplier-1); 
+        $totalAmount = $totalAmount * $taxMultiplier;
+        
+        // Get plane
+        $plane = Plane::find($dosas[0]->plane_id);
+        
+        // Load payment form view
+        return view('pages.backend.payments.dosa-payment')
+            ->with('plane',$plane)
+            ->with('dosas',$dosas)
+            ->with('tax',$tax)
+            ->with('taxAmount',$taxAmount)
+            ->with('client',$client)
+            ->with('totalAmount',$totalAmount)
+        ;
+    }
+
+    // Creates a payment based on dosas
+    public function storebyDosa(Request $request)
+    {
         $dosaIds = $request->dosaIds;
-        // dump($dosaIds);
         $reference = $request->reference;
         $description = $request->description;
         $planeId = $request->planeId;
@@ -214,17 +329,17 @@ class PaymentsController extends Controller
         $dosas = Dosa::where('client_id', $user->client_id)->where('status', 'PENDING')
             ->whereIn('id', $dosaIds)
             ->get();
-        // dd($dosas);
         $plane = Plane::find($dosas[0]->plane_id);
         $client = Client::find($user->client_id);
         $totalAmount = 0;
-        foreach ($dosas as $dosa) {
-            $conversionRate = $this->getConversionRate($dosa->currency, $client->currency);
-            $dosa->convertedAmount = $dosa->total_dosa_amount * $conversionRate;
-            $totalAmount = $totalAmount + ($dosa->convertedAmount);
+        foreach($dosas as $dosa) {
+            foreach ($dosa->items as $item ) {
+                $conversionRate = $this->getConversionRate($dosa->currency,$client->currency);
+                $item->convertedAmount = $item->amount * $conversionRate;
+                $totalAmount = $totalAmount + ($item->convertedAmount);
+            }
         }
 
-        $taxAmount = $totalAmount * ($taxMultiplier - 1);
         $totalAmount = $totalAmount * $taxMultiplier;
 
         $payment = new Payment();
@@ -239,6 +354,7 @@ class PaymentsController extends Controller
         $payment->dosa_date = date('Y-m-d');
         $payment->invoice_number = time();
         $payment->dosa_number = $this->generateRandomString();
+        // If client, set status to approved and discount from the balance
         if ($user->hasRole('CLIENT')) {
             $payment->status = 'APPROVED';
             if ($client->balance >= $totalAmount) {
@@ -254,56 +370,18 @@ class PaymentsController extends Controller
         }
         $payment->save();
 
+        // Link dosas with their respective payment
         foreach ($dosas as $dosa) {
-            $paymentItem = new PaymentItem();
-            $paymentItem->concept = $dosa->aperture_code;
-            $paymentItem->amount = $dosa->convertedAmount;
-            $paymentItem->payment_id = $payment->id;
-            $paymentItem->save();
-            $newDosa = Dosa::find($dosa->id);
-            $newDosa->status = 'APPROVED';
-            $newDosa->save();
+           $dosa->payments()->attach($payment->id);
+           if($user->hasRole('CLIENT')){
+               $dosa->status = 'APPROVED';
+           }else{
+               $dosa->status = 'REVISION';
+           }
+           $dosa->save();
         }
 
         return redirect()->route('payments');
-    }
-
-    public function payCreated(Request $request, $paymentId)
-    {
-        // Edit pending payment to change it's satus to APPROVED
-        $reference = $request->reference;
-        $clientId = $request->clientId;
-        $description = $request->description;
-        $payment = Payment::find($paymentId);
-
-        $client = Client::find($clientId);
-        if ($client->balance < $payment->total_amount) {
-            return redirect()->back()->withErrors(Lang::get('validation.payments.not_enough_money'));
-        }
-
-        $payment->reference = $reference;
-        $payment->description = $description;
-        $payment->status = 'APPROVED';
-        $payment->save();
-
-        $client->balance = $client->balance - $payment->total_amount;
-        $client->save();
-
-        return redirect()->route('payments');
-    }
-
-    public function createPayByAirplane(Request $request, $paymentId)
-    {
-        $payment = Payment::where('id', $paymentId)->with('client')
-            ->with('items')
-            ->first();
-        $taxes = 0;
-        foreach ($payment->items as $item) {
-            $taxes = $taxes + $item->fee;
-        }
-        $payment->taxes = $taxes;
-        $payment->subTotal = $payment->total_amount - $taxes;
-        return view('pages.backend.payments.pay-existing')->with('payment', $payment);
     }
 
     public function generateReport(Request $request)
@@ -340,6 +418,7 @@ class PaymentsController extends Controller
                 return redirect()->back();
                 break;
         }
+        
         // Filter by selected client (-1 value is all clients)
         if ($clientId != -1) {
             $payments = $payments->where('client_id', $clientId);
@@ -405,41 +484,74 @@ class PaymentsController extends Controller
 
     public function details($id)
     {
+        $tax = $this->getTaxes(); //15 %
+        $taxMultiplier = ($tax/100)+1; //1.15
         $payment = Payment::where('id', $id)->with('plane')
-            ->with('items')
             ->with('client')
+            ->with('pendingDosas')
             ->first();
-        return view('pages.backend.payments.details')->with('payment', $payment);
+
+        // convert dosas amount and total amount based on client's currency
+        $totalAmount = 0;
+            foreach($payment->dosas as $dosa) {
+                foreach ($dosa->items as $item ) {
+                    $conversionRate = $this->getConversionRate($dosa->currency,$payment->client->currency);
+                    $item->convertedAmount = $item->amount * $conversionRate;
+                    $totalAmount = $totalAmount + ($item->convertedAmount);
+                }
+            }
+            $totalAmount = $totalAmount * $taxMultiplier;
+            $taxAmount = $totalAmount * ($taxMultiplier-1); 
+        return view('pages.backend.payments.details')
+            ->with('payment', $payment)
+            ->with('totalAmount', $totalAmount)
+            ->with('tax',$tax)
+            ->with('taxAmount',$taxAmount)
+            ;
     }
 
     public function update(Request $request, $id)
     {
         $status = $request->status;
-        $payment = Payment::where('id', $id)->with('items')->first();
+        $payment = Payment::where('id', $id)->with('pendingDosas')->first();
         $user = auth()->user();
+        $client = Client::find($user->client_id);
+        $tax = $this->getTaxes(); //15 %
+        $taxMultiplier = ($tax/100)+1; //1.15
         if ($user->hasRole('CLIENT')) {
-            if ($status != 'PENDING' && $status != 'CANCELED') {
+            if ($status != 'APPROVED' && $status != 'CANCELLED') {
                 return redirect()->back();
             }
         } elseif ($user->hasRole('TREASURER1')) {
-            if ($status != 'REVISED1' && $status != 'CANCELED') {
+            if ($status != 'REVISED1' && $status != 'CANCELLED') {
                 return redirect()->back();
             }
         }
-        if ($status == 'CANCELED') {
-            foreach ($payment->items as $item) {
-                $dosa = Dosa::where('aperture_code', $item->concept)->where('client_id', $payment->client_id)->first();
-                if ($dosa) {
-                    $dosa->status = 'PENDING';
-                    $dosa->save();
+        if ($status == 'CANCELLED') {
+            foreach ($payment->dosas as $dosa) {
+                $dosa->status = 'PENDING';
+                $dosa->save();
+            }
+        } elseif($status == 'APPROVED') {
+            $totalAmount = 0;
+            foreach($payment->dosas as $dosa) {
+                foreach ($dosa->items as $item ) {
+                    $conversionRate = $this->getConversionRate($dosa->currency,$client->currency);
+                    $convertedAmount = $item->amount * $conversionRate;
+                    $totalAmount = $totalAmount + ($convertedAmount);
                 }
             }
-            $payment->delete();
-        } else {
-            $payment->status = $status;
-            $payment->save();
+            $totalAmount = $totalAmount * $taxMultiplier;
+            if($totalAmount <= $client->balance) {
+                $client->balance = $client->balance - $totalAmount;
+                $client->save();
+            } else {
+                return redirect()->back()->withErrors(Lang::get('messages.dosa.insufficient-balance'));
+            }
         }
-        return redirect()->route('payments');
+        $payment->status = $status;
+        $payment->save();
+        return redirect()->route('payments/pending');
     }
 
     private function generetateInvoiceNumber()
@@ -447,49 +559,35 @@ class PaymentsController extends Controller
         return time();
     }
 
-    private function getPayments($justPending)
+    private function getPayments($reach)
     {
         // Get user role and filter payments acordingly
         switch (auth()->user()->getRoleNames()[0]) {
             case 'MANAGER':
                 // All payments
-                $query = Payment::with('client')->with('plane')
-                    ->with('user')
-                    ->with('items')
-                    ->latest();
+                $query = Payment::where('id','>',0)
+                    ;
                 break;
             case 'OPERATOR':
                 // Payments made from that operator
-                $query = Payment::where('user_id', auth()->user()->id)->with('client')
-                    ->with('plane')
-                    ->with('user')
-                    ->with('items')
-                    ->latest();
+                $query = Payment::where('user_id', auth()->user()->id);
                 break;
             case 'CLIENT':
                 // Payments related to that client
-                $query = Payment::where('client_id', auth()->user()->client_id)->with('client')
-                    ->with('plane')
-                    ->with('user')
-                    ->with('items')
-                    ->latest();
+                $query = Payment::where('client_id', auth()->user()->client_id);
                 break;
             case 'TREASURER1':
                 // Payments related to that client
-                $query = Payment::where('client_id', auth()->user()->client_id)->with('client')
-                    ->with('plane')
-                    ->with('user')
-                    ->with('items')
-                    ->latest();
+                $query = Payment::where('client_id', auth()->user()->client_id);
                 break;
 
             default:
                 $query = [];
                 break;
         }
-
-        // Validate status
-        if ($justPending) {
+        
+        // Validate reach
+        if ($reach == 'PENDING') {
             switch (auth()->user()->getRoleNames()[0]) {
                 case 'MANAGER':
                 case 'OPERATOR':
@@ -501,20 +599,24 @@ class PaymentsController extends Controller
                     break;
                 case 'TREASURER1':
                     $query->where('status', 'REVISED2');
-                    $query->orwhere('status', 'REVISED1');
                     break;
             }
-        } else {
-            $query->where('status', '<>', 'PENDING');
+        } elseif($reach == 'COMPLETED') {
+            
+            $query->where('status', '<>', 'PENDING')
+                ->where('status','<>', 'REVISED1')
+                ->where('status','<>', 'REVISED2')
+                ;
+           
         }
+        $query->with('client')
+            ->with('plane')
+            ->with('user')
+            ;
         // Return datatable
         return DataTables::of($query->get())->addColumn('action', function ($data) {
             $button = '<ul class="fc-color-picker" id="color-chooser">';
-            if (auth()->user()
-                ->hasRole([
-                'TREASURER1',
-                'CLIENT'
-            ])) {
+            if (auth()->user()->hasRole(['TREASURER1','CLIENT'])) {
                 $button .= '<li><a class="text-muted" href="' . route('payments/details', $data->id) . '"><i class="fas fa-edit" data-toggle="tooltip" data-placement="top" title="' . __('messages.payments.details') . '"></i></a></li>';
             }
             $button .= '<li><a class="text-muted" href="' . route('payment-receipt', $data->id) . '"><i class="fas fa-search" data-toggle="tooltip" data-placement="top" title="' . __('messages.pending-payments.view-receipt') . '"></i></a></li>';

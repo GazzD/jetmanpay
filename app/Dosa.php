@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Dosa extends Model
 {
-    public function payment()
+    public function payments()
     {
-        return $this->belongsTo('App\Payment');
+        return $this->belongsToMany('App\Payment');
     }
     
     public function client()
@@ -19,5 +19,9 @@ class Dosa extends Model
     public function plane()
     {
         return $this->belongsTo('App\Plane');
+    }
+
+    public function items(){
+        return $this->hasMany('App\DosaItem');
     }
 }

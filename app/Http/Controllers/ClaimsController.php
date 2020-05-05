@@ -37,21 +37,24 @@ class ClaimsController extends Controller
             Mail::to($email)->send(new CreatedClaim($claim->id));
             
         }
-        return redirect()->back()->withMessage(Lang::get('messahes.claims.claim_made_success'));
+        return redirect()->route('claims');
     }
 
     public function details(Request $request, $id){
         $claim = Claim::where('id',$id)
             ->with('user')
             ->first()
-            ;
+        ;
+        
+        $canConfirm = $claim && $claim->status == 'PENDING' ? true:false;
         return view('pages.backend.claims.details')
             ->with('claim',$claim)
-            ;
+            ->with('canConfirm', $canConfirm)
+        ;
     }
 
-    public function check($id){
-        $claim = Claim::find($id);
+    public function check(Request $request){
+        $claim = Claim::find($request->claimId);
         $claim->status = 'REVISED';
         $claim->save();
 

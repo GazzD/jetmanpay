@@ -22,16 +22,11 @@
 <!-- /.content-header -->
 <!-- Main content -->
 <section class="content">
-    <div class="card card-default">
-        <div class="card-header">
-            <h3 class="card-title">@lang('messages.claims.claim_details')</h3>
-            <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
-                <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-remove"></i></button>
-            </div>
-        </div>
-        <div class="card-body">
-            <form method="post" action="#" enctype=multipart/form-data role="form" class="form-horizontal">
+    <form method="post" action="{{ route('claims/check') }}" enctype=multipart/form-data role="form" class="form-horizontal">
+        @csrf
+        <input type="hidden" name="claimId" value="{{$claim->id}}" />
+        <div class="card card-primary card-outline">
+            <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -89,11 +84,15 @@
                     <textarea class="form-control" disabled style="max-width: 100%;" name="description" placeholder="@lang('messages.claims.description')" rows="8">{{$claim->description}}</textarea>
                     </div>
                 </div>
-            
-            <a href="{{route('claims/check',$claim->id)}}" class="btn btn-primary">@lang('messages.claims.check')</a>
-            </form>
+            </div>
+            <div class="card-footer">
+            	@if($canConfirm)
+                <button type="submit" id="submit-btn" class="btn btn-primary">@lang('messages.claims.check')</button>
+                @endif
+                <a href="{{ route('claims') }}" class="btn btn-default">@lang('pages/users.back')</a>
+            </div>
         </div>
-    </div>
+    </form>
 </section>
 <!-- /.content -->
 @endsection

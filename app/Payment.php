@@ -26,8 +26,16 @@ class Payment extends Model
         return $this->belongsTo('App\Plane');
     }
     
-    public function items()
+    public function dosas()
     {
-        return $this->hasMany('App\PaymentItem');
+        return $this->belongsToMany('App\Dosa')->with('items');
+    }
+    public function pendingDosas()
+    {
+        return $this->belongsToMany('App\Dosa')->where('status','PENDING')->with('items');
+    }
+    public function cancelledDosas()
+    {
+        return $this->belongsToMany('App\Dosa')->where('status','CANCELLED')->with('items');
     }
 }

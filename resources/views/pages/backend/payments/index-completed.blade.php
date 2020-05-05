@@ -126,7 +126,7 @@ $(document).ready(function() {
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "{{route('fetch-payments')}}",
+            "url": "{{route('payments/fetch/completed')}}",
         },
         "columns":[
             {"data":"plane.tail_number"},

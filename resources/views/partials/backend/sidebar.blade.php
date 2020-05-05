@@ -99,10 +99,20 @@
           @endcan
           @can('admin-pending-payments')
             <li class="nav-item has-treeview">
-              <a href="{{route('pending-payments')}}" class="nav-link">
+              <a href="{{route('payments/pending')}}" class="nav-link">
                 <i class="nav-icon fas fa-exclamation-triangle"></i>
                 <p>
                   @lang('pages/sidebar.pending-payments')
+                </p>
+              </a>
+            </li>
+          @endcan
+          @can('admin-completed-payments')
+            <li class="nav-item has-treeview">
+              <a href="{{route('payments/completed')}}" class="nav-link">
+                <i class="nav-icon fas fa-check"></i>
+                <p>
+                  @lang('pages/sidebar.completed-payments')
                 </p>
               </a>
             </li>

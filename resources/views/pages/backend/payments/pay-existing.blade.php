@@ -22,99 +22,92 @@
 <!-- /.content-header -->
 <!-- Main content -->
 <section class="content">
-    <div class="card card-default">
-    <div class="card-header">
-        <h3 class="card-title">@lang('messages.payments.confirm_payment')</h3>
-        <div class="card-tools">
-            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
-            <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-remove"></i></button>
-        </div>
-    </div>
-    <div class="card-body">
-        <form method="post" action="{{route('payments/pay/store',$payment->id)}}" enctype=multipart/form-data role="form" class="form-horizontal">
-        <div class="row">
-            @csrf
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label>@lang('messages.manual-payments.plane')</label>
-                    <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" disabled name="planeId" required="required" id="planes">
-                        <option selected value="{{$payment->plane->id}}">{{$payment->plane->tail_number}}</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label>@lang('messages.manual-payments.client')</label>
-                    <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" disabled name="clientId" required="required" id="clients">
-                        <option selected value="{{$payment->client->id}}">{{$payment->client->name}}</option>
-                    </select>
-                </div>
-            </div>
-       
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label>@lang('messages.payments.invoice_number')</label>
-                    <input type="text" class="form-control" disabled name="invoice_number" value="{{$payment->invoice_number}}">
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label>@lang('messages.manual-payments.reference')</label>
-                    <input type="text" required="" placeholder="Reference" id="reference" class="form-control" name="reference">
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label>@lang('messages.manual-payments.description')</label>
-            <div class="col-md-12">
-                <textarea class="form-control" style="max-width: 100%;" name="description" placeholder="@lang('messages.manual-payments.description')" rows="8"></textarea>
-            </div>
-        </div>
-        <div class="form-group">
-            <label>@lang('messages.payments.invoice_items')</label>
-            @foreach ($payment->items as $item)
-                <div class="row" style="margin-top:10px;">
-                    <div class="col-md-10">
-                    <input type="text" value="{{$item->concept}}" disabled placeholder="Concept" id="feeConcept" class="form-control" name="feeConcept">
-                    </div>
-                    <div class="col-md-2">
-                        <input type="text" value=" @if($payment->currency == 'USD')${{$item->amount - $item->fee}} @else {{$item->amount - $item->fee}} BsS @endif" disabled placeholder="Amount" id="feeAmount" class="form-control" name="feeConcept">
-                    </div>
-                </div>
-            @endforeach
-        </div>
-        <div class="row" style="text-align:right;">
-            <div class="col-md-10">
-                <label><h3>Sub-total</h3></label>
-            </div>
-            <div class="col-md-2">
-                <h3> @if($payment->currency == 'USD')${{$payment->subTotal}} @else {{$payment->subTotal}} BsS @endif</h3>
-            </div>
-        </div>
-        <div class="row" style="text-align:right;">
-            <div class="col-md-10">
-                <label><h3>@lang('messages.payments.taxes')</h3></label>
-            </div>
-            <div class="col-md-2">
-                <h3> @if($payment->currency == 'USD')${{$payment->taxes}} @else {{$payment->taxes}} BsS @endif</h3>
-            </div>
-        </div>
-        <div class="row" style="text-align:right;">
-            <div class="col-md-10">
-                <label><h3>Total</h3></label>
-            </div>
-            <div class="col-md-2">
-                <h3> @if($payment->currency == 'USD')${{$payment->total_amount}} @else {{$payment->total_amount}} BsS @endif</h3>
-            </div>
-        </div>
+	<form method="post" action="{{route('payments/pay/store',$payment->id)}}" enctype=multipart/form-data role="form" class="form-horizontal">
+		<div class="card card-primary card-outline">
+			<div class="card-body">
+				<div class="row">
+					@csrf
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>@lang('messages.manual-payments.plane')</label>
+							<select class="form-control select2 select2-hidden-accessible" style="width: 100%;" disabled name="planeId" required="required" id="planes">
+								<option selected value="{{$payment->plane->id}}">{{$payment->plane->tail_number}}</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>@lang('messages.manual-payments.client')</label>
+							<select class="form-control select2 select2-hidden-accessible" style="width: 100%;" disabled name="clientId" required="required" id="clients">
+								<option selected value="{{$payment->client->id}}">{{$payment->client->name}}</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>@lang('messages.payments.invoice_number')</label>
+							<input type="text" class="form-control" disabled name="invoice_number" value="{{$payment->invoice_number}}">
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>@lang('messages.manual-payments.reference')</label>
+							<input type="text" required="required" placeholder="Reference" id="reference" class="form-control" name="reference">
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label>@lang('messages.manual-payments.description')</label>
+					<div class="col-md-12">
+						<textarea class="form-control" style="max-width: 100%;" name="description" placeholder="@lang('messages.manual-payments.description')" rows="8"></textarea>
+					</div>
+				</div>
+				<div class="form-group">
+					<label>@lang('messages.payments.invoice_items')</label>
+					@foreach ($payment->dosas as $dosa)
+    					@foreach ($dosa->items as $item)
+    					<div class="row" style="margin-top: 10px;">
+    						<div class="col-md-10">
+    							<input type="text" value="{{$item->concept}}" disabled placeholder="Concept" id="feeConcept" class="form-control" name="feeConcept">
+    						</div>
+    						<div class="col-md-2">
+    							<input type="text" value="{{Currency::formatAmount($item->amount, $payment->currency)}}" disabled placeholder="Amount" id="feeAmount" class="form-control" name="feeConcept">
+    						</div>
+    					</div>
+    					@endforeach
+					@endforeach
+				</div>
+				<div class="row" style="text-align: right;">
+					<div class="col-md-10">
+						<label><h3>Sub-total</h3></label>
+					</div>
+					<div class="col-md-2">
+						<h3>{{Currency::formatAmount($payment->subTotal, $payment->currency)}}</h3>
+					</div>
+				</div>
+				<div class="row" style="text-align: right;">
+					<div class="col-md-10">
+						<label><h3>@lang('messages.payments.taxes')</h3></label>
+					</div>
+					<div class="col-md-2">
+						<h3>{{Currency::formatAmount($payment->taxes, $payment->currency)}}</h3>
+					</div>
+				</div>
+				<div class="row" style="text-align: right;">
+					<div class="col-md-10">
+						<label><h3>Total</h3></label>
+					</div>
+					<div class="col-md-2">
+						<h3>{{Currency::formatAmount($payment->total_amount, $payment->currency)}}</h3>
+					</div>
+				</div>
 
-        <div id="feeList">
-        </div>
-        <button type="submit" class="btn btn-primary">@lang('messages.save')</button>
-        </form>
-        </div>
-    </div>
-    </section>
+				<div id="feeList"></div>
+				<button type="submit" class="btn btn-primary">@lang('messages.save')</button>
+			</div>
+		</div>
+	</form>
+</section>
 <!-- /.content -->
 @endsection
 @section('extended-scripts')

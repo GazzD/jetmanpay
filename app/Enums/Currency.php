@@ -9,7 +9,7 @@ abstract class Currency extends Enums
         
         switch ($currency) {
             case 'EU':
-                $symbol = 'x';
+                $symbol = '€';
                 break;
             case 'US':
             case 'USD':
@@ -24,5 +24,18 @@ abstract class Currency extends Enums
                 break;
         }
         return $symbol;
+    }
+    
+    public static function formatAmount($amount, $currency) {
+        switch ($currency) {
+            case 'US':
+            case 'USD':
+                $formattedAmount = Currency::getSymbol($currency). ' ' .$amount;
+                break;
+            default:
+                $formattedAmount = $amount . ' ' . Currency::getSymbol($currency);
+                break;
+        }
+        return $formattedAmount;
     }
 }

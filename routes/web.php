@@ -24,14 +24,16 @@ Route::group(['middleware' => ['auth']], function () {
     // Pending Payments
     Route::group(['middleware' => ['permission:admin-pending-payments']], function () {
         Route::post('/payments/reports', 'PaymentsController@generateReport')->name('payments/reports');
-        Route::get('/payments/pending', 'PaymentsController@pending')->name('pending-payments');
-        Route::get('/payments/pending-payments', 'PaymentsController@fetchPendingPayments')->name('fetch-pending-payments');
-        Route::get('/payments/fetch-payments', 'PaymentsController@fetchPayments')->name('fetch-payments');
+        Route::get('/payments/pending', 'PaymentsController@indexPending')->name('payments/pending');
+        Route::get('/payments/completed', 'PaymentsController@indexCompleted')->name('payments/completed');
+        Route::get('/payments/fetch/pending', 'PaymentsController@fetchPending')->name('payments/fetch/pending');
+        Route::get('/payments/fetch/completed', 'PaymentsController@fetchCompleted')->name('payments/fetch/completed');
     });
     
     // Payments
     Route::group(['middleware' => ['permission:admin-payments']], function () {
-        Route::get('/payments', 'PaymentsController@payments')->name('payments');
+        Route::get('/payments', 'PaymentsController@index')->name('payments');
+        Route::get('/payments/fetch/all', 'PaymentsController@fetchAll')->name('payments/fetch/all');
         Route::get('/payments/{id}', 'PaymentsController@details')->name('payments/details');
         Route::post('/payments/{id}', 'PaymentsController@update')->name('payments/update');
     });
@@ -50,7 +52,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['middleware' => ['permission:admin-claims']], function () {
         Route::get('/claims', 'ClaimsController@index')->name('claims');
         Route::post('/claims/store', 'ClaimsController@store')->name('claims/store');
-        Route::get('/claims/check/{id}', 'ClaimsController@check')->name('claims/check');
+        Route::post('/claims/check', 'ClaimsController@check')->name('claims/check');
         Route::get('/claims/details/{id}', 'ClaimsController@details')->name('claims/details');
         Route::get('/claims/fetch', 'ClaimsController@fetch')->name('claims/fetch');
     });
@@ -64,6 +66,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/payments/manual', 'PaymentsController@manual')->name('manual-payments');
     Route::post('/payments/manual', 'PaymentsController@storeManual')->name('manual-payments');
     Route::get('/clients/fetch/plane/{id}', 'ClientsController@fetchByPlane')->name('fetch-clients-by-plane');
+    
+    // Payment by DOSA
+    Route::post('/payments/dosa/create', 'PaymentsController@createByDosa')->name('payments/dosa/create');
+    Route::post('/payments/dosa/store', 'PaymentsController@storeByDosa')->name('payments/dosa/store');
+    // Route::post('/payments/pending', 'PaymentsController@indexPending')->name('payments/dosa/pending');
     
     // Payment documents
     Route::get('/payments/{id}/documents/', 'PaymentDocumentsController@index')->name('payment-documents');
@@ -93,7 +100,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/dosas', 'DosasController@pay')->name('pay-dosa');
         Route::get('/dosas/plane', 'DosasController@filterByPlane')->name('dosas/plane');
         Route::post('/dosas/plane', 'DosasController@pendingByPlane')->name('dosas/plane');
-        Route::post('/payments/dosa', 'PaymentsController@createPayment')->name('payments/dosa');
         Route::get('/dosas/plane/{tailNumber}', 'DosasController@clientDosas')->name('dosas/plane/tail-number');
         Route::get('/dosas/{id}', 'DosasController@detail')->name('dosa-detail');
     });

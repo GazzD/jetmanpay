@@ -8,12 +8,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0 text-dark">@lang('messages.pending-payments.pending-payments')</h1>
+                <h1 class="m-0 text-dark">@lang('messages.payments.payments')</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">@lang('messages.home')</a></li>
-                    <li class="breadcrumb-item active">@lang('messages.pending-payments.pending-payments')</li>
+                    <li class="breadcrumb-item active">@lang('messages.payments.payments')</li>
                 </ol>
             </div>
         </div>
@@ -31,20 +31,21 @@
 	<table id="datatable" class="table table-striped table-bordered">
 		<thead>
 			<tr>
-				<th>@lang('messages.pending-payments.tail-number')</th>
-				<th>@lang('messages.pending-payments.amount')</th>
-				<th>@lang('messages.pending-payments.date')</th>
-				<th style="max-width: 400px:">@lang('messages.pending-payments.description')</th>
-				<th>@lang('messages.pending-payments.number')</th>
-				<th>@lang('messages.pending-payments.client')</th>
-				<th>@lang('messages.pending-payments.operator')</th>
-				<th>@lang('messages.pending-payments.actions')</th>
+				<th>@lang('messages.payments.tail-number')</th>
+				<th>@lang('messages.payments.amount')</th>
+				<th>@lang('messages.payments.date')</th>
+				<th style="max-width: 400px:">@lang('messages.payments.description')</th>
+				<th>@lang('messages.payments.number')</th>
+				<th>@lang('messages.payments.client')</th>
+				<th>@lang('messages.payments.operator')</th>
+				<th>@lang('messages.payments.status')</th>
+				<th>@lang('messages.payments.actions')</th>
 			</tr>
 		</thead>
 	</table>
-	
 </section>
 <!-- /.content -->
+
  <!-- /.modal -->
 
  <div class="modal fade" id="generateReport">
@@ -52,7 +53,7 @@
         <div class="modal-content">
         <form method="POST" action="{{route('payments/reports')}}">
             @csrf
-            <input type="hidden" name="isPending" value="false">
+            <input type="hidden" name="status" value="FINISHED">
                 <div class="modal-header">
                     <h4 class="modal-title">@lang('messages.payments.generate_report')</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -60,7 +61,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" name="status" value="PENDING">
+                    <input type="hidden" name="reach" value="all">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -125,7 +126,7 @@ $(document).ready(function() {
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "{{route('payments/fetch/pending')}}",
+            "url": "{{route('payments/fetch/all')}}",
         },
         "columns":[
             {"data":"plane.tail_number"},
@@ -135,8 +136,12 @@ $(document).ready(function() {
             {"data":"number"},
             {"data":"client.name"},
             {"data":"user.name"},
+            {"data":"status"},
             {"data":"action"},
         ]
+    });
+    $('.submit-claim').click(function(){
+        $('.loading').style.display="block";
     });
 });
 </script>

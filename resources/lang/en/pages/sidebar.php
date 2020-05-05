@@ -18,6 +18,8 @@ return [
     'operators'         => 'Operators',
     'payments'          => 'Payments',
     'pending-payments'  => 'Pending Payments',
+    'completed-payments'=> 'Completed Payments',
+    'all-payments'      => 'All Payments',
     'send-payments'     => 'Send Payments',
     'by-airline'        => 'By Airline',
     'manual'            => 'Manual',
