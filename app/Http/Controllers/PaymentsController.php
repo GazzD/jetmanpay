@@ -234,51 +234,56 @@ class PaymentsController extends Controller
         }
         return view('pages.backend.payments.filter-pending')->with('payments', $payments);
     }
-
     
-
+    public function createPayByAirplane(Request $request, $paymentId)
+    {
+        // Find pending payment
+        $payment = Payment::where('id', $paymentId)->with('client')
+            ->with('dosas')
+            ->first()
+        ;
+        $taxes = 0;
+        $subTotal = 0;
+        // Calculate taxes and subtotal
+        foreach ($payment->dosas as $dosa) {
+            $taxes += $dosa->exempt_vat_amount;
+            $subTotal += $dosa->taxable_base_amount;
+        }
+        
+        $payment->taxes = $taxes;
+        $payment->subTotal = $subTotal;
+        return view('pages.backend.payments.pay-existing')->with('payment', $payment);
+    }
+    
     public function payCreated(Request $request, $paymentId)
     {
         // Edit pending payment to change it's satus to APPROVED
         $reference = $request->reference;
-        $clientId = $request->clientId;
         $description = $request->description;
         $payment = Payment::find($paymentId);
-
-        $client = Client::find($clientId);
+        $client = Client::find($payment->client_id);
+        
         if ($client->balance < $payment->total_amount) {
             return redirect()->back()->withErrors(Lang::get('validation.payments.not_enough_money'));
         }
-
+        
         $payment->reference = $reference;
         $payment->description = $description;
         $payment->status = 'APPROVED';
         $payment->save();
-
+        
         $client->balance = $client->balance - $payment->total_amount;
         $client->save();
-
+        
         return redirect()->route('payments');
     }
-
-    public function createPayByAirplane(Request $request, $paymentId)
-    {
-        $payment = Payment::where('id', $paymentId)->with('client')
-            ->with('items')
-            ->first();
-        $taxes = 0;
-        foreach ($payment->items as $item) {
-            $taxes = $taxes + $item->fee;
-        }
-        $payment->taxes = $taxes;
-        $payment->subTotal = $payment->total_amount - $taxes;
-        return view('pages.backend.payments.pay-existing')->with('payment', $payment);
-    }
+    
     public function createByDosa(Request $request)
     {
         // Get tax
         $tax = $this->getTaxes(); //15 %
         $taxMultiplier = ($tax/100)+1; //1.15
+        
         // Validate dosas to pay
         if(!$request->get('dosasToPay')){
             return redirect()->back()->withErrors([__('messages.dosa.select_dosas')]);
@@ -287,7 +292,7 @@ class PaymentsController extends Controller
             ->whereIn('id', $request->get('dosasToPay'))
             ->with('items')
             ->get()
-            ;
+        ;
         $client = Client::find(auth()->user()->client_id);
         
         // Calculate total and individual dosa's amount converted to the client's currency
