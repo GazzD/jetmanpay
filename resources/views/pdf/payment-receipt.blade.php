@@ -3,12 +3,12 @@
 <style>
     @page {
     	font-family: "Arial Narrow", Arial, sans-serif;
-    	margin: 100px 25px;
+    	margin: 150px 25px;
     }
     
     header {
     	position: fixed;
-    	top: -100px;
+    	top: -160px;
     	left: -25px;
     	right: -25px;
     	background-color: lightblue;
@@ -25,7 +25,6 @@
     
     .payment-info {
     	line-height: 0.5;
-    	margin-top: 20px;
     }
     
     .payment-table {
@@ -38,7 +37,7 @@
     
     footer {
     	position: fixed;
-    	bottom: -100px;
+    	bottom: -150px;
     	left: -25px;
     	right: -25px;
     	line-height: 1;
@@ -59,7 +58,6 @@
     <p>Opa locka , FL 33054, United States</p>
   </footer>
   <main>
-      <br />    <br />    <br />
     <div class="payment-info">
         <p class="main">TAIL NUMBER</p>
         <p class="sub">{{ $payment->plane->tail_number}}</p>
@@ -136,7 +134,7 @@
                   @foreach($dosa->items as $item)
                   <tr style="font-size: 13px;">
                     <td>{{ $item->concept }}</td>
-                    <td style="text-align: center;">{{ $currency }}{{ $item->amount }}</td>
+                    <td style="text-align: center;">{{ Currency::formatAmount($item->amount, $payment->currency) }}</td>
                   </tr>
                   @endforeach
               @endforeach
