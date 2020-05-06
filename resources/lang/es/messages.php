@@ -156,9 +156,6 @@ return [
         'privacy-policy'        => 'Políticas de privacidad',
         'user-agreement'        => 'Acuerdo de usuario',
     ],
-    'payment-documents'   => [
-        'documents'             => 'Documentos',
-    ],
     'upload-json' => [
         'json'              => 'JSON',
         'json-file'         => 'Archivo json',
