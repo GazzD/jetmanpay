@@ -33,6 +33,10 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/payments/reports', 'PaymentsController@generateReport')->name('payments/reports');
     });
     
+    Route::get('/payments/manual', 'PaymentsController@manual')->name('manual-payments');
+    Route::post('/payments/manual', 'PaymentsController@storeManual')->name('manual-payments');
+    Route::get('/clients/fetch/plane/{id}', 'ClientsController@fetchByPlane')->name('fetch-clients-by-plane');
+    
     // Payments
     Route::group(['middleware' => ['permission:admin-payments']], function () {
         Route::get('/payments', 'PaymentsController@index')->name('payments');
@@ -65,10 +69,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/payments/filter/plane/pending', 'PaymentsController@pendingPaymentsByPlane')->name('payments/filter/plane/pending');
     Route::get('/payments/{paymentId}/pay/create', 'PaymentsController@createPayByAirplane')->name('payments/pay/create');
     Route::post('/payments/{paymentId}/pay/store', 'PaymentsController@payCreated')->name('payments/pay/store');     
-    
-    Route::get('/payments/manual', 'PaymentsController@manual')->name('manual-payments');
-    Route::post('/payments/manual', 'PaymentsController@storeManual')->name('manual-payments');
-    Route::get('/clients/fetch/plane/{id}', 'ClientsController@fetchByPlane')->name('fetch-clients-by-plane');
     
     // Payment by DOSA
     Route::post('/payments/dosa/create', 'PaymentsController@createByDosa')->name('payments/dosa/create');
