@@ -25,7 +25,9 @@
 <section class="content">
     <div class="row"  style="float:right;" >
         <div class="col-md-12">
-            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#generateReport" style="margin-bottom: 10px;">@lang('messages.payments.generate_report')</button>
+        	@can('generate-payments-reports')
+            	<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#generateReport" style="margin-bottom: 10px;">@lang('messages.payments.generate_report')</button>
+            @endcan
         </div>
     </div>
 	<table id="datatable" class="table table-striped table-bordered">
