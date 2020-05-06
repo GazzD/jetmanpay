@@ -25,6 +25,7 @@
 <!-- Main content -->
 <section class="content">
 	<form method="post" action="{{route('recharges/store')}}" enctype="multipart/form-data" role="form" class="form-horizontal">
+		@csrf
 		<div class="card card-primary card-outline">
 			<div class="card-body">
 				@if ($errors->any())
@@ -35,7 +36,7 @@
 						@endforeach
 					</ul>
 				</div>
-				@endif @csrf
+				@endif
 				<div class="form-group">
 					<label for="picture">@lang('pages/recharges.image')</label>
 					<div class="input-group">

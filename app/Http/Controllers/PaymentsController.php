@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Lang;
 use Barryvdh\DomPDF\Facade as PDF;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Enums\Currency;
+use App\DosaItem;
 
 class PaymentsController extends Controller
 {
@@ -63,44 +64,64 @@ class PaymentsController extends Controller
 
     public function storeManual(Request $request)
     {
-        // Creates a new payment and approves it
-        // $planeId = $request->planeId + 0;
-        // $clientId = $request->clientId + 0;
-        // $currency = $request->currency;
-        // $reference = $request->reference;
-        // $description = $request->description;
-        // $paymentItemList = $request->feeList;
-        // $totalAmount = 0;
-        // $userId = Auth::user()->id;
-
-        // // Calculating total amount
-        // foreach ($paymentItemList as $paymentItemArray) {
-        //     $totalAmount = $totalAmount + $paymentItemArray['amount'];
-        // }
-
-        // $payment = new Payment();
-        // $payment->invoice_number = $this->generetateInvoiceNumber();
-        // $payment->plane_id = $planeId;
-        // $payment->client_id = $clientId;
-        // $payment->user_id = $userId;
-        // $payment->currency = $currency;
-        // $payment->number = 'ISP-' . $this->generateRandomString();
-        // $payment->reference = $reference;
-        // $payment->description = $description;
-        // $payment->status = 'APPROVED';
-        // $payment->total_amount = $totalAmount;
-        // $payment->dosa_date = date('Y-m-d H:i:s');
-        // $payment->save();
-
-        // foreach ($paymentItemList as $paymentItemArray) {
-        //     $paymentItem = new PaymentItem();
-        //     $paymentItem->concept = $paymentItemArray['concept'];
-        //     $paymentItem->amount = $paymentItemArray['amount'];
-        //     $paymentItem->payment_id = $payment->id;
-        //     $paymentItem->save();
-        // }
-
-        // return $payment;
+        // Decode fee list
+        $dosaItemList = json_decode($request->itemList);
+        
+        // Calculating total amount
+        $totalAmount = 0;
+        foreach ($dosaItemList as $dosaItemObj) {
+            $totalAmount += $dosaItemObj->amount;
+        }
+        
+        $plane = Plane::find($request->planeId);
+        $client = Client::find($request->clientId);
+        
+        // Create Payment
+        $payment = new Payment();
+        $payment->dosa_number = $this->generateRandomString();
+        $payment->invoice_number = $this->generetateInvoiceNumber();
+        $payment->plane_id = $request->planeId;
+        $payment->client_id = $request->clientId;
+        $payment->user_id = auth()->user()->id;
+        $payment->currency = $request->currency;
+        $payment->number = 'ISP-' . $this->generateRandomString();
+        $payment->reference = $request->reference;
+        $payment->description = $request->description;
+        $payment->status = 'PENDING';
+        $payment->total_amount = $totalAmount;
+        $payment->dosa_date = date('Y-m-d H:i:s');
+        $payment->save();
+        
+        // Create dosa
+        $dosa = new Dosa();
+        $dosa->id_charge = $this->generateRandomString(5);
+        $dosa->airplane = $plane->tail_number;
+        $dosa->status = 'PENDING';
+        $dosa->currency = $request->currency;
+        $dosa->total_dosa_amount = $totalAmount;
+        $dosa->taxable_base_amount = $totalAmount;
+        $dosa->exempt_vat_amount = 0;
+        $dosa->client_code = $client->code;
+        $dosa->client_name = $client->name;
+        $dosa->client_id = $request->clientId;
+        $dosa->plane_id = $request->planeId;
+        $dosa->save();
+        
+        // Create dosa items
+        foreach ($dosaItemList as $dosaItemObj) {
+            $dosaItem = new DosaItem();
+            $dosaItem->concept = $dosaItemObj->concept;
+            $dosaItem->amount = $dosaItemObj->amount;
+            $dosaItem->tax_fee = 0;
+            $dosaItem->dosa_id = $dosa->id;
+            $dosaItem->save();
+        }
+        
+        // Create relations between dosa and payment
+        $payment->dosas()->attach($dosa); 
+        
+        // Redirect to pending list
+        return redirect()->route('payments/pending');
     }
 
     public function receipt($id)
@@ -112,7 +133,6 @@ class PaymentsController extends Controller
             ->with('plane')
             ->find($id)
         ;
-        
         $color = '#FFF';
         switch ($payment->status) {
             case 'APPROVED':
@@ -497,25 +517,25 @@ class PaymentsController extends Controller
         $payment = Payment::where('id', $id)->with('plane')
             ->with('client')
             ->with('pendingDosas')
-            ->first();
-
-        // convert dosas amount and total amount based on client's currency
+            ->first()
+        ;
+        // Convert dosas amount and total amount based on client's currency
         $totalAmount = 0;
-            foreach($payment->dosas as $dosa) {
-                foreach ($dosa->items as $item ) {
-                    $conversionRate = $this->getConversionRate($dosa->currency,$payment->client->currency);
-                    $item->convertedAmount = $item->amount * $conversionRate;
-                    $totalAmount = $totalAmount + ($item->convertedAmount);
-                }
+        foreach($payment->dosas as $dosa) {
+            foreach ($dosa->items as $item ) {
+                $conversionRate = $this->getConversionRate($dosa->currency,$payment->client->currency);
+                $item->convertedAmount = $item->amount * $conversionRate;
+                $totalAmount = $totalAmount + ($item->convertedAmount);
             }
-            $totalAmount = $totalAmount * $taxMultiplier;
-            $taxAmount = $totalAmount * ($taxMultiplier-1); 
+        }
+        $totalAmount = $totalAmount * $taxMultiplier;
+        $taxAmount = $totalAmount * ($taxMultiplier-1); 
         return view('pages.backend.payments.details')
             ->with('payment', $payment)
             ->with('totalAmount', $totalAmount)
             ->with('tax',$tax)
             ->with('taxAmount',$taxAmount)
-            ;
+        ;
     }
 
     public function update(Request $request, $id)
