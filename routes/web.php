@@ -23,11 +23,14 @@ Route::group(['middleware' => ['auth']], function () {
     
     // Pending Payments
     Route::group(['middleware' => ['permission:admin-pending-payments']], function () {
-        Route::post('/payments/reports', 'PaymentsController@generateReport')->name('payments/reports');
         Route::get('/payments/pending', 'PaymentsController@indexPending')->name('payments/pending');
         Route::get('/payments/completed', 'PaymentsController@indexCompleted')->name('payments/completed');
         Route::get('/payments/fetch/pending', 'PaymentsController@fetchPending')->name('payments/fetch/pending');
         Route::get('/payments/fetch/completed', 'PaymentsController@fetchCompleted')->name('payments/fetch/completed');
+    });
+    // Generate Payment reports
+    Route::group(['middleware' => ['permission:generate-payments-reports']], function () {
+        Route::post('/payments/reports', 'PaymentsController@generateReport')->name('payments/reports');
     });
     
     // Payments

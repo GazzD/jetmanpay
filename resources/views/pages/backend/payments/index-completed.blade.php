@@ -25,7 +25,9 @@
 <section class="content">
     <div class="row"  style="float:right;" >
         <div class="col-md-12">
-            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#generateReport" style="margin-bottom: 10px;">@lang('messages.payments.generate_report')</button>
+        	@can('generate-payments-reports')
+            	<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#generateReport" style="margin-bottom: 10px;">@lang('messages.payments.generate_report')</button>
+            @endcan
         </div>
     </div>
 	<table id="datatable" class="table table-striped table-bordered">
@@ -108,7 +110,9 @@
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">@lang('messages.payments.close')</button>
-                    <button type="submit" class="btn btn-primary">@lang('messages.payments.generate_report')</button>
+                    @can('generate-payments-reports')
+                        <button type="submit" class="btn btn-primary">@lang('messages.payments.generate_report')</button>
+                    @endcan
                 </div>
             </form>
         </div>

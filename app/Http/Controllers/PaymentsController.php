@@ -401,6 +401,13 @@ class PaymentsController extends Controller
                 $payments = Payment::where('dosa_date', '>=', $from)
                     ->where('dosa_date', '<=', $to)
                 ;
+                $user = 'ALL';
+                break;
+            case 'GOVERNMENT':
+                $payments = Payment::where('dosa_date', '>=', $from)
+                    ->where('dosa_date', '<=', $to)
+                ;
+                $user = 'ALL';
                 break;
             case 'OPERATOR':
                 $payments = Payment::where('dosa_date', '>=', $from)
@@ -437,6 +444,7 @@ class PaymentsController extends Controller
         // Get payments
         $payments = $payments->with('client')
             ->with('plane')
+            ->with('dosas')
             ->get()
         ;
         // $payments = Payment::with('plane')->with('client')->get();
@@ -450,9 +458,9 @@ class PaymentsController extends Controller
             }
             // Calculate amount before commission
             $totalFee = 0;
-            foreach ($payment->items as $item) {
-                $totalFee = $totalFee + $item->fee;
-            }
+            // foreach ($payment->items as $item) {
+            //     $totalFee = $totalFee + $item->fee;
+            // }
             $payment->amount_before_commission = $payment->total_amount - $totalFee;
         }
         /*
@@ -568,6 +576,11 @@ class PaymentsController extends Controller
                 $query = Payment::where('id','>',0)
                     ;
                 break;
+            case 'GOVERNMENT':
+                // All payments
+                $query = Payment::where('id','>',0)
+                    ;
+                break;
             case 'OPERATOR':
                 // Payments made from that operator
                 $query = Payment::where('user_id', auth()->user()->id);
@@ -582,14 +595,19 @@ class PaymentsController extends Controller
                 break;
 
             default:
-                $query = [];
+                $query = Payment::where('id','<',0)
+                ;
                 break;
         }
-        
         // Validate reach
         if ($reach == 'PENDING') {
             switch (auth()->user()->getRoleNames()[0]) {
                 case 'MANAGER':
+                    $query->where('status', 'PENDING');
+                    break;
+                case 'GOVERNMENT':
+                    $query->where('status', 'PENDING');
+                    break;
                 case 'OPERATOR':
                     $query->where('status', 'PENDING');
                     break;
@@ -602,12 +620,10 @@ class PaymentsController extends Controller
                     break;
             }
         } elseif($reach == 'COMPLETED') {
-            
             $query->where('status', '<>', 'PENDING')
                 ->where('status','<>', 'REVISED1')
                 ->where('status','<>', 'REVISED2')
                 ;
-           
         }
         $query->with('client')
             ->with('plane')

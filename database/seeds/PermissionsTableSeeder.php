@@ -27,6 +27,7 @@ class PermissionsTableSeeder extends Seeder
         Permission::create(['name' => 'admin-dosas']);
         Permission::create(['name' => 'admin-settings']);
         Permission::create(['name' => 'admin-documents']);
+        Permission::create(['name' => 'generate-payments-reports']);
         
         $adminPermissions = [
             'admin-users',
@@ -47,7 +48,8 @@ class PermissionsTableSeeder extends Seeder
             'admin-payments-manual',
             'admin-claims',
             'admin-settings',
-            'admin-documents'
+            'admin-documents',
+            'generate-payments-reports'
         ];
         
         $operatorPermissions = [
@@ -59,7 +61,8 @@ class PermissionsTableSeeder extends Seeder
             'admin-payments-manual',
             'admin-claims',
             'admin-settings',
-            'admin-documents'
+            'admin-documents',
+            'generate-payments-reports'
         ];
         
         $clientPermissions = [
@@ -107,7 +110,8 @@ class PermissionsTableSeeder extends Seeder
         $governmentPermissions = [
             'admin-payments',
             'admin-settings',
-            'admin-documents'
+            'admin-documents',
+            'generate-payments-reports'
         ];
         
         // Assing admin's permissions
