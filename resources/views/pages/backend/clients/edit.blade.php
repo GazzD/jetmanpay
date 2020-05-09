@@ -49,6 +49,16 @@
 				</div>
 				<div class="form-group">
 					<div class="row">
+						<label class="col-md-2 control-label">RIF</label>
+						<div class="col-md-10">
+							<input type="text" disabled value="{{ $client->rif }}" 
+								placeholder="RIF" id="rif"
+								class="form-control" name="rif">
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="row">
 						<label class="col-md-2 control-label">@lang('pages/clients.code')</label>
 						<div class="col-md-10">
 							<input type="text" value="{{ $client->code }}" 
@@ -191,33 +201,28 @@
 						</div>
 					</div>
                 </div>
-                <div class="form-group">
-					<div class="row">
-						<label class="col-md-2 control-label">@lang('pages/clients.parish')</label>
-						<div class="col-md-10">
-							<input type="text" value="{{ $client->parish }}"
-								placeholder="@lang('pages/clients.parish')"
-								id="parish" class="form-control" name="parish">
-						</div>
-					</div>
-                </div>
 				<div class="form-group">
 					<div class="row">
-						<label class="col-md-2 control-label">@lang('pages/clients.municipality')</label>
-						<div class="col-md-4">
+						<label class="col-md-2 control-label">@lang('pages/clients.state')</label>
+						<div class="col-md-2">
+							<input type="text" value="{{ $client->state }}"
+								placeholder="@lang('pages/clients.state')"
+								id="state" class="form-control" name="state">
+						</div>
+						<div class="col-md-2">
+							<input type="text" value="{{ $client->city }}"
+								placeholder="@lang('pages/clients.city')"
+								id="city" class="form-control" name="city">
+							</div>
+						<div class="col-md-3">
 							<input type="text" value="{{ $client->municipality }}"
 								placeholder="@lang('pages/clients.municipality')"
 								id="municipality" class="form-control" name="municipality">
 						</div>
 						<div class="col-md-3">
-							<input type="text" value="{{ $client->city }}"
-								placeholder="@lang('pages/clients.city')"
-								id="city" class="form-control" name="city">
-						</div>
-						<div class="col-md-3">
-							<input type="text" value="{{ $client->state }}"
-								placeholder="@lang('pages/clients.state')"
-								id="state" class="form-control" name="state">
+							<input type="text" value="{{ $client->parish }}"
+								placeholder="@lang('pages/clients.parish')"
+								id="parish" class="form-control" name="parish">
 						</div>
 					</div>
                 </div>
@@ -258,76 +263,6 @@
 							<input type="text" value="{{ $client->rm_register }}"
 								placeholder="@lang('pages/clients.rm_register')"
 								id="rmRegister" class="form-control" name="rmRegister">
-						</div>
-					</div>
-                </div>
-                <div class="form-group">
-					<div class="row">
-						<label class="col-md-2 control-label">@lang('pages/clients.patent')</label>
-						<div class="col-md-10">
-							<input type="text" value="{{ $client->patent }}"
-								placeholder="@lang('pages/clients.patent')"
-								id="patent" class="form-control" name="patent">
-						</div>
-					</div>
-                </div>
-                <div class="form-group">
-					<div class="row">
-						<label class="col-md-2 control-label">@lang('pages/clients.contractors_registration')</label>
-						<div class="col-md-10">
-							<input type="text" value="{{ $client->contractors_registration }}"
-								placeholder="@lang('pages/clients.contractors_registration')"
-								id="contractorsRegistration" class="form-control" name="contractorsRegistration">
-						</div>
-					</div>
-                </div>
-                <div class="form-group">
-					<div class="row">
-						<label class="col-md-2 control-label">@lang('pages/clients.company_activity')</label>
-						<div class="col-md-10">
-							<input type="text" value="{{ $client->company_activity }}"
-								placeholder="@lang('pages/clients.company_activity')"
-								id="companyActivity" class="form-control" name="companyActivity">
-						</div>
-					</div>
-                </div>
-                <div class="form-group">
-					<div class="row">
-						<label class="col-md-2 control-label">@lang('pages/clients.aliquot')</label>
-						<div class="col-md-10">
-							<input type="number" value="{{ $client->aliquot }}"
-								placeholder="@lang('pages/clients.aliquot')"
-								id="aliquot" class="form-control" name="aliquot">
-						</div>
-					</div>
-                </div>
-                <div class="form-group">
-					<div class="row">
-						<label class="col-md-2 control-label">@lang('pages/clients.account')</label>
-						<div class="col-md-10">
-							<input type="text" value="{{ $client->account }}"
-								placeholder="@lang('pages/clients.account')"
-								id="account" class="form-control" name="account">
-						</div>
-					</div>
-                </div>
-                <div class="form-group">
-					<div class="row">
-						<label class="col-md-2 control-label">@lang('pages/clients.num_credit')</label>
-						<div class="col-md-10">
-							<input type="text" value="{{ $client->num_credit }}"
-								placeholder="@lang('pages/clients.num_credit')"
-								id="numCredit" class="form-control" name="numCredit">
-						</div>
-					</div>
-                </div>
-                <div class="form-group">
-					<div class="row">
-						<label class="col-md-2 control-label">@lang('pages/clients.num_debit')</label>
-						<div class="col-md-10">
-							<input type="text" value="{{ $client->num_debit }}"
-								placeholder="@lang('pages/clients.num_debit')"
-								id="numDebit" class="form-control" name="numDebit">
 						</div>
 					</div>
                 </div>
