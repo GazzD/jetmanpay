@@ -28,6 +28,7 @@ class PermissionsTableSeeder extends Seeder
         Permission::create(['name' => 'admin-settings']);
         Permission::create(['name' => 'admin-documents']);
         Permission::create(['name' => 'generate-payments-reports']);
+        Permission::create(['name' => 'update-client']);
         
         $adminPermissions = [
             'admin-users',
@@ -72,7 +73,8 @@ class PermissionsTableSeeder extends Seeder
             'admin-payments',
             'admin-completed-payments',
             'admin-pending-payments',
-            'admin-dosas',
+            'admin-documents',
+            'update-client',
             'admin-settings',
             'admin-documents'
         ];

@@ -44,6 +44,12 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/payments/{id}', 'PaymentsController@details')->name('payments/details');
         Route::post('/payments/{id}', 'PaymentsController@update')->name('payments/update');
     });
+
+    // Edit clients
+    Route::group(['middleware' => ['permission:update-client']], function () {
+        Route::get('/clients/edit', 'ClientsController@edit')->name('clients/edit');
+        Route::post('/clients/update', 'ClientsController@update')->name('clients/update');
+    });
     
     // Recharges 
     Route::group(['middleware' => ['permission:admin-recharges']], function () {

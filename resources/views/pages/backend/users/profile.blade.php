@@ -89,7 +89,11 @@
                     @endif
                 </div>
             </div>
-            <a href="{{ route('users/edit-profile') }}" id="submit-btn" class="btn btn-primary">@lang('pages/users.edit')</a> <button id="submit-btn" data-toggle="modal" data-target="#change-password" class="btn btn-primary">@lang('pages/users.edit-password')</button>
+            <a href="{{ route('users/edit-profile') }}" id="submit-btn" class="btn btn-primary">@lang('pages/users.edit')</a>
+            @can('update-client')
+                <a href="{{ route('clients/edit') }}" id="submit-btn" class="btn btn-primary">@lang('pages/clients.edit-client')</a>
+            @endcan 
+            <button id="submit-btn" data-toggle="modal" data-target="#change-password" class="btn btn-primary">@lang('pages/users.edit-password')</button>
         </div>
     </div>
     <div class="modal fade" id="change-password" tabindex="-1" role="dialog">
@@ -121,6 +125,7 @@
         </form>
       </div>
     </div>
+    
 </section>
 <!-- /.content -->
 @endsection
