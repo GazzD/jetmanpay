@@ -50,7 +50,7 @@
 </head>
 <body>
   <header>
-    <img alt="" src="https://i.imgur.com/xzYsgNt.png" />
+    <img alt="" src="https://i.imgur.com/1yhuzio.png" />
   </header>
   <footer>
     <p>BCDA Aeronautical Solutions LLC</p>

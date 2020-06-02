@@ -12,7 +12,7 @@
     <header>
         
         <div class="center" style="font-size: 13px;">
-            <div>JETMANPAY</div>
+            <div>Aero Payer</div>
             <div>@lang('messages.reports.payments_report')</div>
         </div>
                     
@@ -28,7 +28,7 @@
                     </div>
                 </td>
                 <td style="text-align: right;">
-                    <img src="https://app.jetmanpay.com/assets/images/Logo8.png" style="height: 55px;">
+                    <img src="https://i.imgur.com/HrxpWo4.png" style="height: 55px;">
                 </td>
             </tr>
         </tbody>

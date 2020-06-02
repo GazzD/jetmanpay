@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>Jetmanpay</title>
+        <title>Aero Payer</title>
     </head>
     <body>
         <h1>Un nuevo reclamo ha sido registrado</h1>

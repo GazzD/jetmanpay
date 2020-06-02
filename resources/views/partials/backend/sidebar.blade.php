@@ -4,7 +4,7 @@
     <a href="{{route('dashboard')}}" class="brand-link">
       <img src="{{asset('backend/dist/img/logo.png')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
            style="opacity: .8">
-      <span class="brand-text font-weight-light">Jet Man Pay</span>
+      <span class="brand-text font-weight-light">{{env('APP_NAME')}}</span>
     </a>
 
     <!-- Sidebar -->

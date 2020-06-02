@@ -28,7 +28,7 @@ return [
     'close'     => 'Cerrar',
     'save'      => 'Guardar',
     'footer'   => [
-        'all-rights-reserved' => 'Todos los derechos reservados <strong>JET MAN PAY.</strong>',
+        'all-rights-reserved' => 'Todos los derechos reservados <strong>AERO PAYER.</strong>',
     ],
     'dashboard'   => [
         'dashboard'             => 'Tablero',
