@@ -53,9 +53,9 @@
     <img alt="" src="https://i.imgur.com/1yhuzio.png" />
   </header>
   <footer>
-    <p>BCDA Aeronautical Solutions LLC</p>
-    <a href="https://www.google.com/maps?q=14200+NW+42nd+Avenue&entry=gmail&source=g">14200 NW 42nd Ave suite 188</a>
-    <p>Opa locka , FL 33054, United States</p>
+    <p>Hovéd utca 8. 1. em. 2.</p>
+    <p>1054 Budapest</p>
+    <p>HUNGARY</p>
   </footer>
   <main>
     <div class="payment-info">

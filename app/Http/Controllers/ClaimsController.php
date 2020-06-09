@@ -32,12 +32,12 @@ class ClaimsController extends Controller
 
         //Send Email
 //         $users = User::all();
-        $emails  = explode(',', env('MAIL_CLAIM_TARGETS'));
-        foreach ($emails as $email ) {
-            Mail::to($email)->send(new CreatedClaim($claim->id));
+        // $emails  = explode(',', env('MAIL_CLAIM_TARGETS'));
+        // foreach ($emails as $email ) {
+        //     Mail::to($email)->send(new CreatedClaim($claim->id));
             
-        }
-        return redirect()->route('claims');
+        // }
+        return redirect()->back();
     }
 
     public function details(Request $request, $id){
@@ -63,7 +63,11 @@ class ClaimsController extends Controller
 
     public function fetch(){
         // Fetch claims
-        $claims = Claim::where('user_id', auth()->user()->id)->with('user')->get();
+        if(auth()->user()->hasRole('MANAGER')){
+            $claims = Claim::with('user')->get();
+        }else{
+            $claims = Claim::where('user_id', auth()->user()->id)->with('user')->get();
+        }
         
         foreach ($claims as $key => $claim) {
             $claims[$key]->date = date_format($claim->created_at,"d/m/Y/ H:i:s");

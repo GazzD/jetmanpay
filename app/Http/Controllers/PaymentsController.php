@@ -298,7 +298,7 @@ class PaymentsController extends Controller
         
         // Validate dosas to pay
         if(!$request->get('dosasToPay')){
-            return redirect()->back()->withErrors([__('messages.dosa.select_dosas')]);
+            return redirect()->back()->withErrors([__('pages/dosas.select_dosas')]);
         }
         $dosas = Dosa::where('client_id', auth()->user()->client_id)->where('status', 'PENDING')
             ->whereIn('id', $request->get('dosasToPay'))

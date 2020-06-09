@@ -14,7 +14,7 @@ class ClientsTableSeeder extends Seeder
     {
         Client::create(['rif' => "J-20007774-3", 'code' => "00000", 'name' => "CONSORCIO VENEZOLANO DE INDUSTRIAS AERONAÚTICAS Y SERVICIOS AÉREOS, S. A. (CONVIASA)", 'balance' => 120000]);
         Client::create(['rif' => "J-30255832-8", 'code' => "00004", 'name' => "D┤ACH AVIACION Y SERVICIO TECNICO, S.R.L.",]);
-        /*Client::create(['rif' => "J-30819225-2", 'code' => "00005", 'name' => "RUTAS AEREAS DE VENEZUELA RAV, S.A",]);
+        Client::create(['rif' => "J-30819225-2", 'code' => "00005", 'name' => "RUTAS AEREAS DE VENEZUELA RAV, S.A",]);
         Client::create(['rif' => "J-00000470-6", 'code' => "00006", 'name' => "AVENSA",]);
         Client::create(['rif' => "J-00000469-2", 'code' => "00011", 'name' => "AEROVIAS DEL CONTINENTE AMERICANO, S.A. (AVIANCA)",]);
         Client::create(['rif' => "J-30861657-5", 'code' => "00017", 'name' => "AIR EUROPA LINEAS AEREAS , S.A. (SOCIEDAD UNIPERSONAL)",]);
@@ -3485,6 +3485,6 @@ class ClientsTableSeeder extends Seeder
         Client::create(['rif' => "J-30792144-7", 'code' => "100001186", 'name' => "PAIT CONSULTORES ASOCIADOS, C.A.",]);
         Client::create(['rif' => "J-40726117-7", 'code' => "100001187", 'name' => "CONSORCIO CIENTIFICO TECNOLOGICO DE CONSTRUCION ANDICENTRO",]);
         Client::create(['rif' => "V-02000673-0", 'code' => "100001188", 'name' => "GLENDY QUEZADA",]);
-        Client::create(['rif' => "V-01168174-4", 'code' => "100001189", 'name' => "DINORA MONTENEGRO",]);*/
+        Client::create(['rif' => "V-01168174-4", 'code' => "100001189", 'name' => "DINORA MONTENEGRO",]);
     }
 }

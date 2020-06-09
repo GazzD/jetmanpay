@@ -21,10 +21,9 @@
             <tr>
                 <td>
                     <div style="line-height:11px; font-size:11px;">
-                        <div>14200 NW 42nd Ave suite 188</div>
-                        <div>BCDA Aeronautical Solutions LLC</div>
-                        <div>Opa locka , FL 33054</div>
-                        <div>United States</div>
+                        <div>Hovéd utca 8. 1. em. 2.</div>
+                        <div>1054 Budapest</div>
+                        <div>HUNGARY</div>
                     </div>
                 </td>
                 <td style="text-align: right;">

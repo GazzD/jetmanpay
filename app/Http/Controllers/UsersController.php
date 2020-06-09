@@ -94,9 +94,10 @@ class UsersController extends Controller
             case 'ADMIN':
                 $roles = Role::all();
                 $clients = Client::all();
-                break;
+            break;
             case 'MANAGER':
                 $roles = Role::whereIn('name', ['MANAGER', 'OPERATOR'])->get();
+                $clients = Client::all();
                 break;
             case 'CLIENT':
                 $roles = Role::whereIn('name', ['TREASURER2', 'TREASURER1'])->get();

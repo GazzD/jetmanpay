@@ -62,9 +62,11 @@ Route::group(['middleware' => ['auth']], function () {
     });
     
     // Claims
+    Route::group(['middleware' => ['permission:create-claims']], function () {
+        Route::post('/claims/store', 'ClaimsController@store')->name('claims/store');
+    });
     Route::group(['middleware' => ['permission:admin-claims']], function () {
         Route::get('/claims', 'ClaimsController@index')->name('claims');
-        Route::post('/claims/store', 'ClaimsController@store')->name('claims/store');
         Route::post('/claims/check', 'ClaimsController@check')->name('claims/check');
         Route::get('/claims/details/{id}', 'ClaimsController@details')->name('claims/details');
         Route::get('/claims/fetch', 'ClaimsController@fetch')->name('claims/fetch');

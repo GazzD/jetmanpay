@@ -31,7 +31,7 @@
 		@csrf
         <div class="row"  style="float:right;" >
             <div class="col-md-12">
-                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#generateReport" style="margin-bottom: 10px;">@lang('messages.payments.generate_report')</button>
+                {{-- <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#generateReport" style="margin-bottom: 10px;">@lang('messages.payments.generate_report')</button> --}}
                 <button type="submit" class="btn btn-warning" style="margin-bottom: 10px;">@lang('pages/dosas.pay-dosas')</button>
             </div>
         </div>

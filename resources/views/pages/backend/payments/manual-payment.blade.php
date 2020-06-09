@@ -67,7 +67,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>@lang('messages.manual-payments.description')</label>
-                        <textarea name="description" class="form-control" style="max-width: 100%;" id="description" placeholder="Description" rows="8"></textarea>
+                        <textarea name="description" required="" class="form-control" style="max-width: 100%;" id="description" placeholder="Description" rows="8"></textarea>
                     </div>
                 </div>
             </div>

@@ -79,31 +79,32 @@ class DosasTableSeeder extends Seeder
             // Store dosa
             $dosa->save();
             
-            // Find dosa items
-            $dosaDetailResponse = $guzzleClient->request('GET', 'iaim_w2389009812.php?act=getdetdosa|'.$dosa->id_charge);
-            $dosaDetail = json_decode($dosaDetailResponse->getBody()->getContents());
+        //     // Find dosa items
+        //     $dosaDetailResponse = $guzzleClient->request('GET', 'iaim_w2389009812.php?act=getdetdosa|'.$dosa->id_charge);
+        //     $dosaDetail = json_decode($dosaDetailResponse->getBody()->getContents());
             
-            // Iterate over dosa items
-            foreach ($dosaDetail->detalle as $dosaItemJson) {
-                $dosaItem = array();
-                $dosaItem['step_number'] = $dosaItemJson->nro_paso;
-                $dosaItem['concept'] = $dosaItemJson->nombre_cobro;
-                $dosaItem['amount'] = $dosaItemJson->monto_cobro;
-                $dosaItem['payment_type'] = $dosaItemJson->tipo_cobro;
-                $dosaItem['tax_fee'] = $dosaItemJson->iva;
-                $dosaItem['arrival_date'] = $dosaItemJson->fecha_hora_llegada;
-                $dosaItem['departure_date'] = $dosaItemJson->fecha_hora_salida;
-                $dosaItem['calculation_values'] = $dosaItemJson->valores_calculo;
-                $dosaItem['dosa_id'] = $dosa->id;
-                $dosaItem['created_at'] =  \Carbon\Carbon::now();
-                $dosaItem['updated_at'] = \Carbon\Carbon::now(); 
+        //     // Iterate over dosa items
+        //     foreach ($dosaDetail->detalle as $dosaItemJson) {
+        //         $dosaItem = array();
+        //         $dosaItem['step_number'] = $dosaItemJson->nro_paso;
+        //         $dosaItem['concept'] = $dosaItemJson->nombre_cobro;
+        //         $dosaItem['amount'] = $dosaItemJson->monto_cobro;
+        //         $dosaItem['payment_type'] = $dosaItemJson->tipo_cobro;
+        //         $dosaItem['tax_fee'] = $dosaItemJson->iva;
+        //         $dosaItem['arrival_date'] = $dosaItemJson->fecha_hora_llegada;
+        //         $dosaItem['departure_date'] = $dosaItemJson->fecha_hora_salida;
+        //         $dosaItem['calculation_values'] = $dosaItemJson->valores_calculo;
+        //         $dosaItem['dosa_id'] = $dosa->id;
+        //         $dosaItem['created_at'] =  \Carbon\Carbon::now();
+        //         $dosaItem['updated_at'] = \Carbon\Carbon::now(); 
                 
-                // Add to dosa items array
-                $dosaItems[] = $dosaItem;
-            }
+        //         // Add to dosa items array
+        //         $dosaItems[] = $dosaItem;
+        //     }
+        
         }
         
-        // Store dosa items
-        DB::table('dosa_items')->insert($dosaItems);
+        // // Store dosa items
+        // DB::table('dosa_items')->insert($dosaItems);
     }
 }

@@ -95,7 +95,7 @@ class DosasController extends Controller
         return DataTables::of($dosas)
             ->addColumn('action', function($data){
             $button = '<ul class="fc-color-picker" id="color-chooser">';
-            $button .= '<li><a class="text-muted" href="'.route('dosa-detail', $data->id).'"><i class="fas fa-search" data-toggle="tooltip" data-placement="top" title="'.__('messages.dosas.details').'"></i></a></li>';
+            $button .= '<li><a class="text-muted" href="'.route('dosa-detail', $data->id).'"><i class="fas fa-search" data-toggle="tooltip" data-placement="top" title="'.__('pages/dosas.details').'"></i></a></li>';
             $button .= '</ul>';
             
             return $button;

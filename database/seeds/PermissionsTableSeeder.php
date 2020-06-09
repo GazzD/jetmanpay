@@ -24,6 +24,7 @@ class PermissionsTableSeeder extends Seeder
         Permission::create(['name' => 'admin-payments-by-airline']);
         Permission::create(['name' => 'admin-payments-manual']);
         Permission::create(['name' => 'admin-claims']);
+        Permission::create(['name' => 'create-claims']);
         Permission::create(['name' => 'admin-dosas']);
         Permission::create(['name' => 'admin-settings']);
         Permission::create(['name' => 'admin-documents']);
@@ -76,7 +77,9 @@ class PermissionsTableSeeder extends Seeder
             'admin-documents',
             'update-client',
             'admin-settings',
-            'admin-documents'
+            'admin-documents',
+            'create-claims',
+            'admin-dosas'
         ];
         
         $treasurerPermissions = [
