@@ -6,7 +6,7 @@
         <title> {{env('APP_NAME')}} - @yield('title')</title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="icon" type="image/png" href="{{asset('backend/dist/img/favicon1.png')}}">
+        <link rel="icon" type="image/png" href="{{asset('favicon.ico')}}">
         @include('partials/backend/head')
     </head>
     <body class="hold-transition login-page">
