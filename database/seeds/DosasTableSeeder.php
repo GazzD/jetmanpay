@@ -38,6 +38,9 @@ class DosasTableSeeder extends Seeder
             // Get Client
             $client = Client::where('code', $dosaJson->cod_cliente)->first();
             
+            //Get conversion rate to change the currency to the one of the client
+            $conversionRate = Dosa::getConversionRate($dosaJson->cod_tipo_moneda, $client->currency, $dosaJson->tasa_euro, $dosaJson->tasa_dolar);
+            
             $dosa = new Dosa();
             $dosa->client_id = $client->id;
             $dosa->id_charge = $dosaJson->id_cobro;
@@ -54,9 +57,9 @@ class DosasTableSeeder extends Seeder
             $dosa->flight_type = $dosaJson->tipo_vuelo;
             $dosa->client_code = $dosaJson->cod_cliente;
             $dosa->terminal_code = $dosaJson->cod_terminal;
-            $dosa->taxable_base_amount = $dosaJson->monto_base_imponible;
-            $dosa->exempt_vat_amount = $dosaJson->monto_iva_exento;
-            $dosa->total_dosa_amount = $dosaJson->monto_total_dosa;
+            $dosa->taxable_base_amount = $dosaJson->monto_base_imponible * $conversionRate;
+            $dosa->exempt_vat_amount = $dosaJson->monto_iva_exento * $conversionRate;
+            $dosa->total_dosa_amount = $dosaJson->monto_total_dosa * $conversionRate;
             $dosa->client_name = $dosaJson->nombre_cliente;
             $dosa->arrival_flight_number = $dosaJson->numero_vuelo_lleg;
             $dosa->departure_flight_number = $dosaJson->numero_vuelo_sal;
@@ -85,8 +88,7 @@ class DosasTableSeeder extends Seeder
             $dosaDetailResponse = $guzzleClient->request('GET', 'iaim_w2389009812.php?act=getdetdosa|'.$dosa->id_charge);
             $dosaDetail = json_decode($dosaDetailResponse->getBody()->getContents());
             
-            //Get conversion rate to change the currency to the one of the client
-            $conversionRate = Dosa::getConversionRate($dosaJson->cod_tipo_moneda, $client->currency, $dosaJson->tasa_euro, $dosaJson->tasa_dolar);
+            
             // Iterate over dosa items
             foreach ($dosaDetail->detalle as $dosaItemJson) {
 
