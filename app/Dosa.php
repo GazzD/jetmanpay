@@ -25,7 +25,7 @@ class Dosa extends Model
         return $this->hasMany('App\DosaItem');
     }
 
-    public static function getConversionRate($from, $to){
+    public static function getConversionRate($from, $to, $tasaEuro, $tasaDolar){
         $conversionRate = 0;
         switch ($from) {
             case 'USD':
@@ -34,10 +34,10 @@ class Dosa extends Model
                             $conversionRate = 1; //USD TO USD
                             break;
                         case 'BS':
-                            $conversionRate = 175000; //USD TO BS
+                            $conversionRate = 1/$tasaDolar; //USD TO BS
                         break;
                         case 'EU':
-                            $conversionRate = 0.8; //USD TO EU
+                            $conversionRate = $tasaEuro/$tasaDolar; //USD TO EU
                         break;
                         default:
                             $conversionRate = 0; //default
@@ -47,13 +47,13 @@ class Dosa extends Model
             case 'BS':
                     switch ($to) {
                         case 'USD':
-                            $conversionRate = 1/175000; //BS TO USD
+                            $conversionRate = $tasadolar; //BS TO USD
                             break;
                         case 'BS':
                             $conversionRate = 1; //BS TO BS
                         break;
                         case 'EU':
-                            $conversionRate = 1/200000; //BS TO EU
+                            $conversionRate = $tasaEuro; //BS TO EU
                         break;
                         default:
                             $conversionRate = 0; //default
@@ -63,10 +63,10 @@ class Dosa extends Model
             case 'EU':
                     switch ($to) {
                         case 'USD':
-                            $conversionRate = 1.2; //EU TO USD
+                            $conversionRate = $tasaDolar/$tasaEuro; //EU TO USD
                             break;
                         case 'BS':
-                            $conversionRate = 200000; //EU TO BS
+                            $conversionRate = $tasaEuro; //EU TO BS
                         break;
                         case 'EU':
                             $conversionRate = 1; //EU TO EU

@@ -35,13 +35,17 @@ class DosasTableSeeder extends Seeder
         // Iterate over dosas
         foreach ($dosaListResponseObject->transferencia as $dosaJson) {
             
+            // Get Client
+            $client = Client::where('code', $dosaJson->cod_cliente)->first();
+            
             $dosa = new Dosa();
+            $dosa->client_id = $client->id;
             $dosa->id_charge = $dosaJson->id_cobro;
             $dosa->airplane = $dosaJson->matricula;
             $dosa->billing_code = $dosaJson->cod_facturacion;
             $dosa->closure_code = $dosaJson->cod_cierre;
             $dosa->aperture_date = $dosaJson->fecha_apertura;
-            $dosa->currency = 'USD';
+            $dosa->currency = $client->currency;
             $dosa->aperture_code = $dosaJson->cod_apertura;
             $dosa->status_code = $dosaJson->cod_status;
             $dosa->flight_type_id = $dosaJson->id_tipo_vuelo;
@@ -59,9 +63,7 @@ class DosasTableSeeder extends Seeder
             $dosa->arrival_time = $dosaJson->hora_real_lleg;
             $dosa->departure_time = $dosaJson->hora_real_sal;
             
-            // Validate Client
-            $client = Client::where('code', $dosaJson->cod_cliente)->first();
-            $dosa->client_id = 1;//$client ? $client->id: null;
+            
             
             // Validate plane
             $plane = Plane::where('tail_number', $dosaJson->matricula)->first();
@@ -84,8 +86,7 @@ class DosasTableSeeder extends Seeder
             $dosaDetail = json_decode($dosaDetailResponse->getBody()->getContents());
             
             //Get conversion rate to change the currency to the one of the client
-            $conversionRate = Dosa::getConversionRate($dosaJson->cod_tipo_moneda, $client->currency);
-            
+            $conversionRate = Dosa::getConversionRate($dosaJson->cod_tipo_moneda, $client->currency, $dosaJson->tasa_euro, $dosaJson->tasa_dolar);
             // Iterate over dosa items
             foreach ($dosaDetail->detalle as $dosaItemJson) {
 
