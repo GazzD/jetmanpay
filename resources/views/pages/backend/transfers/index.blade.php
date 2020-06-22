@@ -26,6 +26,9 @@
 <section class="content">
     <div class="card card-primary card-outline">
         <div class="card-header">
+            <div class="row mb-2" style="float:right;">
+                <a href="{{route('transfers/create')}}" class="btn btn-primary"> @lang('pages/transfers.create')</a>
+            </div>
         </div>
         <div class="card-body">
             <table id="datatable" class="table table-striped table-bordered">
@@ -36,6 +39,7 @@
                         <th>@lang('pages/transfers.currency')</th>
                         <th>@lang('pages/transfers.status')</th>
                         <th>@lang('pages/transfers.created_at')</th>
+                        <th>@lang('pages/transfers.actions')</th>
                     </tr>
                 </thead>
             </table>
@@ -60,6 +64,7 @@ $(document).ready(function() {
             {"data":"currency"},
             {"data":"status"},
             {"data":"created_at"},
+            {"data":"action"},
         ]
     });
 });
