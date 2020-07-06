@@ -32,7 +32,7 @@ return [
     'planes'            => 'Planes',
     'recharges'         => 'Recharges',
     'approved_dosas'    => 'Approved Dosas',
-    'system'            => 'Airline',
+    'system'            => 'Airport',
     'transferences'     => 'Transferences',
     'transfers'         => 'Transfers',
 ];

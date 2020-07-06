@@ -31,7 +31,7 @@ return [
     'planes'            => 'Aviones',
     'recharges'         => 'Recargas',
     'approved_dosas'    => 'Dosas aprobadas',
-    'system'            => 'Aerolineas',
+    'system'            => 'Aeropuerto',
     'transferences'     => 'Transferencias',
     'transfers'         => 'Transferencias',
 ];
