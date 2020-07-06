@@ -34,4 +34,5 @@ return [
     'approved_dosas'    => 'Approved Dosas',
     'system'            => 'Airline',
     'transferences'     => 'Transferences',
+    'transfers'         => 'Transfers',
 ];

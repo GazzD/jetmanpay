@@ -33,4 +33,5 @@ return [
     'approved_dosas'    => 'Dosas aprobadas',
     'system'            => 'Aerolineas',
     'transferences'     => 'Transferencias',
+    'transfers'         => 'Transferencias',
 ];

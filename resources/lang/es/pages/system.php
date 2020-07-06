@@ -19,7 +19,7 @@ return [
     'balance_eu'    => 'Balance EU',
     'created_at'    => 'Fecha de creación',
     'updated_at'    => 'Última modificación',
-    'system'        => 'Información de aerolinea',
+    'system'        => 'Información del aeropuerto',
     'HISTORIC'      => 'Historial',
     'ACTIVE'        => 'Activo',
 ];
