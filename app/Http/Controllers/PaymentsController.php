@@ -15,6 +15,7 @@ use Barryvdh\DomPDF\Facade as PDF;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Enums\Currency;
 use App\DosaItem;
+use App\System;
 
 class PaymentsController extends Controller
 {
@@ -286,7 +287,39 @@ class PaymentsController extends Controller
         
         $client->balance = $client->balance - $payment->total_amount;
         $client->save();
-        
+
+        // Update system's balance to include the total of the payment
+        $systemInfo =  System::where('status','ACTIVE')->firstOrFail(); // Current active systemInfo
+        $newSystemInfo = new System(); // New systeminfo that will replace the current one to keep an historic
+
+        //Compare the amount in the  with the corresponding balance in the correct currency and validates the amount is lesser than the current balance in the system
+        switch ($payment->currency){
+            case 'USD':
+                $newSystemInfo->balance_usd = $systemInfo->balance_usd + $payment->amount;
+                $newSystemInfo->balance_bs = $systemInfo->balance_bs;
+                $newSystemInfo->balance_eu = $systemInfo->balance_eu;
+                break;
+            case 'BS':
+                $newSystemInfo->balance_usd = $systemInfo->balance_usd;
+                $newSystemInfo->balance_bs = $systemInfo->balance_bs + $payment->amount;
+                $newSystemInfo->balance_eu = $systemInfo->balance_eu;
+                break;
+            case 'EU':
+                $newSystemInfo->balance_bs = $systemInfo->balance_bs;
+                $newSystemInfo->balance_usd = $systemInfo->balance_usd;
+                $newSystemInfo->balance_eu = $systemInfo->balance_eu + $payment->amount;
+                break;
+            
+            default:
+                return redirect()->back();
+                break;
+        }
+        $systemInfo->status = 'HISTORIC';
+        $systemInfo->save();
+
+        $newSystemInfo->status = 'ACTIVE';
+        $newSystemInfo->save();
+
         return redirect()->route('payments');
     }
     

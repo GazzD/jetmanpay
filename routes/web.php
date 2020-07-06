@@ -134,17 +134,19 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/documents', 'DocumentsController@index')->name('documents');
     });
 
-    //System
-    Route::get('/system', 'SystemController@index')->name('system');
-    Route::get('/system/fetch', 'SystemController@fetch')->name('system/fetch');
-
-    //Transfers
-    Route::get('/transfers', 'TransfersController@index')->name('transfers');
-    Route::get('/transfers/fetch', 'TransfersController@fetch')->name('transfers/fetch');
-    Route::get('/transfers/create', 'TransfersController@create')->name('transfers/create');
-    Route::post('/transfers/store', 'TransfersController@store')->name('transfers/store');
-    Route::get('/transfers/{id}', 'TransfersController@details')->name('transfers/details');
-    Route::post('/transfers/approve', 'TransfersController@approve')->name('transfers/approve');
+    Route::group(['middleware' => ['permission:admin-system-information']], function () {
+        //System
+        Route::get('/system', 'SystemController@index')->name('system');
+        Route::get('/system/fetch', 'SystemController@fetch')->name('system/fetch');
+        
+        //Transfers
+        Route::get('/transfers', 'TransfersController@index')->name('transfers');
+        Route::get('/transfers/fetch', 'TransfersController@fetch')->name('transfers/fetch');
+        Route::get('/transfers/create', 'TransfersController@create')->name('transfers/create');
+        Route::post('/transfers/store', 'TransfersController@store')->name('transfers/store');
+        Route::get('/transfers/{id}', 'TransfersController@details')->name('transfers/details');
+        Route::post('/transfers/approve', 'TransfersController@approve')->name('transfers/approve');
+    });
     
 });
 

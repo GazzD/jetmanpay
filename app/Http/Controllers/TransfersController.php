@@ -17,7 +17,6 @@ class TransfersController extends Controller
 
     public function fetch(){
         $transfer = Transfer::all();
-
         // Return datatable
         return DataTables::of($transfer)
             ->addColumn('action', function($data){
@@ -74,29 +73,36 @@ class TransfersController extends Controller
     public function approve(Request $request){
         $transfer = Transfer::findOrFail($request->id);
         if($transfer->status == 'PENDING'){
-            $systemInfo =  System::where('status','ACTIVE')->firstOrFail();
+            $systemInfo =  System::where('status','ACTIVE')->firstOrFail(); // Current active systemInfo
+            $newSystemInfo = new System(); // New systeminfo that will replace the current one to keep an historic
 
             //Compare the amount in the transfer with the corresponding balance in the correct currency and validates the amount is lesser than the current balance in the system
             switch ($transfer->currency){
                 case 'USD':
                     if($transfer->amount > $systemInfo->balance_usd){
-                        return redirect()->back()->withErrors([__('pages/transfers.insufficient_funds')]);
+                        return redirect()->back()->withInput()->withErrors([__('pages/transfers.insufficient_funds')]);
                     }else{
-                        $systemInfo->balance_usd = $systemInfo->balance_usd - $transfer->amount;
+                        $newSystemInfo->balance_usd = $systemInfo->balance_usd - $transfer->amount;
+                        $newSystemInfo->balance_bs = $systemInfo->balance_bs;
+                        $newSystemInfo->balance_eu = $systemInfo->balance_eu;
                     }
                     break;
                 case 'BS':
                     if($transfer->amount > $systemInfo->balance_bs){
-                        return redirect()->back()->withErrors([__('pages/transfers.insufficient_funds')]);
+                        return redirect()->back()->withInput()->withErrors([__('pages/transfers.insufficient_funds')]);
                     }else{
-                        $systemInfo->balance_bs = $systemInfo->balance_bs - $transfer->amount;
+                        $newSystemInfo->balance_bs = $systemInfo->balance_bs - $transfer->amount;
+                        $newSystemInfo->balance_eu = $systemInfo->balance_eu;
+                        $newSystemInfo->balance_usd = $systemInfo->balance_usd;
                     }
                     break;
                 case 'EU':
                     if($transfer->amount > $systemInfo->balance_eu){
-                        return redirect()->back()->withErrors([__('pages/transfers.insufficient_funds')]);
+                        return redirect()->back()->withInput()->withErrors([__('pages/transfers.insufficient_funds')]);
                     }else{
-                        $systemInfo->balance_eu = $systemInfo->balance_eu - $transfer->amount;
+                        $newSystemInfo->balance_eu = $systemInfo->balance_eu - $transfer->amount;
+                        $newSystemInfo->balance_bs = $systemInfo->balance_bs;
+                        $newSystemInfo->balance_usd = $systemInfo->balance_usd;
                     }
                     break;
                 
@@ -104,9 +110,16 @@ class TransfersController extends Controller
                     return redirect()->back();
                     break;
             }
+
+            $systemInfo->status = 'HISTORIC';
             $systemInfo->save();
+
+            $newSystemInfo->status = 'ACTIVE';
+            $newSystemInfo->save();
+
             $transfer->status = 'APPROVED';
             $transfer->save();
+
             return redirect()->route('transfers');
         }
     }

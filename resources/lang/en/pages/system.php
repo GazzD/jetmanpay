@@ -20,7 +20,7 @@ return [
     'status'        => 'Status',
     'created_at'    => 'Created at',
     'updated_at'    => 'Updated at',
-    'system'        => 'Airline information',
+    'system'        => 'Airport information',
     'HISTORIC'      => 'Historic',
     'ACTIVE'      => 'Active',
 ];

@@ -37,26 +37,24 @@
               </p>
             </a>
           </li>
-          {{-- @can('admin-system') --}}
+          @can('admin-system-information')
           <li class="nav-item">
             <a href="{{route('system')}}" class="nav-link">
-              <i class="nav-icon fas fa-plane"></i>
+              <i class="nav-icon fas fa-plane-departure"></i>
               <p>
                 @lang('pages/sidebar.system')
               </p>
             </a>
          </li>
-         {{-- @endcan
-          @can('admin-transfers') --}}
           <li class="nav-item">
             <a href="{{route('transfers')}}" class="nav-link">
-              <i class="nav-icon fas fa-plane"></i>
+              <i class="nav-icon fas fa-exchange-alt"></i>
               <p>
                 @lang('pages/sidebar.transfers')
               </p>
             </a>
          </li>
-         {{-- @endcan --}}
+         @endcan
           @can('admin-planes')
           <li class="nav-item">
             <a href="{{route('planes')}}" class="nav-link">

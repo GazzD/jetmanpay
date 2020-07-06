@@ -30,5 +30,6 @@ class SystemController extends Controller
 
          // Return datatable
          return DataTables::of($system)->make(true);
-     }
+    }
+
 }
