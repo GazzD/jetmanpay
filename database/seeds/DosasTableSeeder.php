@@ -24,7 +24,12 @@ class DosasTableSeeder extends Seeder
         
         // Get web service's base url
         $baseUrl = env('DOSA_WEBSERVICE_ENDPOINT');
-        $guzzleClient = new GuzzleClient(['base_uri' => $baseUrl]);
+        $guzzleClient = new GuzzleClient([
+            'headers' => [
+                'User-Agent'   => 'curl/7.65.3',
+            ],
+            'base_uri' => $baseUrl
+        ]);
         
         // Get all new dosas
         $dosaListResponse = $guzzleClient->request('GET', 'iaim_w2389009812.php?act=gettransfdosa|1');
