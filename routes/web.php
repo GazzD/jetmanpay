@@ -17,6 +17,10 @@ use Illuminate\Support\Facades\Auth;
 Auth::routes();
 Route::post('/staff', 'StaffController@store')->name('staff/store');
 
+// Test routes
+Route::get('/test1', 'TestController@test1')->name('test1');
+Route::get('/test2', 'TestController@test2')->name('test2');
+
 // Private routes
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/', 'DashboardController@index')->name('dashboard');

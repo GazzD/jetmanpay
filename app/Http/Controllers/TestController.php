@@ -1,22 +1,17 @@
 <?php
 
+namespace App\Http\Controllers;
+
+
+use App\Plane;
 use App\Client;
 use App\Dosa;
-use App\Plane;
 use GuzzleHttp\Client as GuzzleClient;
-use function GuzzleHttp\json_decode;
-use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class DosasTableSeeder extends Seeder
+class TestController extends Controller
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
-    public function run()
-    {
+    public function test1() {
         // Dosa items
         $dosaItems = array();
         
@@ -91,7 +86,7 @@ class DosasTableSeeder extends Seeder
             
             // Iterate over dosa items
             foreach ($dosaDetail->detalle as $dosaItemJson) {
-
+                
                 $dosaItem = array();
                 $dosaItem['step_number'] = $dosaItemJson->nro_paso;
                 $dosaItem['concept'] = $dosaItemJson->nombre_cobro;
@@ -103,15 +98,27 @@ class DosasTableSeeder extends Seeder
                 // $dosaItem['calculation_values'] = $dosaItemJson->valores_calculo;
                 $dosaItem['dosa_id'] = $dosa->id;
                 $dosaItem['created_at'] =  \Carbon\Carbon::now();
-                $dosaItem['updated_at'] = \Carbon\Carbon::now(); 
+                $dosaItem['updated_at'] = \Carbon\Carbon::now();
                 
                 // Add to dosa items array
                 $dosaItems[] = $dosaItem;
             }
-        
+            
         }
         
         // // Store dosa items
         DB::table('dosa_items')->insert($dosaItems);
     }
+
+    public function test2(){
+        $guzzleClient = new GuzzleClient([
+            'base_uri' => 'https://jsonplaceholder.typicode.com/'
+        ]);
+        
+        // Get all new dosas
+        $test = $guzzleClient->request('GET', 'todos/1');
+        
+        return $test;
+    }
+
 }
