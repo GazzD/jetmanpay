@@ -3,6 +3,9 @@
 use App\Client;
 use Illuminate\Database\Seeder;
 
+use GuzzleHttp\Client as GuzzleClient;
+use function GuzzleHttp\json_decode;
+
 class ClientsTableSeeder extends Seeder
 {
     /**
