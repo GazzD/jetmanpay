@@ -1,13 +1,11 @@
 <?php
 
+use App\Client;
 use App\Dosa;
+use App\Plane;
+use GuzzleHttp\Client as GuzzleClient;
 use function GuzzleHttp\json_decode;
 use Illuminate\Database\Seeder;
-use GuzzleHttp\Client as GuzzleClient;
-use App\Plane;
-use App\User;
-use App\Client;
-
 use Illuminate\Support\Facades\DB;
 
 class DosasTableSeeder extends Seeder
