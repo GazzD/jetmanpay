@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
         $this->call(PermissionsTableSeeder::class);
         $this->call(PlanesTableSeeder::class);
         $this->call(PaymentsTableSeeder::class);
-//         $this->call(DosasTableSeeder::class);
+        $this->call(DosasTableSeeder::class);
         $this->call(SystemTableSeeder::class);
     }
 }
