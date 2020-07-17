@@ -65,15 +65,28 @@
 @endsection
 @section('extended-scripts')
 <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<script src="http://cdn.datatables.net/plug-ins/1.10.15/dataRender/datetime.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     $('#datatable').DataTable({
-        "processing": true,
-        "serverSide": true,
-        "ajax": {
-            "url": "{{route('system/fetch')}}",
+    	columnDefs:[
+        	{
+            	targets:4, render:function(data){
+	      			return moment(data).format('DD/MM/YYYY h:m:s A');
+	    		}
+    		},
+    		{
+            	targets:5, render:function(data){
+            		return moment(data).format('DD/MM/YYYY h:m:s A');
+	    		}
+    		}
+		],
+    	processing: true,
+        serverSide: true,
+        ajax: {
+            url: "{{route('system/fetch')}}",
         },
-        "columns":[
+        columns:[
             {"data":"balance_usd"},
             {"data":"balance_bs"},
             {"data":"balance_eu"},

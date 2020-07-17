@@ -20,6 +20,7 @@ class SystemController extends Controller
 
     public function index(){
         $system = System::where('status','ACTIVE')->first();
+        
         return view('pages.backend.system.index')
             ->with('system',$system)
             ;
@@ -27,9 +28,9 @@ class SystemController extends Controller
 
     public function fetch(){
         $system = System::all();
-
-         // Return datatable
-         return DataTables::of($system)->make(true);
+        
+        // Return datatable
+        return DataTables::of($system)->make(true);
     }
 
 }
